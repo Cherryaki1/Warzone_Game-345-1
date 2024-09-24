@@ -1,0 +1,3 @@
+C:/Users/gregl/OneDrive/Documents/GitHub/Warzone_Game-a1_COMP345/cmake-build-debug/CMakeFiles/Warzone_Game_a1_COMP345.dir
+C:/Users/gregl/OneDrive/Documents/GitHub/Warzone_Game-a1_COMP345/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/gregl/OneDrive/Documents/GitHub/Warzone_Game-a1_COMP345/cmake-build-debug/CMakeFiles/rebuild_cache.dir

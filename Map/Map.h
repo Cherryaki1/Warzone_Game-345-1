@@ -19,7 +19,6 @@ class Territory {
 
 public:
     Territory(string name, int continentID, string player, int number_of_armies = 0);
-
 };
 
 class Continent {
