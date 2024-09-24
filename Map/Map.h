@@ -18,7 +18,7 @@ class Territory {
     int number_of_armies;
 
 public:
-    Territory(string name, int continentID, string player, int number_of_armies = 0);
+    Territory(string name, string player, int continentID, int number_of_armies);
 };
 
 class Continent {
