@@ -7,25 +7,34 @@ using namespace std;
 
 
 class Card {
-    int cardID; // 1. bomb, 2. reinforcement, 3. blockade, 4. airlift, 5. diplomacy.
 public:
+    Card();
+    ~Card();
+    Card(int type);
+    Card(string type);
+    void setType(int type);
+    void setType(string type);
+    string getType();
+    int getTypeID();
     bool play();
 private:
+    int cardID; // 1. bomb, 2. reinforcement, 3. blockade, 4. airlift, 5. diplomacy.
+
 };
 
 class Deck {
-    vector<Card> cards;
-public:
-    bool draw();
 
+public:
+    void initailize();
+    bool draw();
 private:
+    vector<Card>* cards;
 };
 
 class Hand {
-    vector<Card> cards;
 public:
-
 private:
+    vector<Card>* cards;
 };
 
 
