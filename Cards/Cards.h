@@ -39,6 +39,7 @@ class Hand {
 public:
     Hand();
     ~Hand();
+    void addToHand(Card* card);
 private:
     vector<Card>* cards;
 };
