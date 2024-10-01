@@ -2,47 +2,18 @@
 #include <string>
 #include <queue>
 #include <stdbool.h>
+#include <Orders.h>
 
-class Order {
-    public:
-
-        bool validate() {
-
-        }
-
-        void execute() {
-
-        }
-
-        void deploy() {
-
-        }
-
-        void advance() {
-
-        }
-
-        void bomb() {
-
-        }
-
-        void  blockage() {
-
-        }
-
-        void airlift() {
-
-        }
-
-        void negotiate() {
-            
-        }
-};
+using namespace std;
 
 class OrderList {
     public:
 
-        void move() {
+        list<Order> orders;
+
+        void move(Order order, int position) {
+            
+            
 
         }
 
