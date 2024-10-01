@@ -1,3 +1,0 @@
-/Users/valakhalilzadeh/Documents/Warzone_Game-345-1/cmake-build-debug/CMakeFiles/Warzone_Game_345_1.dir
-/Users/valakhalilzadeh/Documents/Warzone_Game-345-1/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/valakhalilzadeh/Documents/Warzone_Game-345-1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
