@@ -18,21 +18,27 @@ public:
     int getTypeID();
     bool play();
 private:
-    int cardID; // 1. bomb, 2. reinforcement, 3. blockade, 4. airlift, 5. diplomacy.
-
+    int* cardID; // 1. bomb, 2. reinforcement, 3. blockade, 4. airlift, 5. diplomacy.
+    string* type;
 };
 
 class Deck {
-
 public:
-    void initailize();
-    bool draw();
+    Deck();
+    ~Deck();
+    void shuffle();
+    void initialize(int numCards);
+    void initialize();
+    Card* draw();
 private:
     vector<Card>* cards;
+    int* numCards;
 };
 
 class Hand {
 public:
+    Hand();
+    ~Hand();
 private:
     vector<Card>* cards;
 };
