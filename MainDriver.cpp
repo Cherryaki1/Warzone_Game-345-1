@@ -1,6 +1,8 @@
 #include <iostream>
-// NIce
+#include "GameEngineDriver.h"
+using namespace std;
+
 int main(){
-  std::cout << "Hello World" << std::endl;
+  testGameStates();
   return 0;
 }

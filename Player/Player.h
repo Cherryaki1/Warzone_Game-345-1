@@ -7,24 +7,33 @@
 #include "Cards/Cards.h"
 #include "Orders/Orders.h"
 
-using namespace std;
 
 class Orderslist;
 class Territory;
+class Hand;
 class Map;
 class Order;
 
 class Player {
 private:
-        //Hand* playerHand;
+        Hand* playerHand;
         Orderslist* ordersList;
-        string playerName;
+        std::string* playerName;
 public:
         Player();
-        Player(string name);
+        Player(std::string name);
+        Player(const Player& other);       // Copy constructor
+        Player& operator=(const Player& other); // Assignment operator
+        ~Player();
+
+        void setPlayerName(std::string name);
+        std::string getPlayerName() const;
 
         void toDefend();
         void toAttack();
         void issueOrder();
+
+        friend std::ostream& operator<<(std::ostream& os, const Player& player); // Stream insertion operator
+
 };
 #endif
