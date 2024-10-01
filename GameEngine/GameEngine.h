@@ -14,7 +14,7 @@ class Play {
     static bool endPhase();
 };
 
-void testGameStates();
+
 
 #endif
 
