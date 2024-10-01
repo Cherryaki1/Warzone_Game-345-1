@@ -5,13 +5,15 @@ using namespace std;
 string cardTypeLookup[5] = {"Bomb", "Reinforcement", "Blockade", "Airlift", "Diplomacy"};
 
 //CARDS
-Card::Card() {}
+Card::Card() {
+
+}
 Card::~Card() {}
 Card::Card(string type) {}
 Card::Card(int type) {}
 
-void Card::setType(int type) {}
-void Card::setType(string type) {}
+//void Card::setType(int type) {}
+//void Card::setType(string type) {}
 
 int Card::getTypeID() {}
 string Card::getType() {}

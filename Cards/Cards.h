@@ -30,6 +30,7 @@ public:
     void shuffle();
     void initialize(int numCards);
     void initialize();
+    void returnToDeck(Card* card);
     Card* draw();
 private:
     vector<Card>* cards;
