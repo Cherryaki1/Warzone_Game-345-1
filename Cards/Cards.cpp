@@ -36,4 +36,6 @@ void Deck::shuffle() {}
 Hand::Hand() {}
 Hand::~Hand() {}
 
+void Hand::display() {}
+
 void Hand::addToHand(Card *card) {}

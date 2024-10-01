@@ -40,6 +40,7 @@ public:
     Hand();
     ~Hand();
     void addToHand(Card* card);
+    void display();
 private:
     vector<Card>* cards;
 };
