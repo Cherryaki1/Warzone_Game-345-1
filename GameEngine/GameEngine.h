@@ -1,16 +1,17 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
 
-class GameEngine {
+class StartUp {
     public:
-    // Phases of the game
     static bool startUpPhase();
-    bool reinforcementPhase();
-    bool ordersIssuingPhase();
-    bool ordersExecutionPhase();
-    bool endPhase();
-    private:
-    // Something maybe
+};
+
+class Play {
+    public:
+    static bool reinforcementPhase();
+    static bool ordersIssuingPhase();
+    static bool ordersExecutionPhase();
+    static bool endPhase();
 };
 #endif
 
