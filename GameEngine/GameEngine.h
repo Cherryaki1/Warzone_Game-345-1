@@ -13,5 +13,8 @@ class Play {
     static bool ordersExecutionPhase();
     static bool endPhase();
 };
+
+void testGameStates();
+
 #endif
 
