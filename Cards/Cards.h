@@ -1,10 +1,11 @@
 #ifndef CARDS_H
 #define CARDS_H
-using namespace std;
 
 #include <string>
 #include <vector>
 
+using std::string;
+using std::vector;
 
 class Card {
 public:

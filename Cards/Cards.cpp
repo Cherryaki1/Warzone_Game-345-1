@@ -19,7 +19,6 @@ string Card::getType() {}
 bool Card::play() {}
 
 
-
 //DECK
 Deck::Deck() {}
 Deck::~Deck() {}
