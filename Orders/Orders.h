@@ -1,3 +1,6 @@
+#ifndef ORDERS_H
+#define ORDERS_H
+
 class Order {
     public:
 
@@ -33,3 +36,5 @@ class airlift: public Order {
 class negotiate: public Order {
             
 };
+
+#endif
