@@ -44,8 +44,10 @@ class Hand {
 public:
     Hand();
     ~Hand();
-    void draw(Deck* deck);
+//    void draw(Deck* deck);
     void display();
+    void place(Card* card);
+
 private:
     vector<Card*> cards;
 };

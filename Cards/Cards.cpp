@@ -42,28 +42,34 @@ Deck::~Deck() {
 }
 
 void Deck::initialize() { //50 cards, 10 of each type by default
-    int numberOfCards = 50;
+    this->numCards = new int(50);
 
     for (int i = 0; i<cardTypeLookup.size(); i++){
-        for (int j=0; j < numberOfCards / cardTypeLookup.size(); j++){
+        for (int j=0; j < *numCards / cardTypeLookup.size(); j++){
             cards.push_back(new Card(i));
         }
     }
 }
 void Deck::initializeRand(int numCards) {}
 
-Card *Deck::draw() {}
+
 void Deck::shuffle() {}
 void Deck::returnToDeck(Card *card) {}
 void Deck::display() {
     for (int i = 0 ; i<cards.size(); i++){
         cout << (i+1) << ": ";
-//        cards[i].displayCard();
         cards.at(i)->displayCard();
     }
 }
 
-
+Card* Deck::draw() {
+    srand(time(0));
+    int index = rand()%(*numCards+1);
+    Card* drawn = cards.at(index);
+    *numCards--;
+    cards.erase(cards.begin()+index);
+    return drawn;
+}
 
 //HAND
 Hand::Hand() {}
@@ -71,4 +77,8 @@ Hand::~Hand() {}
 
 void Hand::display() {}
 
-void Hand::draw(Deck *deck) {}
+void Hand::place(Card* card){
+
+}
+
+//void Hand::draw(Deck *deck) {}
