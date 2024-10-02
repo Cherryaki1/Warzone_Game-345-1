@@ -7,6 +7,3 @@
 
 using namespace std;
 
-orderList::move(Order order, int position) {
-    orderList = new list<Order>;
-}
