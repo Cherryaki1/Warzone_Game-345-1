@@ -3,3 +3,9 @@
 //
 
 #include "MapLoader.h"
+#include "Map.h"
+
+/*
+MapLoader::MapLoader(string mapFile) {
+
+}*/

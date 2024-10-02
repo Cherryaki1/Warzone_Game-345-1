@@ -1,9 +1,7 @@
 
 #ifndef MAPLOADER_H
 #define MAPLOADER_H
+#include "Map.h"
 
-class MapLoader {
 
-    public:
-};
 #endif //MAPLOADER_H

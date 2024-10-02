@@ -1,6 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <bitset>
 #include <string>
 #include <list>
 #include <map>
@@ -8,38 +9,61 @@
 
 #include "Map.h"
 
-using namespace std;
+using std::string;
+using std::vector;
+using std::list;
+using std::map;
 
 
 class Territory {
-    string name;
-    string player; // Change to Player class
-    int continentID;
-    int number_of_armies;
+    private:
+        string name;
+        string owner; // Change to Player class
+        string continentID;
+        int number_of_armies;
 
-public:
-    Territory(string name, string player, int continentID, int number_of_armies);
+    public:
+        Territory() {};
+        Territory(string name, string owner, string continentID, int number_of_armies);
+        string getName() const;
+        string getOwner();
+        string getContinentID() const;
+        int getNumberOfArmies();
+
+        void setPlayer(string player);
+        void setNumberOfArmies(int number_of_armies);
 };
 
 class Continent {
-    string name;
-    int continentID;
-    vector<Territory> territories;
+    private:
+        string name;
+        string continentID;
+        vector<Territory> territories;
 
-public:
-    Continent(string name, Territory territories);
+    public:
+        Continent() {};
+        Continent(string name, string continentID, vector<Territory> territories);
+
+        string getName() const;
+        string getContinentID() const;
+        vector<Territory> getTerritories();
+
 };
 
 class Map {
-    map<Territory, list<Territory> > adjList;
-    Continent continents;
-    Territory territories;
+    private:
+        map<Territory, list<Territory> > adjList;
+        Continent continents;
+        Territory territories;
 
     public:
-    Map(map<Territory, list<Territory> > adjList, Territory territories, Continent continents);
-    void add_edge(Territory u, Territory v);
-    void print();
-    bool validate();
+        Map() {};
+        Map(map<Territory, list<Territory> > adjList);
+        void add_edge(Territory u, Territory v);
+
+        void print();
+        bool validate();
 };
+
 
 #endif

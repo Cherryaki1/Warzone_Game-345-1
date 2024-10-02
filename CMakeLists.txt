@@ -33,4 +33,5 @@ add_executable(Warzone_Game_a1_COMP345
         MainDriver.cpp
         MainDriver.h
         MainDriver.cpp
-        MainDriver.cpp)
+        MainDriver.cpp
+        Map/MapDriver.h)
