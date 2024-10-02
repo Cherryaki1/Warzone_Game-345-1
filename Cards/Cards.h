@@ -11,7 +11,7 @@ class Card {
 public:
     Card();
     ~Card();
-    Card(int type);
+    explicit Card(int type);
     Card(string type);
 //    void setType(int type);
 //    void setType(string type);
@@ -36,7 +36,7 @@ public:
     Card* draw();
     void display();
 private:
-    vector<Card>* cards;
+    vector<Card*> cards;
     int* numCards;
 };
 
@@ -44,10 +44,10 @@ class Hand {
 public:
     Hand();
     ~Hand();
-    void addToHand(Card* card);
+    void draw(Deck* deck);
     void display();
 private:
-    vector<Card>* cards;
+    vector<Card*> cards;
 };
 
 
