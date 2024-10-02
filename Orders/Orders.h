@@ -8,11 +8,14 @@
 #include "Cards/Cards.h"
 #include "Map/Map.h"
 #include "Player/Player.h"
+using std::list;
 
 class Order {
+private:
+    int pos;
 public:
     Order();
-    Order(std::string order);
+    Order(std::string order, int pos);
     Order(const Order& other);
     Order& operator=(const Order& other);
     ~Order();
@@ -55,3 +58,7 @@ class airlift: public Order {
 class negotiate: public Order {
             
 };
+
+void testOrders();
+
+#endif
