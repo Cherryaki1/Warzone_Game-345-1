@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <utility>
+#include <vector>
 using namespace std;
 
 int testLoadMap() {
@@ -70,8 +71,8 @@ vector<Territory> Continent::getTerritories() {
 
 // Map Class Implementation
 
-Map::Map(map<Territory, list<Territory> > adjList) {
-    this->adjList = std::move(adjList);
+Map::Map(int num_territories) {
+    this->num_territories = num_territories;
 }
 
 Map::~Map() {
@@ -79,7 +80,7 @@ Map::~Map() {
 }
 
 void Map::add_edge(Territory u, Territory v) {
-    this->adjList[u].push_back(v);
+    adjList[u].push_back(v);
 }
 
 void Map::print() {
@@ -90,6 +91,11 @@ void Map::print() {
         }
         cout << endl;
     }
+}
+
+bool Map::validate() {
+    // DFS
+    return false;
 }
 
 
