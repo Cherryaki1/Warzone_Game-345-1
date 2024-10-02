@@ -13,11 +13,13 @@ public:
     ~Card();
     Card(int type);
     Card(string type);
-    void setType(int type);
-    void setType(string type);
+//    void setType(int type);
+//    void setType(string type);
     string getType();
     int getTypeID();
     bool play();
+    void setRandomType();
+    void displayCard();
 private:
     int* cardID; // 1. bomb, 2. reinforcement, 3. blockade, 4. airlift, 5. diplomacy.
     string* type;
