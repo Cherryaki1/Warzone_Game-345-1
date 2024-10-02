@@ -19,24 +19,15 @@ void testCards(){
     cout << "Deck now:\n";
     myDeck->summarize();
 
-    cout<<"Playing the hand...";
+    cout<<"Playing the hand...\n";
     for(int i = 0; i<myHand->getHand()->size(); i++){
         Card* thisCard = myHand->getHand()->at(i);
         thisCard->play();
-        myHand->remove(thisCard);
         i--;
     }
 
-
     cout << "Deck now:\n";
     myDeck->summarize();
-
     myHand->display();
 
-//    cout << "Drawing a card...\n";
-//    Card* drawnCard = myDeck->draw();
-//    cout << "Drew this card: ";
-//    drawnCard->displayCard();
-//    cout << "Remaining...\n";
-//    myDeck->display();
 }

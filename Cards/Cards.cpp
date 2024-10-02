@@ -20,7 +20,8 @@ Card::Card(int type, Deck* origin) { //Constructor that takes a type
 Card::~Card() { //Destructor
     delete type;
     delete cardID;
-    delete origin;
+    origin = nullptr;
+    hand = nullptr;
 }
 string Card::getType() {
     return *this->type;
@@ -31,16 +32,19 @@ void Card::setRandomType() {
     this->type = new string(cardTypeLookup[typeID]);
 }
 
-bool Card::play() {
-    // PLAY THE CARD, special order etc.
-//    delete this->hand;
-    this->origin->returnToDeck(this); //Returns card to deck
+void Card::setHand(Hand *handO) {
+    hand = handO;
+}
 
+void Card::play() {
+    // PLAY THE CARD, special order etc.
+    cout << "\t" <<this->getType() << " card played\n";
+    this->origin->returnToDeck(this); //Returns card to deck
+    this->hand->remove(this);
 }
 void Card::displayCard() {
     cout << "This is a " << *type << " card!\t\n";
 }
-
 
 //DECK
 Deck::Deck() { initialize();}
@@ -93,21 +97,22 @@ Hand::Hand() {}
 Hand::~Hand() {}
 
 void Hand::display() {
-    cout << "Cards in your hand:\n";
+    cout << "Cards in your hand: ("<< cards.size() <<")\n";
     for (int i = 0; i<cards.size(); i++){
-        cout << i << ": ";
+        cout << "\t" <<i+1 << ": ";
         cards.at(i)->displayCard();
     }
 }
 
 void Hand::place(Card* card){
     cards.push_back(card);
+    card->setHand(this);
 }
 
 void Hand::remove(Card *card) {
-    string cardType = card->getType();
     for (int i = 0; i<cards.size(); i++){
-        if(cards.at(i)->getType()==cardType){
+        if(cards.at(i)==card){
+            cards.at(i)->setHand(nullptr);
             cards.erase(cards.begin()+i);
             break;
         }

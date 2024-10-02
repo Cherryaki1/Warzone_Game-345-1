@@ -16,16 +16,17 @@ public:
     ~Card();
     explicit Card(int type, Deck* origin);
     Card(string type);
-
+    void setHand(Hand* hand);
     string getType();
     int getTypeID();
-    bool play();
+    void play();
     void setRandomType();
     void displayCard();
 private:
     int* cardID; // 1. bomb, 2. reinforcement, 3. blockade, 4. airlift, 5. diplomacy.
     string* type;
     Deck* origin;
+    Hand* hand;
 };
 
 class Deck {
