@@ -3,12 +3,12 @@
 #include "Player.h"
 using namespace std;
 
-extern void testCard();
+extern void testCards();
 
 // Main Class
 int main(){
   testGameStates();
   //testPlayers();
-  //testCard();
+  //testCards();
   return 0;
 }
