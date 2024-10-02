@@ -10,12 +10,16 @@ int testLoadMap() {
 
 // Territory Class Implementation
 
-Territory::Territory(string name, string owner, const string continentID, int number_of_armies)
+Territory::Territory(string* name, string* owner, const string* continentID, int* number_of_armies)
 {
-  this->name = std::move(name);
-  this->owner = std::move(owner);
-  this->continentID = continentID;
-  this->number_of_armies = number_of_armies;
+    this->name = *name;
+    this->owner = *owner;
+    this->continentID = *continentID;
+    this->number_of_armies = *number_of_armies;
+}
+
+Territory::~Territory() {
+    this->owner.clear();
 }
 
 string Territory::getName() const {
@@ -44,10 +48,12 @@ void Territory::setNumberOfArmies(int number_of_armies) {
 
 // Continent Class Implementation
 
-Continent::Continent(string name, const string continentID, vector<Territory> territories) {
-    this->name = std::move(name);
-    this->continentID = continentID;
-    this->territories = std::move(territories);
+Continent::Continent(string* name, const string* continentID, vector<Territory*> territories) {
+    this->name = *name;
+    this->continentID = *continentID;
+    for (auto &territory : territories) {
+        this->territories.push_back(*territory);
+    }
 }
 
 string Continent::getName() const {
@@ -66,6 +72,10 @@ vector<Territory> Continent::getTerritories() {
 
 Map::Map(map<Territory, list<Territory> > adjList) {
     this->adjList = std::move(adjList);
+}
+
+Map::~Map() {
+    this->adjList.clear();
 }
 
 void Map::add_edge(Territory u, Territory v) {

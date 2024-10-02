@@ -24,7 +24,8 @@ class Territory {
 
     public:
         Territory() {};
-        Territory(string name, string owner, string continentID, int number_of_armies);
+        Territory(string* name, string* owner, const string* continentID, int* number_of_armies);
+        ~Territory();
         string getName() const;
         string getOwner();
         string getContinentID() const;
@@ -42,7 +43,7 @@ class Continent {
 
     public:
         Continent() {};
-        Continent(string name, string continentID, vector<Territory> territories);
+        Continent(string* name, const string* continentID, vector<Territory*> territories);
 
         string getName() const;
         string getContinentID() const;
@@ -55,6 +56,7 @@ class Map {
         map<Territory, list<Territory> > adjList;
         Continent continents;
         Territory territories;
+        ~Map();
 
     public:
         Map() {};
