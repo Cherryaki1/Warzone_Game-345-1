@@ -29,10 +29,10 @@
 * **Orders** - Execution and validation of Player's commands
 
 ### Team Members (Team 36):
-- Botao Yang [@cherryaki1] (/cherryaki)
-- Gregory Lajoie [@notxplosion] (/notxplosion)
-- Vala Khalilzadeh [@vala35] (/vala35)
-- Arturo Sanchez Escobar [@DaKingzz] (/DaKingzz)
-- Abdulah Ghulam Ali [@CallMeAbdu] (/CallMeAbdu)
+- Botao Yang [@cherryaki1](https://github.com//cherryaki)
+- Gregory Lajoie [@notxplosion](https://github.com//notxplosion)
+- Vala Khalilzadeh [@vala35](https://github.com//vala35)
+- Arturo Sanchez Escobar [@DaKingzz](https://github.com//DaKingzz)
+- Abdulah Ghulam Ali [@CallMeAbdu](https://github.com//CallMeAbdu)
 
 
