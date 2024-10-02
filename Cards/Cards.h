@@ -7,14 +7,16 @@
 using std::string;
 using std::vector;
 
+class Deck;
+class Hand;
+
 class Card {
 public:
     Card();
     ~Card();
-    explicit Card(int type);
+    explicit Card(int type, Deck* origin);
     Card(string type);
-//    void setType(int type);
-//    void setType(string type);
+
     string getType();
     int getTypeID();
     bool play();
@@ -23,6 +25,7 @@ public:
 private:
     int* cardID; // 1. bomb, 2. reinforcement, 3. blockade, 4. airlift, 5. diplomacy.
     string* type;
+    Deck* origin;
 };
 
 class Deck {
@@ -30,24 +33,23 @@ public:
     Deck();
     ~Deck();
     void shuffle();
-    void initializeRand(int numCards);
     void initialize();
     void returnToDeck(Card* card);
     Card* draw();
     void display();
+    void summarize();
 private:
     vector<Card*> cards;
-    int* numCards;
 };
 
 class Hand {
 public:
     Hand();
     ~Hand();
-//    void draw(Deck* deck);
     void display();
     void place(Card* card);
-
+    void remove(Card* card);
+    vector<Card*>* getHand();
 private:
     vector<Card*> cards;
 };
