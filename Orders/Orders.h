@@ -5,60 +5,68 @@
 #include <string>
 #include <list>
 #include <stdbool.h>
-#include "Cards/Cards.h"
-#include "Map/Map.h"
-#include "Player/Player.h"
-using std::list;
 
 class Order {
-private:
-    int pos;
 public:
     Order();
-    Order(std::string order, int pos);
-    Order(const Order& other);
-    Order& operator=(const Order& other);
+    Order(const std::string& orderType);
     ~Order();
 
     bool validate();
     void execute();
+
+    friend std::ostream& operator<<(std::ostream& os, const Order& order);
+protected:
+    std::string orderType;
+    bool executed;
 };
 
-class orderList {
+class DeployOrder : public Order {
+public:
+    DeployOrder();
+};
+
+class AdvanceOrder : public Order {
+public:
+    AdvanceOrder();
+};
+
+class BombOrder : public Order {
+public:
+    BombOrder();
+};
+
+class BlockadeOrder : public Order {
+public:
+    BlockadeOrder();
+};
+
+class AirliftOrder : public Order {
+public:
+    AirliftOrder();
+};
+
+class NegotiateOrder : public Order {
+public:
+    NegotiateOrder();
+};
+
+class OrdersList {
 private:
-    list<Order> orders;
+    std::list<Order*> orders;
 
 public:
-    orderList();
-
-    void move(Order order, int position); 
-    void remove(int position);
-};
-
-class deploy: public Order {
+    OrdersList();
+    ~OrdersList();
     
+    void addOrder(Order* order);
+    void move(int fromPosition, int toPosition); // Updated signature for move
+    void remove(int position); // Updated signature for remove
+
+    friend std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList);
 };
 
-class advance: public Order {
-
-};
-
-class bomb: public Order {
-
-};
-
-class blockage: public Order {
-
-};
-
-class airlift: public Order {
-
-};
-
-class negotiate: public Order {
-            
-};
-
-void testOrders();
+// Test function
+void testOrdersList();
 
 #endif
