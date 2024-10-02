@@ -53,19 +53,19 @@ class Continent {
 
 class Map {
     private:
-        map<Territory, list<Territory> > adjList;
+
+        map <Territory, list<Territory>> adjList;
+        int num_territories;
         Continent continents;
-        Territory territories;
         ~Map();
 
     public:
         Map() {};
-        Map(map<Territory, list<Territory> > adjList);
+        Map(int num_territories);
         void add_edge(Territory u, Territory v);
-
         void print();
         bool validate();
 };
 
 
-#endif
+#endif MAP_H
