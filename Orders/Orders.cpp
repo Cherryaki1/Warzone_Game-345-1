@@ -1,23 +1,12 @@
-#include <list>
-#include <string>
-#include <queue>
-#include <stdbool.h>
 #include <Orders.h>
+#include <stdbool.h>
+#include <list>
+#include "Cards/Cards.h"
+#include "Map/Map.h"
+#include "Player/Player.h"
 
 using namespace std;
 
-class OrderList {
-    public:
-
-        list<Order> orders;
-
-        void move(Order order, int position) {
-            
-            
-
-        }
-
-        void remove() {
-
-        }
-};
+orderList::move(Order order, int position) {
+    orderList = new list<Order>;
+}
