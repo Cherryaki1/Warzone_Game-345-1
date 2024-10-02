@@ -2,11 +2,11 @@
 #include "GameEngineDriver.h"
 #include "Player.h"
 using namespace std;
-extern void testCard();
+extern void testCards();
 // Ncce TEST
 int main(){
   testGameStates();
   testPlayers();
-  testCard();
+  testCards();
   return 0;
 }

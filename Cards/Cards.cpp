@@ -1,8 +1,9 @@
 #include <iostream>
 #include "Cards.h"
+#include "vector";
 using namespace std;
 
-string cardTypeLookup[5] = {"Bomb", "Reinforcement", "Blockade", "Airlift", "Diplomacy"};
+vector<string> cardTypeLookup = {"Bomb", "Reinforcement", "Blockade", "Airlift", "Diplomacy"};
 
 //CARDS
 Card::Card() {
@@ -10,7 +11,14 @@ Card::Card() {
 }
 Card::~Card() {}
 Card::Card(string type) {}
-Card::Card(int type) {}
+Card::Card(int type) {
+    if(type<cardTypeLookup.size()){
+        this->type = new string(cardTypeLookup[type]);
+    } else {
+        cout << type << " is not a correct card type!\n";
+    }
+
+}
 
 //void Card::setType(int type) {}
 //void Card::setType(string type) {}
@@ -18,7 +26,6 @@ Card::Card(int type) {}
 int Card::getTypeID() {}
 string Card::getType() {}
 void Card::setRandomType() {
-//    srand(time(0));
     int typeID = rand()%5;
     this->type = new string(cardTypeLookup[typeID]);
 }
@@ -29,15 +36,28 @@ void Card::displayCard() {
 
 
 //DECK
-Deck::Deck() {}
+Deck::Deck() { initialize();}
 Deck::~Deck() {}
 
-void Deck::initialize() {}
-void Deck::initialize(int numCards) {}
+void Deck::initialize() { //50 cards, 10 of each type by default
+    int numCards = 50;
+    for (int i = 0; i<cardTypeLookup.size(); i++){
+        for (int j=0; j<numCards/cardTypeLookup.size(); j++){
+            cards.push_back(*new Card(i));
+        }
+    }
+}
+void Deck::initializeRand(int numCards) {}
 
 Card *Deck::draw() {}
 void Deck::shuffle() {}
 void Deck::returnToDeck(Card *card) {}
+void Deck::display() {
+    for (int i = 0 ; i<cards.size(); i++){
+        cout << (i+1) << ": ";
+        cards[i].displayCard();
+    }
+}
 
 
 
