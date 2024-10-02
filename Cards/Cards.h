@@ -30,12 +30,13 @@ public:
     Deck();
     ~Deck();
     void shuffle();
-    void initialize(int numCards);
+    void initializeRand(int numCards);
     void initialize();
     void returnToDeck(Card* card);
     Card* draw();
+    void display();
 private:
-    vector<Card>* cards;
+    vector<Card> cards;
     int* numCards;
 };
 
