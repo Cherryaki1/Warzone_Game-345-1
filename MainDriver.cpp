@@ -1,12 +1,14 @@
 #include <iostream>
-#include "GameEngineDriver.h"
+#include "GameEngine.h"
 #include "Player.h"
 using namespace std;
-extern void testCards();
-// Ncce TEST
+
+extern void testCard();
+
+// Main Class
 int main(){
   testGameStates();
-  testPlayers();
-  testCards();
+  //testPlayers();
+  //testCard();
   return 0;
 }
