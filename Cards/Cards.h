@@ -36,7 +36,7 @@ public:
     Card* draw();
     void display();
 private:
-    vector<Card> cards;
+    vector<Card>* cards;
     int* numCards;
 };
 
