@@ -55,7 +55,3 @@ class airlift: public Order {
 class negotiate: public Order {
             
 };
-
-void testOrders();
-
-#endif
