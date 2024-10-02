@@ -23,6 +23,8 @@ void testCards(){
     for(int i = 0; i<myHand->getHand()->size(); i++){
         Card* thisCard = myHand->getHand()->at(i);
         thisCard->play();
+        myHand->remove(thisCard);
+        i--;
     }
 
 

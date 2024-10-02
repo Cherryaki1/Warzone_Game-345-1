@@ -109,7 +109,6 @@ void Hand::remove(Card *card) {
     for (int i = 0; i<cards.size(); i++){
         if(cards.at(i)->getType()==cardType){
             cards.erase(cards.begin()+i);
-            cout << "called!";
             break;
         }
     }

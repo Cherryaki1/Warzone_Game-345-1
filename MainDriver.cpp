@@ -4,13 +4,13 @@
 #include "Player.h"
 using namespace std;
 
-extern void testCard();
+extern void testCards();
 
 // Main Class
 int main(){
   //testGameStates();
   //testPlayers();
-  //testCard();
+  testCards();
 
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;
