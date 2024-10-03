@@ -23,12 +23,13 @@ class Territory {
         int number_of_armies;
 
     public:
-        Territory() {};
+        Territory();
         Territory(string* name, string* owner, const string* continentID, int* number_of_armies);
         ~Territory();
         string getName() const;
         string getOwner();
         string getContinentID() const;
+        vector<string> getAdjacentTerritories() const;
         int getNumberOfArmies();
 
         void setPlayer(string player);
@@ -44,7 +45,6 @@ class Continent {
     public:
         Continent() {};
         Continent(string* name, const string* continentID, vector<Territory*> territories);
-
         string getName() const;
         string getContinentID() const;
         vector<Territory> getTerritories();
@@ -52,20 +52,18 @@ class Continent {
 };
 
 class Map {
-    private:
-
-        map <Territory, list<Territory>> adjList;
-        int num_territories;
-        Continent continents;
-        ~Map();
-
     public:
         Map() {};
         Map(int num_territories);
         void add_edge(Territory u, Territory v);
         void print();
         bool validate();
+    private:
+        int num_territories;
+        Continent continents;
+        map <Territory, list<Territory>> adjList;
+        ~Map();
 };
 
 
-#endif MAP_H
+#endif

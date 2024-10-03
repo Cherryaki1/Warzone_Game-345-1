@@ -48,7 +48,6 @@ void Territory::setNumberOfArmies(int number_of_armies) {
 }
 
 // Continent Class Implementation
-
 Continent::Continent(string* name, const string* continentID, vector<Territory*> territories) {
     this->name = *name;
     this->continentID = *continentID;
@@ -78,10 +77,10 @@ Map::Map(int num_territories) {
 Map::~Map() {
     this->adjList.clear();
 }
-
+/* Causing Problems
 void Map::add_edge(Territory u, Territory v) {
     adjList[u].push_back(v);
-}
+}*/
 
 void Map::print() {
     for (auto &i : this->adjList) {
@@ -97,6 +96,8 @@ bool Map::validate() {
     // DFS
     return false;
 }
+
+
 
 
 
