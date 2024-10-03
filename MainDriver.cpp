@@ -7,12 +7,10 @@ using namespace std;
 
 extern void testCard();
 
-int main() {
-  testLoadMap();
-}
 // Main Class
-/*
+
 int main(){
+  //testLoadMap();
   //testGameStates();
   //testPlayers();
   //testCard();
@@ -71,4 +69,4 @@ int main(){
 
   return 0;
 }
-*/
+
