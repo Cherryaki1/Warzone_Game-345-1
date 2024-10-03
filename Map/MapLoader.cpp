@@ -55,7 +55,7 @@ bool MapLoader::loadFromFile(const string& filename) {
             int i = 0;
             while (ss >> continentName >> bonus) {
                 // Create Continent
-                continents[i] = Continent(&continentName, &bonus);
+                continents[i] = Continent(continentName, bonus);
                 i++;
             }
             map.setContinents(continents);
@@ -74,7 +74,7 @@ bool MapLoader::loadFromFile(const string& filename) {
                 neighbors.push_back(neighbor);
             }
             
-            Territory territory(&name, &owner, &continent, 0);
+            Territory territory(name, owner, continent, 0);
             // Initialize adjacency list entry if it doesn't exist
             if (map.getAdjList().find(territory) == map.getAdjList().end()) {
                 map.getAdjList()[territory] = list<Territory>();
@@ -83,7 +83,7 @@ bool MapLoader::loadFromFile(const string& filename) {
             // Add neighbors as edges
             for (auto& neighborName : neighbors) {
                 // Neighbors are defined as territory names
-                Territory neighbor(&neighborName, &owner, &continent, 0);
+                Territory neighbor(neighborName, owner, continent, 0);
                 map.add_edge(territory, neighbor);
             }
         }

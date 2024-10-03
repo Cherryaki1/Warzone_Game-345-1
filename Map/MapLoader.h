@@ -6,7 +6,7 @@
 class MapLoader {
 public:
     MapLoader() = default;
-    ~MapLoader() = default;
+    ~MapLoader();
 
     MapLoader(const string &filename);
 

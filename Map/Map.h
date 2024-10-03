@@ -1,7 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <bitset>
+
 #include <string>
 #include <list>
 #include <map>
@@ -17,18 +17,18 @@ using std::map;
 
 class Territory {
     private:
-        string name;
-        string owner; // Change to Player class
-        string continentID;
-        int number_of_armies;
+        string *pName;
+        string *pOwner; // Change to Player class
+        string *pContinentID;
+        int *pNumber_of_armies;
 
     public:
-        Territory() {};
-        Territory(string* name, string* owner, const string* continentID, int* number_of_armies);
+        Territory();
+        Territory(string name, string owner, string continentID, int number_of_armies);
         ~Territory();
-        string getName() const;
+        string getName();
         string getOwner();
-        string getContinentID() const;
+        string getContinentID();
         int getNumberOfArmies();
 
         void setPlayer(string player);
@@ -37,23 +37,20 @@ class Territory {
 
 class Continent {
     private:
-        string continentID;
-        int bonus;
-        vector<Territory> territories;
+        string *pContinentID;
+        int *pBonus;
 
     public:
         Continent() {};
-        Continent(const string* continentID, int* bonus);
-        Continent(const string* continentID, vector<Territory*> territories);
+        Continent(string continentID, int bonus);
 
-        string getContinentID() const;
-        vector<Territory> getTerritories();
+        string getContinentID();
+        int getBonus();
 
 };
 
 class Map {
     private:
-        int num_territories;
         vector<Continent> continents; // Changed to a vector to hold multiple continents
         vector<Territory> territories;
         map<Territory, list<Territory>> adjList;
@@ -76,4 +73,4 @@ class Map {
 };;
 
 
-#endif MAP_H
+#endif

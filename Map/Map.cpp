@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <map>
 using namespace std;
 
 int testLoadMap() {
@@ -10,76 +11,69 @@ int testLoadMap() {
 }
 
 // Territory Class Implementation
+Territory::Territory() {
+    pName = nullptr;
+    pOwner = nullptr;
+    pContinentID = nullptr;
+    pNumber_of_armies = nullptr;
+}
 
-Territory::Territory(string* name, string* owner, const string* continentID, int* number_of_armies)
+Territory::Territory(string name, string owner, string continentID, int number_of_armies)
 {
-    this->name = *name;
-    this->owner = *owner;
-    this->continentID = *continentID;
-    this->number_of_armies = *number_of_armies;
+    *pName = std::move(name);
+    *pOwner = std::move(owner);
+    *pContinentID = std::move(continentID);
+    *pNumber_of_armies = number_of_armies;
 }
 
 Territory::~Territory() {
-    this->owner.clear();
+    delete pName;
+    delete pOwner;
+    delete pContinentID;
+    delete pNumber_of_armies;
 }
 
-string Territory::getName() const {
-    return this->name;
+string Territory::getName() {
+    return *pName;
 }
 
 string Territory::getOwner() {
-    return this->owner;
+    return *pOwner;
 }
 
-string Territory::getContinentID() const {
-    return this->continentID;
+string Territory::getContinentID() {
+    return *pContinentID;
 }
 
 int Territory::getNumberOfArmies() {
-    return this->number_of_armies;
+    return *pNumber_of_armies;
 }
 
 void Territory::setPlayer(string player) {
-    this->owner = player;
+    *pOwner = player;
 }
 
 void Territory::setNumberOfArmies(int number_of_armies) {
-    this->number_of_armies = number_of_armies;
+    *pNumber_of_armies = number_of_armies;
 }
 
 // Continent Class Implementation
 
-Continent::Continent(const string *continentID, int *bonus) {
-    this->continentID = *continentID;
-    this->bonus = *bonus;
+Continent::Continent(string continentID, int bonus) {
+    *pContinentID = std::move(continentID);
+    *pBonus = bonus;
 }
 
-Continent::Continent(const string *continentID, vector<Territory *> territories)
-{
-  this->continentID = *continentID;
-  for (auto &territory : territories)
-  {
-    this->territories.push_back(*territory);
-  }
+
+string Continent::getContinentID() {
+    return *pContinentID;
 }
 
-string Continent::getContinentID() const {
-    return this->continentID;
-}
-
-string Continent::getContinentID() const {
-    return this->continentID;
-}
-
-vector<Territory> Continent::getTerritories() {
-    return this->territories;
+int Continent::getBonus() {
+    return *pBonus;
 }
 
 // Map Class Implementation
-
-Map::Map(int num_territories) {
-    this->num_territories = num_territories;
-}
 
 Map::~Map() {
     this->adjList.clear();
@@ -91,7 +85,7 @@ void Map::add_edge(Territory u, Territory v) {
 }
 
 void Map::setAdjList(map<Territory, list<Territory>> adjList) {
-    this->adjList = adjList;
+    this->adjList = std::move(adjList);
 }
 
 map<Territory, list<Territory>> Map::getAdjList() {
@@ -114,15 +108,7 @@ vector<Territory> Map::getTerritories() {
     return vector<Territory>();
 }
 
-void Map::print()
-{
-    for (auto &i : this->adjList) {
-        cout << i.first.getName() << " -> ";
-        for (auto &j : i.second) {
-            cout << j.getName() << " ";
-        }
-        cout << endl;
-    }
+void Map::print() {
 }
 
 bool Map::validate() {
