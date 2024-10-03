@@ -12,6 +12,8 @@
 #include <string>
 #include <vector>
 
+#include "Player/Player.h"
+
 using std::string;
 using std::vector;
 
@@ -50,14 +52,17 @@ private:
 
 class Hand {
 public:
-    Hand(); //Default constructor
+    Hand(Player* player); //Default constructor
     ~Hand(); //Destructor
     void display(); //Displays all cards in the hand
     void place(Card* card); //Places a card ptr into the hand
     void remove(Card* card); //Removes a card ptr from the hand
     vector<Card*>* getHand(); //Returns a ptr to the hand's cards vector
+    Player* getOwner();
+
 private:
     vector<Card*> cards; //Vector of card pointers
+    Player* owner; // the player that owns the card
 };
 
 #endif //CARDS_H
