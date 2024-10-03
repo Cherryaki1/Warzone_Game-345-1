@@ -3,6 +3,7 @@
         "*.ejs": "html",
         "list": "cpp",
         "iterator": "cpp",
+        "map": "cpp"
         "iostream": "cpp",
         "ostream": "cpp",
         "string": "cpp",

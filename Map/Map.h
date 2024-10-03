@@ -1,13 +1,11 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <bitset>
+
 #include <string>
 #include <list>
 #include <map>
 #include <vector>
-
-#include "Map.h"
 
 using std::string;
 using std::vector;
@@ -16,53 +14,73 @@ using std::map;
 
 
 class Territory {
-    private:
-        string name;
-        string owner; // Change to Player class
-        string continentID;
-        int number_of_armies;
 
-    public:
-        Territory();
-        Territory(string* name, string* owner, const string* continentID, int* number_of_armies);
-        ~Territory();
-        string getName() const;
-        string getOwner();
-        string getContinentID() const;
-        vector<string> getAdjacentTerritories() const;
-        int getNumberOfArmies();
+private:
+    string *pName;
+    string *pOwner;  // Pointer to the owner (future Player class)
+    string *pContinentID;
+    int *pNumber_of_armies;
 
-        void setPlayer(string player);
-        void setNumberOfArmies(int number_of_armies);
+public:
+    Territory();
+    Territory(string name, string owner, string continentID, int number_of_armies);
+    Territory(const Territory &other);  // Copy constructor
+    Territory& operator=(const Territory &other);  // Assignment operator
+    ~Territory();
+
+    string getName() const;
+    string getOwner() const;
+    string getContinentID() const;
+    int getNumberOfArmies() const;
+
+    void setPlayer(const string &player);
+    void setNumberOfArmies(int number_of_armies);
+
+    bool operator<(const Territory& other) const;  // Comparison for use in map
+
 };
 
 class Continent {
-    private:
-        string name;
-        string continentID;
-        vector<Territory> territories;
+private:
+    string *pContinentName;
+    int *pBonus;
 
-    public:
-        Continent() {};
-        Continent(string* name, const string* continentID, vector<Territory*> territories);
-        string getName() const;
-        string getContinentID() const;
-        vector<Territory> getTerritories();
+public:
+    Continent();
+    Continent(string continentName, int bonus);
+    Continent(const Continent &other);  // Copy constructor
+    Continent& operator=(const Continent &other);  // Assignment operator
+    ~Continent();
 
+    string getContinentName() const;
+    int getBonus() const;
 };
 
 class Map {
-    public:
-        Map() {};
-        Map(int num_territories);
-        void add_edge(Territory u, Territory v);
-        void print();
-        bool validate();
     private:
-        int num_territories;
-        Continent continents;
-        map <Territory, list<Territory>> adjList;
+        vector<Continent*> *pContinents;  // Pointer to vector of continents
+        vector<Territory*> *pTerritories;  // Pointer to vector of territories
+        map<Territory*, list<Territory*>> *pAdjList;  // Pointer to adjacency list
+
+    public:
+
+        Map();
+        Map(int num_territories);
         ~Map();
+
+        void add_edge(Territory* u, Territory* v);
+
+        void setAdjList(map<Territory*, list<Territory*>> *adjList);
+        map<Territory*, list<Territory*>>* getAdjList();
+
+        void setContinents(vector<Continent*> *continents);
+        vector<Continent*>* getContinents();
+
+        void setTerritories(vector<Territory*> *territories);
+        vector<Territory*>* getTerritories();
+
+        void print() const;
+        bool validate() const;  // Const because it doesn't modify the object
 };
 
 
