@@ -94,7 +94,8 @@ Continent& Continent::operator=(const Continent &other) {
     if (this != &other) {
         *pContinentName = *other.pContinentName;
         *pBonus = *other.pBonus;
-
+    }
+}
 
 Continent::~Continent() {
     delete pContinentName;

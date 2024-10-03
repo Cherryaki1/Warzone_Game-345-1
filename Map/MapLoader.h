@@ -10,7 +10,7 @@ public:
 
     MapLoader(const string &filename);
 
-    void loadFromFile(const string &filename, Map &map);
+    static void loadFromFile(const string &filename, Map &map);
 };
 
 #endif
