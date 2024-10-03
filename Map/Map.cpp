@@ -76,36 +76,36 @@ bool Territory::operator<(const Territory &other) const {
 // Continent Class Implementation
 
 Continent::Continent() {
-    pContinentID = new string("");
+    pContinentName = new string("");
     pBonus = new int(0);
 }
 
-Continent::Continent(string continentID, int bonus) {
-    pContinentID = new string(std::move(continentID));
+Continent::Continent(string continentName, int bonus) {
+    pContinentName = new string(std::move(continentName));
     pBonus = new int(bonus);
 }
 
 Continent::Continent(const Continent &other) {
-    pContinentID = new string(*other.pContinentID);
+    pContinentName = new string(*other.pContinentName);
     pBonus = new int(*other.pBonus);
 }
 
 Continent& Continent::operator=(const Continent &other) {
     if (this != &other) {
-        *pContinentID = *other.pContinentID;
+        *pContinentName = *other.pContinentName;
         *pBonus = *other.pBonus;
     }
     return *this;
 }
 
 Continent::~Continent() {
-    delete pContinentID;
+    delete pContinentName;
     delete pBonus;
 }
 
 // Getters and Setters
-string Continent::getContinentID() const {
-    return *pContinentID;
+string Continent::getContinentName() const {
+    return *pContinentName;
 }
 
 int Continent::getBonus() const {

@@ -40,17 +40,17 @@ public:
 
 class Continent {
 private:
-    string *pContinentID;
+    string *pContinentName;
     int *pBonus;
 
 public:
     Continent();
-    Continent(string continentID, int bonus);
+    Continent(string continentName, int bonus);
     Continent(const Continent &other);  // Copy constructor
     Continent& operator=(const Continent &other);  // Assignment operator
     ~Continent();
 
-    string getContinentID() const;
+    string getContinentName() const;
     int getBonus() const;
 };
 
