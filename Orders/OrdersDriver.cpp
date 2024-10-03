@@ -1,41 +1,45 @@
 #include <iostream>
 #include "Orders.h"
-using namespace std;
 
 void testOrdersLists() {
-    // Creating an OrdersList object
     OrdersList ordersList;
-    cout << "Orders List created." << endl;
+    std::cout << "Orders List created." << std::endl;
 
-    // Adding different types of orders
-    cout << "Adding Deploy and Advance orders." << std::endl;
+    // Adding 8 orders
     ordersList.addOrder(new DeployOrder());
+    ordersList.addOrder(new BombOrder());
+    ordersList.addOrder(new AirliftOrder());
     ordersList.addOrder(new AdvanceOrder());
+    ordersList.addOrder(new BlockadeOrder());
+    ordersList.addOrder(new NegotiateOrder());
+    ordersList.addOrder(new DeployOrder());
+    ordersList.addOrder(new BombOrder());
 
-    // Displaying the list of orders
-    cout << "Initial Orders List: " << std::endl;
-    cout << ordersList;
+    std::cout << "Initial Orders List: " << std::endl;
+    std::cout << ordersList;
 
-    // Moving orders in the list
-    cout << "Moving orders in the list..." << std::endl;
-    ordersList.move(0, 1);
-    cout << "Orders List after moving: " << std::endl;
-    cout << ordersList;
+    // Moving some orders around
+    std::cout << "\nSwapping orders in the list..." << std::endl;
+    ordersList.move(0, 5);  // Move the first order to position 5
+    ordersList.move(7, 2);  // Move the last order to position 2
+    ordersList.move(3, 0);  // Move an order from the middle to the start
+    std::cout << "Orders List after moving: " << std::endl;
+    std::cout << ordersList;
 
-    // Executing and removing orders
-    cout << "Executing and removing orders..." << std::endl;
-    ordersList.remove(0); // Removes first order
-    ordersList.remove(0); // Removes second order
+    // Removing 3 orders from the list
+    std::cout << "\nRemoving 3 orders from the list..." << std::endl;
+    ordersList.remove(1);  // Remove the order at position 1
+    ordersList.remove(4);  // Remove the order at position 4
+    ordersList.remove(0);  // Remove the order at position 0
+    std::cout << "Orders List after removing 3 orders: " << std::endl;
+    std::cout << ordersList;
 
-    // Final state of the OrdersList
-    cout << "Final Orders List (should be empty): " << std::endl;
-    cout << ordersList;
+    // Executing remaining orders
+    std::cout << "\nExecuting remaining orders..." << std::endl;
+    for (auto it = ordersList.getOrders().begin(); it != ordersList.getOrders().end(); ++it) {
+        (*it)->execute();
+    }
+  
+    std::cout << "\nFinal Orders List (should show executed orders): " << std::endl;
+    std::cout << ordersList;
 }
-
-/*
-int main() {
-    // Call the test function for Orders List
-    testOrdersLists();
-    return 0;
-}
-*/

@@ -5,6 +5,7 @@
 #include <string>
 #include <list>
 #include <stdbool.h>
+void testOrdersLists();
 
 class Order {
 public:
@@ -13,7 +14,9 @@ public:
     ~Order();
 
     bool validate();
-    void execute();
+    void execute();  // Base execute method
+
+    std::string getOrderType() const;  // Getter for the order type
 
     friend std::ostream& operator<<(std::ostream& os, const Order& order);
 protected:
@@ -24,31 +27,37 @@ protected:
 class DeployOrder : public Order {
 public:
     DeployOrder();
+    void execute();
 };
 
 class AdvanceOrder : public Order {
 public:
     AdvanceOrder();
+    void execute();
 };
 
 class BombOrder : public Order {
 public:
     BombOrder();
+    void execute();
 };
 
 class BlockadeOrder : public Order {
 public:
     BlockadeOrder();
+    void execute();
 };
 
 class AirliftOrder : public Order {
 public:
     AirliftOrder();
+    void execute();
 };
 
 class NegotiateOrder : public Order {
 public:
     NegotiateOrder();
+    void execute();
 };
 
 class OrdersList {
@@ -58,15 +67,16 @@ private:
 public:
     OrdersList();
     ~OrdersList();
-    
+
     void addOrder(Order* order);
-    void move(int fromPosition, int toPosition); // Updated signature for move
-    void remove(int position); // Updated signature for remove
+    void move(int fromPosition, int toPosition);
+    void remove(int position);
+    bool isEmpty();
+
+    std::list<Order*>& getOrders();
 
     friend std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList);
 };
 
-// Test function
-void testOrdersList();
 
 #endif

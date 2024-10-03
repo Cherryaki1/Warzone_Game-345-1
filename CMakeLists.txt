@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.27)
 project(Warzone_Game_a1_COMP345)
 
@@ -28,12 +27,4 @@ add_executable(Warzone_Game_a1_COMP345
     Player/Player.h
     Player/PlayerDriver.cpp
     MainDriver.cpp
-    MainDriver.h
-    Map/MapLoader.cpp
-    Map/MapLoader.h
-    MainDriver.cpp
-    MainDriver.h
-    MainDriver.cpp
-    MainDriver.cpp
-    Map/MapDriver.h)
-
+    MainDriver.h)

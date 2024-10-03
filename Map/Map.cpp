@@ -94,9 +94,7 @@ Continent& Continent::operator=(const Continent &other) {
     if (this != &other) {
         *pContinentName = *other.pContinentName;
         *pBonus = *other.pBonus;
-    }
-    return *this;
-}
+
 
 Continent::~Continent() {
     delete pContinentName;
@@ -130,6 +128,7 @@ void Map::add_edge(Territory* u, Territory* v) {
     (*pAdjList)[u].push_back(v);
     (*pAdjList)[v].push_back(u);
 }
+
 
 // Getters and Setters
 void Map::setAdjList(map<Territory*, list<Territory*>> *adjList) {
@@ -165,6 +164,8 @@ bool Map::validate() const {
     // DFS
     return false;
 }
+
+
 
 
 

@@ -14,6 +14,7 @@ using std::map;
 
 
 class Territory {
+
 private:
     string *pName;
     string *pOwner;  // Pointer to the owner (future Player class)
@@ -36,6 +37,7 @@ public:
     void setNumberOfArmies(int number_of_armies);
 
     bool operator<(const Territory& other) const;  // Comparison for use in map
+
 };
 
 class Continent {
@@ -61,6 +63,7 @@ class Map {
         map<Territory*, list<Territory*>> *pAdjList;  // Pointer to adjacency list
 
     public:
+
         Map();
         Map(int num_territories);
         ~Map();

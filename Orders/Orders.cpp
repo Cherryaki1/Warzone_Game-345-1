@@ -9,19 +9,22 @@ Order::Order(const std::string& orderType) : orderType(orderType), executed(fals
 Order::~Order() {}
 
 bool Order::validate() {
-    // Simple validation logic; actual logic depends on the specific order type
     std::cout << "Validating order: " << orderType << std::endl;
     return true;
 }
 
 void Order::execute() {
-    if (validate()) {
-        std::cout << "Executing order: " << orderType << std::endl;
-        executed = true;
-    } else {
-        std::cout << "Order is not valid: " << orderType << std::endl;
-    }
+    std::cout << "Executing base order: " << orderType << std::endl;
 }
+
+std::string Order::getOrderType() const {
+    return orderType;
+}
+
+std::list<Order*>& OrdersList::getOrders() {
+    return orders;
+}
+
 
 std::ostream& operator<<(std::ostream& os, const Order& order) {
     os << "Order Type: " << order.orderType;
@@ -33,21 +36,45 @@ std::ostream& operator<<(std::ostream& os, const Order& order) {
 
 // Deploy Order implementations
 DeployOrder::DeployOrder() : Order("Deploy") {}
+void DeployOrder::execute() {
+    std::cout << "Using Deploy card" << std::endl;
+    executed = true;
+}
 
 // Advance Order implementations
 AdvanceOrder::AdvanceOrder() : Order("Advance") {}
+void AdvanceOrder::execute() {
+    std::cout << "Using Advance card" << std::endl;
+    executed = true;
+}
 
 // Bomb Order implementations
 BombOrder::BombOrder() : Order("Bomb") {}
+void BombOrder::execute() {
+    std::cout << "Using Bomb card" << std::endl;
+    executed = true;
+}
 
 // Blockade Order implementations
 BlockadeOrder::BlockadeOrder() : Order("Blockade") {}
+void BlockadeOrder::execute() {
+    std::cout << "Using Blockade card" << std::endl;
+    executed = true;
+}
 
 // Airlift Order implementations
 AirliftOrder::AirliftOrder() : Order("Airlift") {}
+void AirliftOrder::execute() {
+    std::cout << "Using Airlift card" << std::endl;
+    executed = true;
+}
 
 // Negotiate Order implementations
 NegotiateOrder::NegotiateOrder() : Order("Negotiate") {}
+void NegotiateOrder::execute() {
+    std::cout << "Using Negotiate card" << std::endl;
+    executed = true;
+}
 
 // OrdersList implementations
 OrdersList::OrdersList() {}
@@ -68,8 +95,10 @@ void OrdersList::move(int fromPosition, int toPosition) {
     }
 
     auto itFrom = std::next(orders.begin(), fromPosition);
+    Order* orderToMove = *itFrom;
+    orders.erase(itFrom);
     auto itTo = std::next(orders.begin(), toPosition);
-    std::iter_swap(itFrom, itTo);
+    orders.insert(itTo, orderToMove);
 
     std::cout << "Moved order from position " << fromPosition << " to " << toPosition << std::endl;
 }
@@ -85,6 +114,10 @@ void OrdersList::remove(int position) {
     orders.erase(it);
 
     std::cout << "Removed order at position " << position << std::endl;
+}
+
+bool OrdersList::isEmpty() {
+    return orders.empty();
 }
 
 std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList) {
