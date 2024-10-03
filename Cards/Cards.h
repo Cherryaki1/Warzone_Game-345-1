@@ -39,8 +39,7 @@ class Deck {
 public:
     Deck(); //Default constructor
     ~Deck(); //Destructor
-    void shuffle();
-    void initialize(); //Initailizes deck for first use
+    void initialize(); //Initializes deck for first use
     void returnToDeck(Card* card); //Returns a card to the deck
     Card* draw(); //Draws from the card and returns a card ptr
     void display(); //Displays all cards in the deck (one by one)
