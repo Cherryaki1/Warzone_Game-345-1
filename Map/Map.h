@@ -37,15 +37,15 @@ class Territory {
 
 class Continent {
     private:
-        string name;
         string continentID;
+        int bonus;
         vector<Territory> territories;
 
     public:
         Continent() {};
-        Continent(string* name, const string* continentID, vector<Territory*> territories);
+        Continent(const string* continentID, int* bonus);
+        Continent(const string* continentID, vector<Territory*> territories);
 
-        string getName() const;
         string getContinentID() const;
         vector<Territory> getTerritories();
 
@@ -53,19 +53,27 @@ class Continent {
 
 class Map {
     private:
-
-        map <Territory, list<Territory>> adjList;
         int num_territories;
-        Continent continents;
-        ~Map();
+        vector<Continent> continents; // Changed to a vector to hold multiple continents
+        vector<Territory> territories;
+        map<Territory, list<Territory>> adjList;
 
     public:
+        ~Map();
         Map() {};
         Map(int num_territories);
         void add_edge(Territory u, Territory v);
+
+        void setAdjList(map<Territory, list<Territory>> adjList);
+        map<Territory, list<Territory>> getAdjList();
+        void setContinents(vector<Continent> continents);
+        vector<Continent> getContinents();
+        void setTerritories(vector<Territory> territories);
+        vector<Territory> getTerritories();
+
         void print();
         bool validate();
-};
+};;
 
 
 #endif MAP_H

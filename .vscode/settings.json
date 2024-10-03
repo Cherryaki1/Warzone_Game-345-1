@@ -2,6 +2,7 @@
     "files.associations": {
         "*.ejs": "html",
         "list": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "map": "cpp"
     }
 }
