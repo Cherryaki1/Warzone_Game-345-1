@@ -76,35 +76,35 @@ bool Territory::operator<(const Territory &other) const {
 // Continent Class Implementation
 
 Continent::Continent() {
-    pContinentName = new string("");
+    pContinentID = new string("");
     pBonus = new int(0);
 }
 
-Continent::Continent(string continentName, int bonus) {
-    pContinentName = new string(std::move(continentName));
+Continent::Continent(string continentID, int bonus) {
+    pContinentID = new string(std::move(continentID));
     pBonus = new int(bonus);
 }
 
 Continent::Continent(const Continent &other) {
-    pContinentName = new string(*other.pContinentName);
+    pContinentID = new string(*other.pContinentID);
     pBonus = new int(*other.pBonus);
 }
 
 Continent& Continent::operator=(const Continent &other) {
     if (this != &other) {
-        *pContinentName = *other.pContinentName;
+        *pContinentID = *other.pContinentID;
         *pBonus = *other.pBonus;
     }
 }
 
 Continent::~Continent() {
-    delete pContinentName;
+    delete pContinentID;
     delete pBonus;
 }
 
 // Getters and Setters
-string Continent::getContinentName() const {
-    return *pContinentName;
+string Continent::getContinentID() const {
+    return *pContinentID;
 }
 
 int Continent::getBonus() const {
@@ -129,7 +129,6 @@ void Map::add_edge(Territory* u, Territory* v) {
     (*pAdjList)[u].push_back(v);
     (*pAdjList)[v].push_back(u);
 }
-
 
 // Getters and Setters
 void Map::setAdjList(map<Territory*, list<Territory*>> *adjList) {

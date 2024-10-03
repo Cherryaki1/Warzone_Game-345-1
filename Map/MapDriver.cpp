@@ -8,7 +8,7 @@ using namespace std;
 
 int testLoadMap() {
     // Load the map
-    const string mapFile = "map.map"; // change the name of the map file HERE!!!
+    const string mapFile = "../World 2007.map"; // change the name of the map file HERE!!!
     MapLoader mapLoader(mapFile);
     cout << "MapLoader created" << endl;
 
