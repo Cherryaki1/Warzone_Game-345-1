@@ -18,20 +18,20 @@ using std::cout;
 using std::endl;
 
 MapLoader::MapLoader(const string& filename) {
-    loadFromFile(filename);
+    Map map = Map();
+    loadFromFile(filename, map);
 }
 
 MapLoader::~MapLoader() {
     // Destructor
 }
 
-bool MapLoader::loadFromFile(const string& filename) { 
+void MapLoader::loadFromFile(const string& filename, Map &map) {
 
-    Map map = Map();
     ifstream file(filename);
     if (!file.is_open()) {
         cout << "Failed to open file!" << endl;
-        return false;
+        return;
     }
 
     string line, section;
@@ -45,20 +45,17 @@ bool MapLoader::loadFromFile(const string& filename) {
         }
 
         stringstream ss(line);
-        if (section == "[Map]") {
-            // Handle Map metadata if needed
-        } else if (section == "[Continents]") {
-            vector<Continent> continents;
+        if (section == "[Continents]") {
+            vector<Continent*> continents;
             string continentName;
             int bonus;
 
-            int i = 0;
             while (ss >> continentName >> bonus) {
                 // Create Continent
-                continents[i] = Continent(continentName, bonus);
-                i++;
+                Continent *continent = new Continent(continentName, bonus);
+                continents.push_back(continent);
             }
-            map.setContinents(continents);
+            map.setContinents(&continents);
         } else if (section == "[Territories]") {
             string name, continent, owner;
             int x, y;
@@ -74,20 +71,21 @@ bool MapLoader::loadFromFile(const string& filename) {
                 neighbors.push_back(neighbor);
             }
             
-            Territory territory(name, owner, continent, 0);
+            Territory *territory = new Territory(name, owner, continent, 0);
+
+            map.getTerritories()->push_back(territory);
             // Initialize adjacency list entry if it doesn't exist
-            if (map.getAdjList().find(territory) == map.getAdjList().end()) {
-                map.getAdjList()[territory] = list<Territory>();
+            if (map.getAdjList()->find(territory) == map.getAdjList()->end()) {
+                (*map.getAdjList())[territory] = list<Territory*>();
             }
             
             // Add neighbors as edges
-            for (auto& neighborName : neighbors) {
+            for (const auto& neighborName : neighbors) {
                 // Neighbors are defined as territory names
-                Territory neighbor(neighborName, owner, continent, 0);
+                Territory *neighbor = new Territory(neighborName, owner, continent, 0);
                 map.add_edge(territory, neighbor);
             }
         }
     }
-
   file.close();
 }
