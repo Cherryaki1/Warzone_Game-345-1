@@ -17,20 +17,19 @@
 #include "GameEngine.h"
 #include "Player.h"
 #include "Orders.h"
+#include "Cards.h"
+#include "MapDriver.h"
+
 using namespace std;
 
-extern void testCards();
-/*
-int main() {
-  testLoadMap();
-}
-*/
+
 // Main Class
 int main(){
-  //testGameStates();
-  //testPlayers();
-  //testOrdersLists();
-  //testCards();
+//  testLoadMap();
+  testGameStates();
+  testPlayers();
+  testOrdersLists();
+  testCards();
 
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;

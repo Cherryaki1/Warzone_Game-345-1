@@ -64,4 +64,6 @@ private:
     Player* owner; // the player that owns the card
 };
 
+void testCards();
+
 #endif //CARDS_H
