@@ -10,6 +10,8 @@
 #include "Orders/Orders.h"
 #include "Cards/Cards.h"
 #include "Map/Map.h"
+#include "Map/MapDriver.h"
+#include "Map/MapLoader.h"
 
 using namespace std;
 
@@ -119,13 +121,37 @@ void Player::issueOrder(const std::string& orderType) {
 
 
 // Method to identify territories to defend (placeholder implementation)
-void Player::toDefend() {
+vector<Territory*> Player::toDefend(Map& map) {
     // Logic to identify territories to defend
+    vector<Territory*> defendList;
+    vector<Territory*>* allTerritories = map.getTerritories();
+
+    srand(time(0));  // Seed for random selection
+
+    // Randomly select 3 territories to defend (you can adjust the number)
+    for (int i = 0; i < 3 && i < allTerritories->size(); ++i) {
+        int randomIndex = rand() % allTerritories->size();
+        defendList.push_back(allTerritories->at(randomIndex));
+    }
+
+    return defendList;
 }
 
 // Method to identify territories to attack (placeholder implementation)
-void Player::toAttack() {
-    // Logic to identify territories to attack
+vector<Territory*> Player::toAttack(Map& map) {
+    // Logic to identify territories to attack'
+    vector<Territory*> attackList;
+    vector<Territory*>* allTerritories = map.getTerritories();
+
+    srand(time(0));  // Seed for random selection
+
+    // Randomly select 3 territories to attack (you can adjust the number)
+    for (int i = 0; i < 3 && i < allTerritories->size(); ++i) {
+        int randomIndex = rand() % allTerritories->size();
+        attackList.push_back(allTerritories->at(randomIndex));
+    }
+
+    return attackList;
 }
 
 // Stream insertion operator

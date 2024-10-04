@@ -22,7 +22,6 @@
 
 using namespace std;
 
-
 // Main Class
 int main(){
   testLoadMap();

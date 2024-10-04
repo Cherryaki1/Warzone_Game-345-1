@@ -15,6 +15,7 @@
 #include <string>
 #include <vector>
 class Hand;
+class OrdersList;
 using std::string;
 using std::vector;
 
@@ -34,8 +35,8 @@ public:
     void setPlayerName(string name);
     string getPlayerName() const;
 
-    void toDefend();
-    void toAttack();
+    vector<Territory*> toDefend(Map& map);
+    vector<Territory*> toAttack(Map& map);
     void issueOrder(const std::string& orderType);
 
     friend std::ostream& operator<<(std::ostream& os, const Player& player); // Stream insertion operator
