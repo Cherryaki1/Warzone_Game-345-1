@@ -15,12 +15,11 @@ public:
 
     MapLoader(const string &filename);
 
-    static void loadFromFile(const string &filename, Map &map);
+    void loadFromFile(const string &filename, Map &map);
 
-    Map &getMap();
-
+    Map& getMap();
 private:
-    Map map;  // Internal map object where loaded data is stored
+    Map map; // Internal map object where loaded data is stored
 };
 
 #endif

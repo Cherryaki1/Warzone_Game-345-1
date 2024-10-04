@@ -8,13 +8,28 @@ using namespace std;
 
 extern Map* globalMap;
 
+
 int testLoadMap() {
     // Load the map
-    const string mapFile = "../World 2007.map"; // change the name of the map file HERE!!!
+    const string mapFile = "../World 2007.map"; // Change the name of the map file HERE!!!
     MapLoader mapLoader(mapFile);
-    cout << "MapLoader created" << endl;
-    //cout << "Map loaded with " << map.getTerritories()->size() << " territories." << endl;
 
-    // Validate
+    cout << "MapLoader created" << endl;
+
+    Map& loadedMap = mapLoader.getMap();
+
+    // Output the number of territories loaded
+    cout << "Map loaded with " << loadedMap.getTerritories().size() << " territories." << endl;
+
+    // Validate the map
+    if (loadedMap.validate()) {
+        cout << "Map is valid!" << endl;
+    } else {
+        cout << "Map is invalid!" << endl;
+    }
+
+    // Output the details of the map using the stream operator
+    cout << loadedMap << endl;
+
     return 0;
 }

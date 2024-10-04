@@ -48,7 +48,7 @@ Territory::~Territory() {
     delete pNumber_of_armies;
 }
 
-std::ostream& Territory::operator<<(std::ostream& os, const Territory& territory) {
+std::ostream& operator<<(std::ostream& os, const Territory& territory) {
     os << "Territory: " << territory.getName()
        << ", Owner: " << territory.getOwner()
        << ", Continent: " << territory.getContinentID()
@@ -132,10 +132,11 @@ void Continent::addTerritory(Territory* territory) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Continent& continent) {
-    os << "Continent: " << continent.getContinentID() << ", Bonus: " << continent.getBonus();
-    for (const auto& continentTerritories : continent.getCTerritories()) {
-        os << ", " << continentTerritories;
+    os << "Continent: " << continent.getContinentID() << ", Bonus: " << continent.getBonus() << "\nTerritories:\n";
+    for (const auto& territory : continent.getCTerritories()) {
+        os << territory << std::endl;
     }
+
     return os;
 }
 
@@ -226,27 +227,56 @@ bool Map::isContinentConnected(Continent* continent) {
 }
 
 bool Map::hasUniqueContinent() {
+    map<string, Territory*> continentAssignment;
 
+    for (Territory* territory : *pTerritories) {
+        string continentID = territory->getContinentID();
+        if (continentAssignment.find(continentID) != continentAssignment.end()) {
+            return false;  // Territory belongs to multiple continents
+        }
+        continentAssignment[continentID] = territory;  // Store the assignment
+    }
+    return true;
 }
 
-bool Map::validate() const {
-    // DFS
-    return false;
+bool Map::validate() {
+    // 1. Check if the map is a connected graph
+    if (!isGraphConnected()) {
+        std::cout << "Map is not connected!" << std::endl;
+        return false;
+    }
+
+    // 2. Check if each continent forms a connected subgraph
+    for (Continent* continent : *pContinents) {
+        if (!isContinentConnected(continent)) {
+            std::cout << "Continent " << continent->getContinentID() << " is not connected!" << std::endl;
+            return false;
+        }
+    }
+
+    // 3. Ensure each territory belongs to exactly one continent
+    if (!hasUniqueContinent()) {
+        std::cout << "A territory belongs to multiple continents!" << std::endl;
+        return false;
+    }
+
+    // If all checks pass
+    return true;
 }
 
-std::ostream& Map::operator<<(std::ostream& os, Map& map) {
+std::ostream& operator<<(std::ostream& os, Map& map) {
     os << "Map Details:\n";
 
     // Output continents
     os << "Continents:\n";
     for (const auto& continent : map.getContinents()) {
-        os << *continent << std::endl;  // Use the Continent's stream operator
+        os << continent << std::endl;  // Use the Continent's stream operator
     }
 
     // Output territories
     os << "\nTerritories:\n";
     for (const auto& territory : map.getTerritories()) {
-        os << *territory << std::endl;  // Use the Territory's stream operator
+        os << territory << std::endl;  // Use the Territory's stream operator
     }
 
     // Output adjacency list

@@ -124,14 +124,14 @@ void Player::issueOrder(const std::string& orderType) {
 vector<Territory*> Player::toDefend(Map& map) {
     // Logic to identify territories to defend
     vector<Territory*> defendList;
-    vector<Territory*>* allTerritories = map.getTerritories();
+    vector<Territory*> allTerritories = map.getTerritories();
 
     srand(time(0));  // Seed for random selection
 
     // Randomly select 3 territories to defend (you can adjust the number)
-    for (int i = 0; i < 3 && i < allTerritories->size(); ++i) {
-        int randomIndex = rand() % allTerritories->size();
-        defendList.push_back(allTerritories->at(randomIndex));
+    for (int i = 0; i < 3 && i < allTerritories.size(); ++i) {
+        int randomIndex = rand() % allTerritories.size();
+        defendList.push_back(allTerritories.at(randomIndex));
     }
 
     return defendList;
@@ -141,14 +141,14 @@ vector<Territory*> Player::toDefend(Map& map) {
 vector<Territory*> Player::toAttack(Map& map) {
     // Logic to identify territories to attack'
     vector<Territory*> attackList;
-    vector<Territory*>* allTerritories = map.getTerritories();
+    vector<Territory*> allTerritories = map.getTerritories();
 
     srand(time(0));  // Seed for random selection
 
     // Randomly select 3 territories to attack (you can adjust the number)
-    for (int i = 0; i < 3 && i < allTerritories->size(); ++i) {
-        int randomIndex = rand() % allTerritories->size();
-        attackList.push_back(allTerritories->at(randomIndex));
+    for (int i = 0; i < 3 && i < allTerritories.size(); ++i) {
+        int randomIndex = rand() % allTerritories.size();
+        attackList.push_back(allTerritories.at(randomIndex));
     }
 
     return attackList;

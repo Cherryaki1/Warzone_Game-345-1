@@ -26,6 +26,10 @@ MapLoader::~MapLoader() {
     // Destructor
 }
 
+Map &MapLoader::getMap() {
+    return map;
+}
+
 void MapLoader::loadFromFile(const string& filename, Map &map) {
 
     ifstream file(filename);
@@ -46,22 +50,17 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
 
         stringstream ss(line);
         if (section == "[Continents]") {
-            stringstream continentLineStream(line);
             string continentName;
-            string bonusStr;
+            int bonus;
 
-            while (getline(ss, line)) {
-                // Create Continent
-                getline(continentLineStream, continentName, '=');
-                getline(continentLineStream, bonusStr);
+            // Read continent name and bonus
+            getline(ss, continentName, '=');
+            ss >> bonus;
 
-                int bonus = stoi(bonusStr);
-
-                cout << "Continent " << continentName << " created with bonus " << bonus << endl;
-
-                Continent *continent = new Continent(continentName, bonus);
-                map.getContinents().push_back(continent);
-            }
+            // Create and store the continent
+            Continent* continent = new Continent(continentName, bonus);
+            map.getContinents().push_back(continent);
+            cout << "Continent " << continentName << " created with bonus " << bonus << endl;
         } else if (section == "[Territories]") {
             string name, continent, owner, skip;
             int x, y;
@@ -79,13 +78,14 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
             }
 
             // Territory Creation
-            cout << "Territory " << name << " in continent " << continent << endl;
+            //cout << "Territory " << name << " in continent " << continent << endl;
             Territory *territory = new Territory(name, owner, continent, 0);
 
+            vector<Continent *> continents = map.getContinents();
             // Add Territories to Continent
-            for (unsigned int i = 0; i < map.getContinents().size(); i++) {
-                if (map.getContinents()[i]->getContinentID() == continent) {
-                    map.getContinents()[i]->addTerritory(territory);
+            for (auto & i : continents) {
+                if (i->getContinentID() == continent) {
+                    i->addTerritory(territory);
                 }
             }
             map.getTerritories().push_back(territory);
@@ -100,13 +100,15 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
                 // Neighbors are defined as territory names
                 Territory *neighbor = new Territory(neighborName, owner, continent, 0);
 
-                cout << "Territory adj " << neighbor->getName() << " in continent " << territory->getContinentID()
-                << " connected to " << territory->getName() << endl;
+                /*cout << "Territory adj " << neighbor->getName() << " in continent " << territory->getContinentID()
+                << " connected to " << territory->getName() << endl;*/
 
                 map.add_edge(territory, neighbor);
             }
         }
+
     }
+    this->map = map;
   file.close();
 }
 

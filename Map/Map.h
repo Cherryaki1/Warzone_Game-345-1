@@ -31,7 +31,7 @@ public:
     ~Territory();
 
     bool operator<(const Territory& other) const;  // Comparison for use in map
-    std::ostream& operator<<(std::ostream& os, const Territory& territory);
+    friend std::ostream& operator<<(std::ostream& os, const Territory& territory);
 
     string getName() const;
     void setName(const string &name);
@@ -57,7 +57,8 @@ public:
     ~Continent();
 
     void addTerritory(Territory *territory) const;
-    std::ostream& operator<<(std::ostream& os, const Continent& continent);
+
+    friend std::ostream& operator<<(std::ostream& os, const Continent& continent);
 
     string getContinentID() const;
     void setContinentID(const string &continentID);
@@ -84,9 +85,9 @@ class Map {
         bool isGraphConnected();
         bool isContinentConnected(Continent* continent);
         bool hasUniqueContinent();
-        bool validate() const;
+        bool validate();
 
-        std::ostream& Map::operator<<(std::ostream& os, Map& map);
+        friend std::ostream& operator<<(std::ostream& os, Map& map);
 
         void setAdjList(map<Territory*, list<Territory*>> *adjList);
         map<Territory*, list<Territory*>> getAdjList();
