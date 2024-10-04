@@ -1,23 +1,42 @@
+// Arturo Sanchez Escobar (40283236), Team 36
+// Abdulah Ghulam Ali (40281857), Team 36
+// Amir Vala Khalilzadeh (40253211), Team 36
+// Gregory Lajoie (ID), Team 36
+// Botao Yang (ID), Team 36
+// COMP 345 - D (Advanced Program Design, C++)
+// Warzone Game Team Project - Assignment 1
+// October 4, 2024
+// *******************************************
+// This is a cpp file which tests all parts of the assignment
+// This file runs all the test methods created to test each part of the assignment, a menu has also been implemented
+
 #include <iostream>
+#include <fstream>
+#include <string>
 #include "MainDriver.h"
 #include "GameEngine.h"
 #include "Player.h"
+#include "Orders.h"
+#include "Cards.h"
+#include "MapDriver.h"
+
 using namespace std;
 
-extern void testCards();
 
 // Main Class
 int main(){
-  //testGameStates();
-  //testPlayers();
-  //testCards();
+  testLoadMap();
+  testGameStates();
+  testPlayers();
+  testOrdersLists();
+  testCards();
 
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;
 
   // PROMPT FOR MAP SELECTION
   while(menuLoop) {
-    cout << "To begin, choose your map...  Map 1: Test , Map 2: Canada, Map 3: Invalid" << endl;
+    cout << "To begin, choose your map...  Map 1: Test , Map 2: World 2007, Map 3: InvalidPlaceHolder" << endl;
     cout << "Enter the number of the map as your choice: ";
     cin >> chosenMap;
     cout << chosenMap << endl;
@@ -29,13 +48,13 @@ int main(){
       menuLoop = false;
       break;
       case 2:
-        mapName = "Canada.txt";
+        mapName = "World 2007.map";
       // Load map passing the name and returning boolean value
       cout << mapName << " successfully loaded." << endl;
       menuLoop = false;
       break;
       case 3:
-        mapName = "Invalid.txt";
+        mapName = "InvalidPlaceHolder.txt";
       // Load map passing the name and returning boolean value
       cout << mapName << " successfully loaded..." << endl;
       menuLoop = false;
@@ -70,13 +89,13 @@ int main(){
     }
   }
 
-
-/* Thing I removed from CMakeList to run the program.
-  Map/Map.cpp
-    Map/Map.h
-    Map/MapDriver.cpp
-*/
+  // MAX 32 CONTINENTS
+  // MAX 10 ADJACENT TERRITORIES
+  // MAX 255 TERRITORIES
 
   return 0;
 }
+
+
+
 

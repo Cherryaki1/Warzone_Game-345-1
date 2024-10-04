@@ -3,5 +3,14 @@
 #define MAPLOADER_H
 #include "Map.h"
 
+class MapLoader {
+public:
+    MapLoader() = default;
+    ~MapLoader();
 
-#endif //MAPLOADER_H
+    MapLoader(const string &filename);
+
+    static void loadFromFile(const string &filename, Map &map);
+};
+
+#endif

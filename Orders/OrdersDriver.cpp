@@ -39,8 +39,7 @@ void testOrdersLists() {
     for (auto it = ordersList.getOrders().begin(); it != ordersList.getOrders().end(); ++it) {
         (*it)->execute();
     }
-
+  
     std::cout << "\nFinal Orders List (should show executed orders): " << std::endl;
     std::cout << ordersList;
 }
-

@@ -5,6 +5,7 @@
 #include <string>
 #include <list>
 #include <stdbool.h>
+void testOrdersLists();
 
 class Order {
 public:
