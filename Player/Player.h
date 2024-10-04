@@ -10,12 +10,11 @@
 #define PLAYER_H
 
 #include "Map/Map.h"
-#include "Cards/Cards.h"
 #include "Orders/Orders.h"
 
 #include <string>
 #include <vector>
-
+class Hand;
 using std::string;
 using std::vector;
 

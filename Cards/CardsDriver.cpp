@@ -10,7 +10,7 @@ void testCards(){
     Deck *myDeck = new Deck();
     cout << "Deck created. Default deck contains 50 cards, 10 of each type - here are the card details:\n";
     myDeck->summarize();
-    Hand *myHand = new Hand();
+    Hand *myHand = new Hand(new Player("bob"));
     for(int i = 0 ; i< 9; i++){
         myHand->place(myDeck->draw());
     }
