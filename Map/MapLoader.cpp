@@ -47,7 +47,6 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
         stringstream ss(line);
         if (section == "[Continents]") {
             stringstream continentLineStream(line);
-            vector<Continent*> continents;
             string continentName;
             string bonusStr;
 
@@ -61,9 +60,8 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
                 cout << "Continent " << continentName << " created with bonus " << bonus << endl;
 
                 Continent *continent = new Continent(continentName, bonus);
-                continents.push_back(continent);
+                map.getContinents()->push_back(continent);
             }
-            map.setContinents(&continents);
         } else if (section == "[Territories]") {
             string name, continent, owner, skip;
             int x, y;

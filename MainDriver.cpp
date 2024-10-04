@@ -25,7 +25,7 @@ using namespace std;
 
 // Main Class
 int main(){
-//  testLoadMap();
+  testLoadMap();
   testGameStates();
   testPlayers();
   testOrdersLists();
