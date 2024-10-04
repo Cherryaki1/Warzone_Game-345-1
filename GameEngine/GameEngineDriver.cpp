@@ -12,9 +12,18 @@ void testGameStates() {
             cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;
             if(play.ordersIssuingPhase() == true) {
                 cout << "Orders Issuing Phase Completed, proceeding to Orders Execution" << endl;
-                if(play.ordersExecutionPhase() == true) {
+                if(play.ordersExecutionPhase() == "endexecorders") {
                     cout << "Orders Execution Phase Completed, checking End Phase" << endl;
                     testGameStates();
+                }else {
+                    if(play.endPhase() == true) {
+                        cout << "Congratulations, a player has won!" << endl;
+                        cout << "Thank you for playing!" << endl;
+                    }else {
+                        cout << "The win conditions have not been met yet!" << endl;
+                        testGameStates();
+                    }
+
                 }
             }
         }

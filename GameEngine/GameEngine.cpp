@@ -1,12 +1,12 @@
 #include <iostream>
 #include "GameEngine.h"
 
-#include <set>
 using namespace std;
 
 // STARTUP CONSTRUCTOR
 StartUp::StartUp() {
     invalidCommand = new bool(false); // Dynamically Allocate Memory
+    command = nullptr; // To avoid dereferencing issues
 }
 
 // PLAY CONSTRUCTOR
@@ -17,11 +17,18 @@ Play::Play() {
 
 // DESTRUCTORS TO FREE ALLOCATED MEMORY
 StartUp::~StartUp() {
-    delete invalidCommand;  // Free the allocated memory of new
+    if (invalidCommand != nullptr) {
+        delete invalidCommand;  // Free the allocated memory of new
+    }
+    if(command != nullptr) {
+        delete command; // Free memory for command if it is allocated
+    }
 }
 
 Play::~Play() {
-    delete invalidCommand; // Free the allocated memory of new
+    if (invalidCommand != nullptr) {
+        delete invalidCommand;  // Free the allocated memory of new
+    }
     if(command != nullptr) {
         delete command; // Free memory for command if it is allocated
     }
@@ -31,6 +38,12 @@ Play::~Play() {
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
 bool StartUp::startUpPhase() {
     cout << "... Starting up Phase ..." << endl;
+
+    // Allocate memory for `command` before using it
+    if(command == nullptr) {
+        command = new string("");  // Allocate memory for command
+    }
+
     setInvalidCommand(false);
     while(!getInvalidCommand()){
         cout << "Type \"loadmap\" to transition to the next state"<< endl;
@@ -80,21 +93,16 @@ bool StartUp::startUpPhase() {
 bool Play::reinforcementPhase() {
     cout << "... Reinforcement Phase ..." << endl;
     setInvalidCommand(false);
+
+    if(command == nullptr) {
+        command = new string("");  // Allocate memory for command
+    }
+
     // Call to assignCountries Function which assign troops to countries
     while(!getInvalidCommand()) {
         cout << "Type \"issueorder\" to transition to the next state" << endl;
         cin >> *command;
         if(getCommand() == "issueorder") {
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
-        }
-    }
-    setInvalidCommand(false);
-    while(!getInvalidCommand()) {
-        cout << "Type \"hi\" to transition to the next state" << endl;
-        cin >> *command;
-        if(getCommand() == "hi") {
             setInvalidCommand(true);
         }else {
             cerr << "Invalid command!" << endl;
@@ -106,11 +114,16 @@ bool Play::reinforcementPhase() {
 bool Play::ordersIssuingPhase() {
     cout << "... Orders Issuing Phase ..." << endl;
     setInvalidCommand(false);
+
+    if(command == nullptr) {
+        command = new string("");  // Allocate memory for command
+    }
+
     // Call to issueOrder Function
     while(!getInvalidCommand()) {
-        cout << "Type \"execorder\" to transition to the next state" << endl;
+        cout << "Type \"endissueorders\" to transition to the next state" << endl;
         cin >> *command;
-        if(getCommand() == "execorder") {
+        if(getCommand() == "endissueorders") {
             setInvalidCommand(true);
         }else {
             cerr << "Invalid command!" << endl;
@@ -119,29 +132,25 @@ bool Play::ordersIssuingPhase() {
     return true;
 }
 
-bool Play::ordersExecutionPhase() {
+string Play::ordersExecutionPhase() {
     cout << "... Orders Execution Phase ..." << endl;
     setInvalidCommand(false);
+
+    if(command == nullptr) {
+        command = new string("");  // Allocate memory for command
+    }
+
     // Call to executeOrders Function
     while(!getInvalidCommand()) {
         cout << "Type \"endexecorders\" to keep playing or \"win\" to end the game" << endl;
         cin >> *command;
-        if(getCommand() == "execorder") {
+        if(getCommand() == "endexecorders" || getCommand() == "win") {
             setInvalidCommand(true);
-        }
-        if(getCommand() == "win"){
-            if(endPhase() == true) {
-                cout << "Congratulations, a player has won!" << endl;
-                cout << "Thank you for playing!" << endl;
-                setInvalidCommand(true);
-            }else {
-                //cerr << "The win conditions have not been met yet!" << endl;
-            }
         }else {
             cerr << "Invalid command!" << endl;
         }
     }
-    return true;
+    return getCommand();
 }
 
 
@@ -153,10 +162,17 @@ bool Play::endPhase() {
 
 // SETTERS AND GETTERS FOR STARTUP
 string StartUp::getCommand() const {
-    return *command;        // Dereference and get value
+    if(command == nullptr) {
+        return ""; // Return empty string if command is initialized
+    }
+    return *command; // Dereference and return the actual value
 }
-void StartUp::setCommand(string* value) {
-    command = value;        // Assign new value
+void StartUp::setCommand(const string& cmd) {
+    if(command == nullptr) {
+        command = new string(cmd); // Allocate memory and set command if it is initialized
+    }else {
+        *command = cmd; // Assign new value if already allocated
+    }
 }
 bool StartUp::getInvalidCommand() const {
     return *invalidCommand;     // Dereference and get value

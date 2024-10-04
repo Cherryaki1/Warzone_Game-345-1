@@ -18,7 +18,7 @@ class StartUp {
 
     // SETTERS ANG GETTERS FOR STARTUP
     string getCommand() const;
-    void setCommand(string* cmd);
+    void setCommand(const string& cmd);
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
 };
@@ -34,7 +34,7 @@ class Play {
     // PHASES
     bool reinforcementPhase();
     bool ordersIssuingPhase();
-    bool ordersExecutionPhase();
+    string ordersExecutionPhase();
     bool endPhase();
 
     // SETTERS AND GETTERS FOR PLAY
