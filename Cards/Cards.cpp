@@ -38,6 +38,11 @@ Card::Card(const Card &other){
     hand=other.hand;
 }
 
+ostream& operator<<(ostream &os, const Card* card){ //Stream insertion operator - displays a card
+    os << *card->type << " card\n";
+    return os;
+}
+
 string Card::getType() { //Returns the type of the card
     return *this->type;
 }
@@ -83,11 +88,6 @@ void Card::play() { //Creates the corresponding order of the card, removes it fr
     this->hand->remove(this);
 }
 
-void Card::displayCard() { //Displays the card's type in a friendly manner
-    cout << "This is a " << *type << " card!\t\n";
-}
-
-
 
 //**************************DECK**************************
 Deck::Deck() { initialize();} //Constructs a deck, using the initialize() function to do so.
@@ -115,11 +115,11 @@ void Deck::initialize() { //Creates a default number of cards for the deck
 void Deck::returnToDeck(Card *card) { //Returns a card pointer to the deck
     cards.push_back(card);
 }
-void Deck::display() { //Displays each card by iterating through the deck and calling Cards::display() for each.
-    for (int i = 0 ; i<cards.size(); i++){
-        cout << (i+1) << ": ";
-        cards.at(i)->displayCard();
+ostream& operator<<(ostream &os, const Deck* deck) { //Displays each card by iterating through the deck and printing each card.
+    for (int i = 0 ; i<deck->cards.size(); i++){
+        os << (i+1) << ": " << deck->cards.at(i);
     }
+    return os;
 }
 void Deck::summarize(){ //Summarizes the deck by displaying the number of cards by type
     for (int i = 0; i<cardTypeLookup.size(); i++){
@@ -150,12 +150,12 @@ Hand::Hand(const Hand &other){
     }
 }
 
-void Hand::display() { //Displays each card by iterating through the hand and calling Cards::display() for each.
-    cout << "Cards in your hand: ("<< cards.size() <<")\n";
-    for (int i = 0; i<cards.size(); i++){
-        cout << "\t" <<i+1 << ": ";
-        cards.at(i)->displayCard();
+ostream& operator<<(ostream &os, const Hand* hand) { //Displays each card by iterating through the hand and calling Cards::display() for each.
+    cout << "Cards in your hand: ("<< hand->cards.size() <<")\n";
+    for (int i = 0; i<hand->cards.size(); i++){
+        os << "\t" <<i+1 << ": " << hand->cards.at(i) << "";
     }
+    return os;
 }
 
 void Hand::place(Card* card){ //Places the given card pointer into the hand

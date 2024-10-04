@@ -14,7 +14,7 @@ void testCards(){
     for(int i = 0 ; i< 9; i++){
         myHand->place(myDeck->draw());
     }
-    myHand->display();
+    cout << myHand;
 
     cout << "Deck now:\n";
     myDeck->summarize();
@@ -28,6 +28,5 @@ void testCards(){
 
     cout << "Deck now:\n";
     myDeck->summarize();
-    myHand->display();
-
+    cout << myHand;
 }
