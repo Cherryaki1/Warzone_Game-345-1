@@ -1,33 +1,36 @@
 #include "Player.h"
+#include "MapLoader.h"
 #include <iostream>
+
+extern Map* globalMap;
+
 using namespace std;
 
 void testPlayers() {
-    // Creating a player using the default constructor
-    Player player1;
-    cout << "Player 1 (default): " << player1 << endl;
+    string filename = "../World 2007.map";
+    MapLoader mapLoader(filename);
+    Map map;
+    mapLoader.loadFromFile(filename, map);
 
-    // Creating a player using the overloaded constructor
-    Player player2("Alice");
-    cout << "Player 2 (overloaded constructor): " << player2 << endl;
 
-    // Using the setPlayerName method
-    player1.setPlayerName("Bob");
-    cout << "Player 1 (after setPlayerName): " << player1 << endl;
+    //cout << "Map loaded with " << mapLoader.getMap().getTerritories()->size() << " territories." << endl;
 
-    // Demonstrating the copy constructor
-    Player player3 = player2;  // Invokes copy constructor
-    cout << "Player 3 (copy of Player 2): " << player3 << endl;
+    Player player("John");
 
-    // Demonstrating the assignment operator
-    player1 = player2;  // Invokes assignment operator
-    cout << "Player 1 (after assigning Player 2 to it): " << player1 << endl;
+    cout << "\nTesting toDefend() method..." << endl;
+    vector<Territory*> defendList = player.toDefend(map);
+    cout << "Territories to Defend:" << endl;
+    for (Territory* territory : defendList) {
+        cout << "- " << territory->getName() << " with " << territory->getNumberOfArmies() << " armies" << endl;
+    }
 
-    // Demonstrating self-assignment (should not cause any issues)
-    player1 = player1;
-    cout << "Player 1 (after self-assignment): " << player1 << endl;
-
-    // Destructor will be called automatically when player objects go out of scope
+    // Step 4: Test toAttack()
+    cout << "\nTesting toAttack() method..." << endl;
+    vector<Territory*> attackList = player.toAttack(map);
+    cout << "Territories to Attack:" << endl;
+    for (Territory* territory : attackList) {
+        cout << "- " << territory->getName() << " with " << territory->getNumberOfArmies() << " armies" << endl;
+    }
 }
 
 

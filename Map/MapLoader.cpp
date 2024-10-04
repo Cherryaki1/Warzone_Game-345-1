@@ -89,7 +89,7 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
             if (map.getAdjList()->find(territory) == map.getAdjList()->end()) {
                 (*map.getAdjList())[territory] = list<Territory*>();
             }
-            
+
             // Add neighbors as edges
             for (const auto& neighborName : neighbors) {
                 // Neighbors are defined as territory names
@@ -97,10 +97,11 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
 
                 cout << "Territory adj " << neighbor->getName() << " in continent " << territory->getContinentID()
                 << " connected to " << territory->getName() << endl;
-                
+
                 map.add_edge(territory, neighbor);
             }
         }
     }
   file.close();
 }
+
