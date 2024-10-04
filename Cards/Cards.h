@@ -11,7 +11,6 @@
 
 #include <string>
 #include <vector>
-
 #include "Player/Player.h"
 
 using std::string;
