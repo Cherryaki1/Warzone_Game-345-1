@@ -8,10 +8,11 @@
 using namespace std;
 
 extern void testCards();
-
+/*
 int main() {
   testLoadMap();
 }
+*/
 // Main Class
 int main(){
   //testGameStates();
