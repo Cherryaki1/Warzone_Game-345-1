@@ -42,6 +42,22 @@ Play::~Play() {
     }
 }
 
+// OPERATOR << FOR STARTUP
+ostream& operator<<(ostream& out, const StartUp& startup) {
+    out << "StartUp State: \n";
+    out << "Command: " << (startup.command ? *startup.command : "None") << "\n";
+    out << "Invalid Command: " << (*startup.invalidCommand ? "true" : "false") << "\n";
+    return out;
+}
+
+// OPERATOR << FOR PLAY
+ostream& operator<<(ostream& out, const Play& play) {
+    out << "Play State: \n";
+    out << "Command: " << (play.command ? *play.command : "None") << "\n";
+    out << "Invalid Command: " << (*play.invalidCommand ? "true" : "false") << "\n";
+    return out;
+}
+
 
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
 bool StartUp::startUpPhase() {

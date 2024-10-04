@@ -9,7 +9,9 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
 #include <string>
+#include <iostream>
 using std::string;
+using std::ostream;
 
 
 
@@ -29,6 +31,9 @@ class StartUp {
     void setCommand(const string& cmd);
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
+
+    // Stream insertion operator
+    friend ostream& operator<<(ostream& out, const StartUp& startup);
 };
 
 class Play {
@@ -50,6 +55,9 @@ class Play {
     void setCommand(const string& cmd);
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
+
+    // Stream insertion operator
+    friend ostream& operator<<(ostream& out, const Play& play);
 };
 
 void testGameStates();
