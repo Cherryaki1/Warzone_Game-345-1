@@ -4,6 +4,9 @@
 #include <utility>
 #include <vector>
 #include <map>
+#include <stack>
+#include <set>
+
 using namespace std;
 
 // Territory Class Implementation
@@ -45,70 +48,107 @@ Territory::~Territory() {
     delete pNumber_of_armies;
 }
 
-// Getters and Setters
+std::ostream& Territory::operator<<(std::ostream& os, const Territory& territory) {
+    os << "Territory: " << territory.getName()
+       << ", Owner: " << territory.getOwner()
+       << ", Continent: " << territory.getContinentID()
+       << ", Armies: " << territory.getNumberOfArmies();
+    return os;
+}
+
+bool Territory::operator<(const Territory &other) const {
+    return *pName < *other.pName;  // Comparison based on name for map key
+}
+
+// Territory: Getters and Setters
 string Territory::getName() const {
     return *pName;
+}
+
+void Territory::setName(const string &name) {
+    *pName = name;
 }
 
 string Territory::getOwner() const {
     return *pOwner;
 }
 
+void Territory::setOwner(const string &player) {
+    *pOwner = player;
+}
+
 string Territory::getContinentID() const {
     return *pContinentID;
+}
+
+void Territory::setContinentID(const string &continentID) {
+    *pContinentID = continentID;
 }
 
 int Territory::getNumberOfArmies() const {
     return *pNumber_of_armies;
 }
 
-void Territory::setPlayer(const string &player) {
-    *pOwner = player;
-}
-
 void Territory::setNumberOfArmies(int number_of_armies) {
     *pNumber_of_armies = number_of_armies;
 }
 
-bool Territory::operator<(const Territory &other) const {
-    return *pName < *other.pName;  // Comparison based on name for map key
-}
 // Continent Class Implementation
 
 Continent::Continent() {
     pContinentID = new string("");
+    pTerritories = new vector<Territory *>();
     pBonus = new int(0);
 }
 
-Continent::Continent(string continentID, int bonus) {
+Continent::Continent(string continentID, vector<Territory *> territories, int bonus) {
     pContinentID = new string(std::move(continentID));
+    pTerritories = new vector<Territory *>(std::move(territories));
     pBonus = new int(bonus);
 }
 
 Continent::Continent(const Continent &other) {
     pContinentID = new string(*other.pContinentID);
+    pTerritories = new vector<Territory *>(*other.pTerritories);
     pBonus = new int(*other.pBonus);
 }
 
 Continent& Continent::operator=(const Continent &other) {
     if (this != &other) {
         *pContinentID = *other.pContinentID;
+        *pTerritories = *other.pTerritories;
         *pBonus = *other.pBonus;
     }
 }
 
 Continent::~Continent() {
     delete pContinentID;
+    delete pTerritories;
     delete pBonus;
 }
 
-// Getters and Setters
+std::ostream& operator<<(std::ostream& os, const Continent& continent) {
+    os << "Continent: " << continent.getContinentID() << ", Bonus: " << continent.getBonus();
+    return os;
+}
+
+// Continent: Getters and Setters
 string Continent::getContinentID() const {
     return *pContinentID;
 }
 
+void Continent::setContinentID(const string &continentID) {
+    *pContinentID = continentID;
+}
+
+
+
 int Continent::getBonus() const {
     return *pBonus;
+}
+
+void Continent::setBonus(int bonus) {
+    *pBonus = bonus;
 }
 
 // Map Class Implementation
@@ -130,7 +170,88 @@ void Map::add_edge(Territory* u, Territory* v) {
     (*pAdjList)[v].push_back(u);
 }
 
-// Getters and Setters
+// Map: Validation
+
+void DFS(Territory* start, set<Territory*> &visited, map<Territory*, list<Territory*>> adjList) {
+    stack<Territory*> s;
+    s.push(start);
+
+    while (!s.empty()) {
+        Territory* current = s.top();
+        s.pop();
+
+        if (visited.find(current) == visited.end()) {
+            visited.insert(current);
+            for (Territory* neighbor : adjList[current]) {
+                if (visited.find(neighbor) == visited.end()) {
+                    s.push(neighbor);
+                }
+            }
+        }
+    }
+}
+
+bool isGraphConnected(Map &map) {
+    if (map.getTerritories()->empty()) return true;
+
+    set<Territory*> visited;
+    DFS((*map.getTerritories())[0], visited, *map.getAdjList());
+
+    return visited.size() == map.getTerritories()->size();
+}
+
+bool isContinentConnected(Continent* continent, Map &map) {
+    if (continent->(continentTerritories()->size)) return true;
+
+    set<Territory*> visited;
+    DFS(continent->territories[0], visited);
+
+    // Check if all territories in the continent were visited
+    for (Territory* territory : continent->territories) {
+        if (visited.find(territory) == visited.end()) {
+            return false;  // A territory was not reachable, subgraph is not connected
+        }
+    }
+    return true;
+}
+
+bool hasUniqueContinent() {
+
+}
+
+bool Map::validate() const {
+    // DFS
+    return false;
+}
+
+std::ostream& Map::operator<<(std::ostream& os, Map& map) {
+    os << "Map Details:\n";
+
+    // Output continents
+    os << "Continents:\n";
+    for (const auto& continent : map.getContinents()) {
+        os << *continent << std::endl;  // Use the Continent's stream operator
+    }
+
+    // Output territories
+    os << "\nTerritories:\n";
+    for (const auto& territory : map.getTerritories()) {
+        os << *territory << std::endl;  // Use the Territory's stream operator
+    }
+
+    // Output adjacency list
+    os << "\nAdjacency List:\n";
+    for (const auto& entry : map.getAdjList()) {
+        os << entry.first->name << " -> ";
+        for (const auto& neighbor : entry.second) {
+            os << neighbor->name << " ";
+        }
+        os << std::endl;
+    }
+    return os;
+}
+
+// Map: Getters and Setters
 void Map::setAdjList(map<Territory*, list<Territory*>> *adjList) {
     pAdjList = adjList;
 }
@@ -155,15 +276,6 @@ vector<Territory*>* Map::getTerritories() {
     return pTerritories;
 }
 
-void Map::print() const {
-    // Implement to print map details
-}
-
-
-bool Map::validate() const {
-    // DFS
-    return false;
-}
 
 
 

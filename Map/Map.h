@@ -5,11 +5,13 @@
 #include <string>
 #include <list>
 #include <map>
+#include <set>
 #include <vector>
 
 using std::string;
 using std::vector;
 using std::list;
+using std::set;
 using std::map;
 
 
@@ -28,32 +30,38 @@ public:
     Territory& operator=(const Territory &other);  // Assignment operator
     ~Territory();
 
-    string getName() const;
-    string getOwner() const;
-    string getContinentID() const;
-    int getNumberOfArmies() const;
-
-    void setPlayer(const string &player);
-    void setNumberOfArmies(int number_of_armies);
-
     bool operator<(const Territory& other) const;  // Comparison for use in map
+    std::ostream& operator<<(std::ostream& os, const Territory& territory);
 
+    string getName() const;
+    void setName(const string &name);
+    string getOwner() const;
+    void setOwner(const string &player);
+    string getContinentID() const;
+    void setContinentID(const string &continentID);
+    int getNumberOfArmies() const;
+    void setNumberOfArmies(int number_of_armies);
 };
 
 class Continent {
 private:
     string *pContinentID;
+    vector<Territory *> *pTerritories;
     int *pBonus;
 
 public:
     Continent();
-    Continent(string continentID, int bonus);
+    Continent(string continentID, vector<Territory *> territories, int bonus);
     Continent(const Continent &other);  // Copy constructor
     Continent& operator=(const Continent &other);  // Assignment operator
     ~Continent();
 
+    std::ostream& operator<<(std::ostream& os, const Continent& continent);
+
     string getContinentID() const;
+    void setContinentID(const string &continentID);
     int getBonus() const;
+    void setBonus(int bonus);
 };
 
 class Map {
@@ -65,22 +73,24 @@ class Map {
     public:
 
         Map();
-        Map(int num_territories);
         ~Map();
 
         void add_edge(Territory* u, Territory* v);
 
+        void DFS(Territory* start, set<Territory*> &visited);
+        bool isGraphConnected();
+        bool isContinentConnected(Continent* continent);
+        bool hasUniqueContinent();
+        bool validate() const;
+
+        std::ostream& Map::operator<<(std::ostream& os, Map& map);
+
         void setAdjList(map<Territory*, list<Territory*>> *adjList);
         map<Territory*, list<Territory*>>* getAdjList();
-
         void setContinents(vector<Continent*> *continents);
         vector<Continent*>* getContinents();
-
         void setTerritories(vector<Territory*> *territories);
         vector<Territory*>* getTerritories();
-
-        void print() const;
-        bool validate() const;  // Const because it doesn't modify the object
 };
 
 
