@@ -282,14 +282,10 @@ std::ostream& operator<<(std::ostream& os, Map& map) {
 
     // Output adjacency list
     os << "\nAdjacency List:\n";
-    for (const auto& entry : map.getAdjList()) {
+    for (const auto& entry : map.getAdjList()) {  // Dereference to get the map
         os << entry.first->getName() << " -> ";
-        const auto& neighbors = entry.second; // Get the neighbors list
-        for (size_t i = 0; i < neighbors.size(); ++i) {
-            os << neighbors[i].getName();
-            if (i < neighbors.size() - 1) { // Check if not the last element
-                os << ", "; // Add comma if not the last neighbor
-            }
+        for (const auto& neighbor : entry.second) {
+            os << neighbor->getName() << ", ";
         }
         os << std::endl;  // Move to the next line after listing neighbors
     }
