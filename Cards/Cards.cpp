@@ -47,9 +47,35 @@ void Card::setHand(Hand *hand) { //Assigns a owning hand ptr to a card
 void Card::play() { //Creates the corresponding order of the card, removes it from Player's hand and returns it to the deck
     // PLAY THE CARD, special order etc.
     cout << "\t" <<this->getType() << " card played\n";
+
+    // Get the player who owns this hand and issue the order based on card type
+    Player* player = this->hand->getOwner();  // Get the owner of the card from the hand that the card belongs to
+
+    if (player) {
+        if (getType() == "Bomb") {
+            player->issueOrder("Bomb");
+        }
+        else if (getType() == "Blockade") {
+            player->issueOrder("Blockade");
+        }
+        else if (getType() == "Airlift") {
+            player->issueOrder("Airlift");
+        }
+        else if (getType() == "Diplomacy") {
+            player->issueOrder("Negotiate");
+        }
+        else if (getType() == "Reinforcement") {
+            player->issueOrder("Reinforcement");
+        } else {
+            cout << "Unknown card type!\n";
+            return;
+        }
+    }
+
     this->origin->returnToDeck(this); //Returns card to deck
     this->hand->remove(this);
 }
+
 void Card::displayCard() { //Displays the card's type in a friendly manner
     cout << "This is a " << *type << " card!\t\n";
 }
@@ -100,7 +126,7 @@ Card* Deck::draw() { //Randomly draws from the deck of cards, returns the pointe
 }
 
 //**************************HAND**************************
-Hand::Hand() {}
+Hand::Hand(Player* player) : owner(player) {}
 Hand::~Hand() {}
 
 void Hand::display() { //Displays each card by iterating through the hand and calling Cards::display() for each.
@@ -129,3 +155,9 @@ void Hand::remove(Card *card) { //Removes card from hand by going through the ha
 vector<Card*>* Hand::getHand(){ //Returns a pointer to the hand's card vector
     return &cards;
 }
+
+Player* Hand::getOwner() {
+    return owner;
+}
+
+
