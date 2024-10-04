@@ -101,9 +101,8 @@ Continent::Continent() {
     pBonus = new int(0);
 }
 
-Continent::Continent(string continentID, vector<Territory *> territories, int bonus) {
+Continent::Continent(string continentID, int bonus) {
     pContinentID = new string(std::move(continentID));
-    pTerritories = new vector<Territory *>(std::move(territories));
     pBonus = new int(bonus);
 }
 
@@ -119,6 +118,7 @@ Continent& Continent::operator=(const Continent &other) {
         *pTerritories = *other.pTerritories;
         *pBonus = *other.pBonus;
     }
+    return *this;
 }
 
 Continent::~Continent() {
@@ -127,8 +127,15 @@ Continent::~Continent() {
     delete pBonus;
 }
 
+void Continent::addTerritory(Territory* territory) const {
+    pTerritories->push_back(territory);
+}
+
 std::ostream& operator<<(std::ostream& os, const Continent& continent) {
     os << "Continent: " << continent.getContinentID() << ", Bonus: " << continent.getBonus();
+    for (const auto& continentTerritories : continent.getCTerritories()) {
+        os << ", " << continentTerritories;
+    }
     return os;
 }
 
@@ -141,7 +148,13 @@ void Continent::setContinentID(const string &continentID) {
     *pContinentID = continentID;
 }
 
+vector <Territory *> Continent::getCTerritories() const {
+    return *pTerritories;
+}
 
+void Continent::setCTerritories(vector<Territory *> territories) {
+    *pTerritories = std::move(territories);
+}
 
 int Continent::getBonus() const {
     return *pBonus;
@@ -172,7 +185,7 @@ void Map::add_edge(Territory* u, Territory* v) {
 
 // Map: Validation
 
-void DFS(Territory* start, set<Territory*> &visited, map<Territory*, list<Territory*>> adjList) {
+void Map::DFS(Territory* start, set<Territory*> &visited) {
     stack<Territory*> s;
     s.push(start);
 
@@ -182,7 +195,7 @@ void DFS(Territory* start, set<Territory*> &visited, map<Territory*, list<Territ
 
         if (visited.find(current) == visited.end()) {
             visited.insert(current);
-            for (Territory* neighbor : adjList[current]) {
+            for (Territory* neighbor : (*pAdjList)[current]) {
                 if (visited.find(neighbor) == visited.end()) {
                     s.push(neighbor);
                 }
@@ -191,31 +204,28 @@ void DFS(Territory* start, set<Territory*> &visited, map<Territory*, list<Territ
     }
 }
 
-bool isGraphConnected(Map &map) {
-    if (map.getTerritories()->empty()) return true;
+bool Map::isGraphConnected() {
+    if (pTerritories->empty()) return true;
 
     set<Territory*> visited;
-    DFS((*map.getTerritories())[0], visited, *map.getAdjList());
+    DFS((*pTerritories)[0], visited);  // Start DFS from the first territory
 
-    return visited.size() == map.getTerritories()->size();
+    return visited.size() == pTerritories->size();
 }
 
-bool isContinentConnected(Continent* continent, Map &map) {
-    if (continent->(continentTerritories()->size)) return true;
+bool Map::isContinentConnected(Continent* continent) {
+    // Get territories for the continent
+    vector<Territory*> territories = continent->getCTerritories();
+    if (territories.empty()) return true;
 
     set<Territory*> visited;
-    DFS(continent->territories[0], visited);
+    DFS(territories[0], visited);  // Start DFS within the continent
 
     // Check if all territories in the continent were visited
-    for (Territory* territory : continent->territories) {
-        if (visited.find(territory) == visited.end()) {
-            return false;  // A territory was not reachable, subgraph is not connected
-        }
-    }
-    return true;
+    return visited.size() == territories.size();
 }
 
-bool hasUniqueContinent() {
+bool Map::hasUniqueContinent() {
 
 }
 
@@ -242,9 +252,9 @@ std::ostream& Map::operator<<(std::ostream& os, Map& map) {
     // Output adjacency list
     os << "\nAdjacency List:\n";
     for (const auto& entry : map.getAdjList()) {
-        os << entry.first->name << " -> ";
+        os << entry.first->getName()<< " -> ";
         for (const auto& neighbor : entry.second) {
-            os << neighbor->name << " ";
+            os << neighbor->getName() << " ";
         }
         os << std::endl;
     }
@@ -256,24 +266,24 @@ void Map::setAdjList(map<Territory*, list<Territory*>> *adjList) {
     pAdjList = adjList;
 }
 
-map<Territory*, list<Territory*>>* Map::getAdjList() {
-    return pAdjList;
+map<Territory*, list<Territory*>> Map::getAdjList() {
+    return *pAdjList;
 }
 
 void Map::setContinents(vector<Continent*> *continents) {
     pContinents = continents;
 }
 
-vector<Continent*>* Map::getContinents() {
-    return pContinents;
+vector<Continent*> Map::getContinents() {
+    return *pContinents;
 }
 
 void Map::setTerritories(vector<Territory*> *territories) {
     pTerritories = territories;
 }
 
-vector<Territory*>* Map::getTerritories() {
-    return pTerritories;
+vector<Territory*> Map::getTerritories() {
+    return *pTerritories;
 }
 
 

@@ -46,20 +46,23 @@ public:
 class Continent {
 private:
     string *pContinentID;
-    vector<Territory *> *pTerritories;
+    vector<Territory *> *pTerritories{};
     int *pBonus;
 
 public:
     Continent();
-    Continent(string continentID, vector<Territory *> territories, int bonus);
+    Continent(string continentID, int bonus);
     Continent(const Continent &other);  // Copy constructor
     Continent& operator=(const Continent &other);  // Assignment operator
     ~Continent();
 
+    void addTerritory(Territory *territory) const;
     std::ostream& operator<<(std::ostream& os, const Continent& continent);
 
     string getContinentID() const;
     void setContinentID(const string &continentID);
+    vector <Territory *> getCTerritories() const;
+    void setCTerritories(vector<Territory *> territories);
     int getBonus() const;
     void setBonus(int bonus);
 };
@@ -86,11 +89,11 @@ class Map {
         std::ostream& Map::operator<<(std::ostream& os, Map& map);
 
         void setAdjList(map<Territory*, list<Territory*>> *adjList);
-        map<Territory*, list<Territory*>>* getAdjList();
+        map<Territory*, list<Territory*>> getAdjList();
         void setContinents(vector<Continent*> *continents);
-        vector<Continent*>* getContinents();
+        vector<Continent*> getContinents();
         void setTerritories(vector<Territory*> *territories);
-        vector<Territory*>* getTerritories();
+        vector<Territory*> getTerritories();
 };
 
 

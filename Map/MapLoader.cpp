@@ -60,7 +60,7 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
                 cout << "Continent " << continentName << " created with bonus " << bonus << endl;
 
                 Continent *continent = new Continent(continentName, bonus);
-                map.getContinents()->push_back(continent);
+                map.getContinents().push_back(continent);
             }
         } else if (section == "[Territories]") {
             string name, continent, owner, skip;
@@ -68,11 +68,8 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
             vector<string> neighbors;
 
             getline(ss, name, ',');  // Territory name
-
-            // Coordinates (not used here, but could be stored)
             getline(ss, skip, ',');  // Skip x
             getline(ss, skip, ',');  // Skip y
-
             getline(ss, continent, ',');  // Continent name
 
             string neighbor;
@@ -81,13 +78,21 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
                 neighbors.push_back(neighbor);
             }
 
+            // Territory Creation
             cout << "Territory " << name << " in continent " << continent << endl;
             Territory *territory = new Territory(name, owner, continent, 0);
 
-            map.getTerritories()->push_back(territory);
+            // Add Territories to Continent
+            for (unsigned int i = 0; i < map.getContinents().size(); i++) {
+                if (map.getContinents()[i]->getContinentID() == continent) {
+                    map.getContinents()[i]->addTerritory(territory);
+                }
+            }
+            map.getTerritories().push_back(territory);
+
             // Initialize adjacency list entry if it doesn't exist
-            if (map.getAdjList()->find(territory) == map.getAdjList()->end()) {
-                (*map.getAdjList())[territory] = list<Territory*>();
+            if (map.getAdjList().find(territory) == map.getAdjList().end()) {
+                map.getAdjList()[territory] = list<Territory*>();
             }
 
             // Add neighbors as edges
