@@ -1,17 +1,47 @@
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
+#include <string>
+using std::string;
+
+
 
 class StartUp {
+    private:
+    string* command;
+    bool* invalidCommand;
     public:
-    static bool startUpPhase();
+    StartUp();
+    ~StartUp(); // Destructor
+
+    // PHASE
+    bool startUpPhase();
+
+    // SETTERS ANG GETTERS FOR STARTUP
+    string getCommand() const;
+    void setCommand(string* cmd);
+    bool getInvalidCommand()const;
+    void setInvalidCommand(bool value);
 };
 
 class Play {
+    private:
+    string* command;
+    bool* invalidCommand;
     public:
-    static bool reinforcementPhase();
-    static bool ordersIssuingPhase();
-    static bool ordersExecutionPhase();
-    static bool endPhase();
+    Play();
+    ~Play(); // Destructor
+
+    // PHASES
+    bool reinforcementPhase();
+    bool ordersIssuingPhase();
+    bool ordersExecutionPhase();
+    bool endPhase();
+
+    // SETTERS AND GETTERS FOR PLAY
+    string getCommand() const;
+    void setCommand(const string& cmd);
+    bool getInvalidCommand()const;
+    void setInvalidCommand(bool value);
 };
 
 void testGameStates();

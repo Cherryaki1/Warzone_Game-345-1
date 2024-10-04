@@ -11,11 +11,18 @@ extern void testCards();
 
 // Main Class
 int main(){
-  //testGameStates();
+  testGameStates();
   //testPlayers();
   //testOrdersLists();
   //testCards();
 
+/* For CMakeList
+  Map/Map.cpp
+      Map/Map.h
+      Map/MapDriver.cpp
+*/
+
+  /*
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;
 
@@ -77,7 +84,7 @@ int main(){
   // MAX 32 CONTINENTS
   // MAX 10 ADJACENT TERRITORIES
   // MAX 255 TERRITORIES
-
+*/
   return 0;
 }
 
