@@ -23,6 +23,7 @@ class Card {
 public:
     Card(); //Default constructor
     ~Card(); //Destructor
+    Card(const Card &other); //Copy Constructor
     explicit Card(int type, Deck* origin); //Parameter constructor (we always use this one)
     void setHand(Hand* hand); //Setter for the owning hand pointer of a Card
     string getType(); //Getter for the type of the card
@@ -40,6 +41,7 @@ class Deck {
 public:
     Deck(); //Default constructor
     ~Deck(); //Destructor
+    Deck(const Deck &other); //Copy Constructor
     void initialize(); //Initializes deck for first use
     void returnToDeck(Card* card); //Returns a card to the deck
     Card* draw(); //Draws from the card and returns a card ptr
@@ -53,6 +55,7 @@ class Hand {
 public:
     Hand(Player* player); //Default constructor
     ~Hand(); //Destructor
+    Hand(const Hand &other);
     void display(); //Displays all cards in the hand
     void place(Card* card); //Places a card ptr into the hand
     void remove(Card* card); //Removes a card ptr from the hand

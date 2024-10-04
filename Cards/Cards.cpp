@@ -31,6 +31,13 @@ Card::~Card() { //Destructor
     origin = nullptr; //Nullifies the originating deck pointer
     hand = nullptr; //Nullifies the owning hand pointer
 }
+Card::Card(const Card &other){
+    type=new string(*other.type);
+    cardTypeID=new int(*other.cardTypeID);
+    origin=other.origin;
+    hand=other.hand;
+}
+
 string Card::getType() { //Returns the type of the card
     return *this->type;
 }
@@ -80,11 +87,18 @@ void Card::displayCard() { //Displays the card's type in a friendly manner
     cout << "This is a " << *type << " card!\t\n";
 }
 
+
+
 //**************************DECK**************************
 Deck::Deck() { initialize();} //Constructs a deck, using the initialize() function to do so.
 Deck::~Deck() { //Destroys a deck, going through each card pointer and deleting it
     for (int i = 0; i<cards.size(); i++){
         delete cards.at(i);
+    }
+}
+Deck::Deck(const Deck &other){
+    for(int i = 0; i<other.cards.size(); i++){
+        this->cards.push_back(new Card(*other.cards.at(i)));
     }
 }
 
@@ -128,6 +142,13 @@ Card* Deck::draw() { //Randomly draws from the deck of cards, returns the pointe
 //**************************HAND**************************
 Hand::Hand(Player* player) : owner(player) {}
 Hand::~Hand() {}
+Hand::Hand(const Hand &other){
+    for(int i = 0; i<other.cards.size(); i++){
+        Card *newCard = new Card(*other.cards.at(i)) ;
+        newCard->setHand(this);
+        this->cards.push_back(newCard);
+    }
+}
 
 void Hand::display() { //Displays each card by iterating through the hand and calling Cards::display() for each.
     cout << "Cards in your hand: ("<< cards.size() <<")\n";
