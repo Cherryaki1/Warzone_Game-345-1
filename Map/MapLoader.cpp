@@ -19,7 +19,7 @@ using std::endl;
 
 MapLoader::MapLoader(const string& filename) {
     Map map = Map();
-    loadFromFile(filename, map);
+    loadFromFile(filename);
 }
 
 MapLoader::~MapLoader() {
@@ -30,7 +30,7 @@ Map &MapLoader::getMap() {
     return map;
 }
 
-void MapLoader::loadFromFile(const string& filename, Map &map) {
+void MapLoader::loadFromFile(const string& filename) {
 
     ifstream file(filename);
     if (!file.is_open()) {
@@ -60,7 +60,7 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
             // Create and store the continent
             Continent* continent = new Continent(continentName, bonus);
             map.getContinents().push_back(continent);
-            cout << "Continent " << continentName << " created with bonus " << bonus << endl;
+            //cout << "Continent " << continentName << " created with bonus " << bonus << endl;
         } else if (section == "[Territories]") {
             string name, continent, owner, skip;
             int x, y;
@@ -78,17 +78,16 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
             }
 
             // Territory Creation
-            //cout << "Territory " << name << " in continent " << continent << endl;
             Territory *territory = new Territory(name, owner, continent, 0);
+            map.getTerritories().push_back(territory);
 
-            vector<Continent *> continents = map.getContinents();
             // Add Territories to Continent
-            for (auto & i : continents) {
-                if (i->getContinentID() == continent) {
-                    i->addTerritory(territory);
+            for (auto& cont : map.getContinents()) {
+                if (cont->getContinentID() == continent) {
+                    cont->addTerritory(territory);
+                    break;
                 }
             }
-            map.getTerritories().push_back(territory);
 
             // Initialize adjacency list entry if it doesn't exist
             if (map.getAdjList().find(territory) == map.getAdjList().end()) {
@@ -108,7 +107,6 @@ void MapLoader::loadFromFile(const string& filename, Map &map) {
         }
 
     }
-    this->map = map;
   file.close();
 }
 

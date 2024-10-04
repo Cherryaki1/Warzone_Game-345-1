@@ -15,7 +15,7 @@ public:
 
     MapLoader(const string &filename);
 
-    void loadFromFile(const string &filename, Map &map);
+    void loadFromFile(const string &filename);
 
     Map& getMap();
 private:

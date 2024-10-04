@@ -132,9 +132,11 @@ void Continent::addTerritory(Territory* territory) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Continent& continent) {
-    os << "Continent: " << continent.getContinentID() << ", Bonus: " << continent.getBonus() << "\nTerritories:\n";
+    os << "Continent: " << continent.getContinentID()
+    << ", Bonus: " << continent.getBonus()
+    << "\nTerritories:\n";
     for (const auto& territory : continent.getCTerritories()) {
-        os << territory << std::endl;
+        os << *territory << std::endl;
     }
 
     return os;
@@ -181,7 +183,6 @@ Map::~Map() {
 
 void Map::add_edge(Territory* u, Territory* v) {
     (*pAdjList)[u].push_back(v);
-    (*pAdjList)[v].push_back(u);
 }
 
 // Map: Validation
@@ -270,23 +271,27 @@ std::ostream& operator<<(std::ostream& os, Map& map) {
     // Output continents
     os << "Continents:\n";
     for (const auto& continent : map.getContinents()) {
-        os << continent << std::endl;  // Use the Continent's stream operator
+        os << *continent << std::endl;  // Use the Continent's stream operator
     }
 
     // Output territories
     os << "\nTerritories:\n";
     for (const auto& territory : map.getTerritories()) {
-        os << territory << std::endl;  // Use the Territory's stream operator
+        os << *territory << std::endl;  // Use the Territory's stream operator
     }
 
     // Output adjacency list
     os << "\nAdjacency List:\n";
     for (const auto& entry : map.getAdjList()) {
-        os << entry.first->getName()<< " -> ";
-        for (const auto& neighbor : entry.second) {
-            os << neighbor->getName() << " ";
+        os << entry.first->getName() << " -> ";
+        const auto& neighbors = entry.second; // Get the neighbors list
+        for (size_t i = 0; i < neighbors.size(); ++i) {
+            os << neighbors[i].getName();
+            if (i < neighbors.size() - 1) { // Check if not the last element
+                os << ", "; // Add comma if not the last neighbor
+            }
         }
-        os << std::endl;
+        os << std::endl;  // Move to the next line after listing neighbors
     }
     return os;
 }
