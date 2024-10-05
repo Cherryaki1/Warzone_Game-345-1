@@ -268,22 +268,22 @@ bool Map::validate() {
 }
 
 std::ostream& operator<<(std::ostream& os, Map& map) {
-    os << "Map Details:\n";
+    os << "\n... MAP DETAILS ...\n";
 
     // Output continents
-    os << "All Continents:\n";
+    os << "--All Continents--\n";
     for (const auto& continent : *map.getContinents()) {
         os << *continent << std::endl;  // Use the Continent's stream operator
     }
 
     // Output territories
-    os << "\nAll Territories:\n";
+    os << "\n--All Territories--\n";
     for (const auto& territory : *map.getTerritories()) {
         os << *territory << std::endl;  // Use the Territory's stream operator
     }
 
     // Output adjacency list
-    os << "\nAdjacency List:\n";
+    os << "\n--Adjacency List--\n";
     for (const auto& entry : *map.getAdjList()) {  // Dereference to get the map
         os << entry.first->getName() << " -> ";
         for (const auto& neighbor : entry.second) {
