@@ -271,13 +271,13 @@ std::ostream& operator<<(std::ostream& os, Map& map) {
     os << "Map Details:\n";
 
     // Output continents
-    os << "Continents:\n";
+    os << "All Continents:\n";
     for (const auto& continent : *map.getContinents()) {
         os << *continent << std::endl;  // Use the Continent's stream operator
     }
 
     // Output territories
-    os << "\nTerritories:\n";
+    os << "\nAll Territories:\n";
     for (const auto& territory : *map.getTerritories()) {
         os << *territory << std::endl;  // Use the Territory's stream operator
     }
