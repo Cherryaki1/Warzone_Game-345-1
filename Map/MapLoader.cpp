@@ -63,7 +63,7 @@ void MapLoader::loadFromFile(const string& filename) {
             continents->push_back(continent);
 
         } else if (section == "[Territories]") {
-            string name, continent, owner, skip;
+            string name, continent, owner = "N/A", skip;
             int x, y;
             vector<string> neighbors = {};
 

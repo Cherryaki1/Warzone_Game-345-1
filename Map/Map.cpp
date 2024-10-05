@@ -12,7 +12,7 @@ using namespace std;
 // Territory Class Implementation
 Territory::Territory() {
     pName = new string("");
-    pOwner = new string("");
+    pOwner = new string("N/A");
     pContinentID = new string("");
     pNumber_of_armies = new int(0);
 }
@@ -57,7 +57,7 @@ bool Territory::operator<(const Territory &other) const {
 }
 
 std::ostream& operator<<(std::ostream& os, const Territory& territory) {
-    os << "Territory: " << territory.getName()
+    os << "> Territory: " << territory.getName()
        << ", Owner: " << territory.getOwner()
        << ", Continent: " << territory.getContinentID()
        << ", Armies: " << territory.getNumberOfArmies();
@@ -140,9 +140,9 @@ void Continent::addTerritory(Territory* territory) {
 std::ostream& operator<<(std::ostream& os, const Continent& continent) {
     os << "Continent: " << continent.getContinentID()
     << ", Bonus: " << continent.getBonus()
-    << "\nTerritories:\n";
+    << "\n-Territories:\n";
     for (const auto& territory : continent.getCTerritories()) {
-        os << *territory << std::endl;
+        os << " " <<*territory << std::endl;
     }
 
     return os;
@@ -206,7 +206,7 @@ void Map::DFS(Territory* start, set<Territory*>& visited) {
         // Check if we have already visited this territory
         if (visited.find(current) == visited.end()) {
             visited.insert(current); // Mark it as visited
-            std::cout << ++count << " Visited: " << current->getName() << std::endl;
+            // TO SEE VISITED DFS: std::cout << ++count << " Visited: " << current->getName() << std::endl;
 
             // Check if current is a key in the adjacency list
             if (adjListCopy.find(current) != adjListCopy.end()) {
@@ -238,7 +238,7 @@ void Map::DFSContinent(Territory* start, set<Territory*>& visited, Continent* co
         // Check if we have already visited this territory and if it belongs to the continent
         if (visited.find(current) == visited.end() && current->getContinentID() == continent->getContinentID()) {
             visited.insert(current); // Mark it as visited
-            std::cout << ++count << " Visited: " << current->getName() << std::endl;
+            // TO SEE VISITED DFS: std::cout << ++count << " Visited: " << current->getName() << std::endl;
 
             // Check if current is a key in the adjacency list
             if (adjListCopy.find(current) != adjListCopy.end()) {
@@ -270,7 +270,7 @@ bool Map::isGraphConnected() {
 bool Map::isContinentConnected(Continent* continent) {
     // Get territories for the continent
     vector<Territory*> territories = continent->getCTerritories();
-    cout << "\n" << territories.size() << " - " << continent->getContinentID() << "\n";
+    // DFS DEBUG: cout << "\n" << territories.size() << " - " << continent->getContinentID() << "\n";
     if (territories.empty()) return true;
 
     set<Territory*> visited;
@@ -298,21 +298,21 @@ bool Map::hasUniqueContinent() {
 bool Map::validate() {
     // 1. Check if the map is a connected graph
     if (!isGraphConnected()) {
-        std::cout << "Map is not connected!" << std::endl;
+        std::cout << "!! MAP IS NOT CONNECTED !!" << std::endl;
         return false;
     }
 
     // 2. Check if each continent forms a connected subgraph
     for (Continent* continent : *pContinents) {
         if (!isContinentConnected(continent)) {
-            std::cout << "Continent " << continent->getContinentID() << " is not connected!" << std::endl;
+            std::cout << "!! CONTINENT " << continent->getContinentID() << " IS NOT CONNECTED !!" << std::endl;
             return false;
         }
     }
 
     // 3. Ensure each territory belongs to exactly one continent
     if (!hasUniqueContinent()) {
-        std::cout << "A territory belongs to multiple continents!" << std::endl;
+        std::cout << "!! A TERRITORY BELONGS TO MULTIPLE CONTINENTS !!" << std::endl;
         return false;
     }
 

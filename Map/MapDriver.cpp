@@ -23,12 +23,14 @@ int testLoadMap() {
 
     // Validate the map
     if (loadedMap.validate()) {
-        cout << "Map is valid!" << endl;
+        cout << " ** MAP IS VALID **" << endl;
+        // FULL MAP:
+        cout << loadedMap << endl;
     } else {
-        cout << "Map is invalid!" << endl;
+        cout << " !! MAP IS INVALID !!" << endl;
     }
 
-    //cout << loadedMap << endl;
+
 
     return 0;
 }
