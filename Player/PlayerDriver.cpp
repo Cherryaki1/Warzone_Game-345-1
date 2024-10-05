@@ -10,7 +10,7 @@ void testPlayers() {
     string filename = "../World 2007.map";
     MapLoader mapLoader(filename);
     mapLoader.loadFromFile(filename);
-    Map map = mapLoader.getMap();
+    Map& map = mapLoader.getMap();
 
 
     //cout << "Map loaded with " << mapLoader.getMap().getTerritories()->size() << " territories." << endl;
