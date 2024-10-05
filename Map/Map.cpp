@@ -48,6 +48,14 @@ Territory::~Territory() {
     delete pNumber_of_armies;
 }
 
+bool Territory::operator==(const Territory& other) const {
+    return *this->pName == *other.pName;
+}
+
+bool Territory::operator<(const Territory &other) const {
+    return *pName < *other.pName;  // Comparison based on name for map key
+}
+
 std::ostream& operator<<(std::ostream& os, const Territory& territory) {
     os << "Territory: " << territory.getName()
        << ", Owner: " << territory.getOwner()
@@ -56,9 +64,6 @@ std::ostream& operator<<(std::ostream& os, const Territory& territory) {
     return os;
 }
 
-bool Territory::operator<(const Territory &other) const {
-    return *pName < *other.pName;  // Comparison based on name for map key
-}
 
 // Territory: Getters and Setters
 string Territory::getName() const {
@@ -188,25 +193,70 @@ void Map::add_edge(Territory* u, Territory* v) {
 
 // Map: Validation
 
-void Map::DFS(Territory* start, set<Territory*> &visited) {
+void Map::DFS(Territory* start, set<Territory*>& visited) {
+    map<Territory*, list<Territory*>> adjListCopy = *pAdjList;
     stack<Territory*> s;
     s.push(start);
+    int count = 0;
 
     while (!s.empty()) {
-        Territory* current = s.top();
-        s.pop();
+        Territory* current = s.top(); // Get the current territory
+        s.pop(); // Remove it from the stack
 
-        const auto& neighbors = (*pAdjList)[current];
+        // Check if we have already visited this territory
         if (visited.find(current) == visited.end()) {
-            visited.insert(current);
-            for (Territory* neighbor : neighbors) {
-                if (visited.find(neighbor) == visited.end()) {
-                    s.push(neighbor);
+            visited.insert(current); // Mark it as visited
+            std::cout << ++count << " Visited: " << current->getName() << std::endl;
+
+            // Check if current is a key in the adjacency list
+            if (adjListCopy.find(current) != adjListCopy.end()) {
+                const auto& neighbors = adjListCopy[current];
+
+                for (Territory* neighbor : neighbors) {
+                    // Push only unvisited neighbors onto the stack
+                    if (visited.find(neighbor) == visited.end()) {
+                        s.push(neighbor);
+                    }
                 }
+            } else {
+                std::cout << "No neighbors found for: " << current->getName() << std::endl;
             }
         }
     }
 }
+
+void Map::DFSContinent(Territory* start, set<Territory*>& visited, Continent* continent) {
+    map<Territory*, list<Territory*>> adjListCopy = *pAdjList;
+    stack<Territory*> s;
+    s.push(start);
+    int count = 0; // Initialize count
+
+    while (!s.empty()) {
+        Territory* current = s.top(); // Get the current territory
+        s.pop(); // Remove it from the stack
+
+        // Check if we have already visited this territory and if it belongs to the continent
+        if (visited.find(current) == visited.end() && current->getContinentID() == continent->getContinentID()) {
+            visited.insert(current); // Mark it as visited
+            std::cout << ++count << " Visited: " << current->getName() << std::endl;
+
+            // Check if current is a key in the adjacency list
+            if (adjListCopy.find(current) != adjListCopy.end()) {
+                const auto& neighbors = adjListCopy[current];
+
+                for (const auto& neighbor : neighbors) {
+                    // Push only unvisited neighbors that belong to the same continent onto the stack
+                    if (visited.find(neighbor) == visited.end() && neighbor->getContinentID() == continent->getContinentID()) {
+                        s.push(neighbor);
+                    }
+                }
+            } else {
+                std::cout << "No neighbors found for: " << current->getName() << std::endl;
+            }
+        }
+    }
+}
+
 
 bool Map::isGraphConnected() {
     if (pTerritories->empty()) return true;
@@ -220,24 +270,27 @@ bool Map::isGraphConnected() {
 bool Map::isContinentConnected(Continent* continent) {
     // Get territories for the continent
     vector<Territory*> territories = continent->getCTerritories();
+    cout << "\n" << territories.size() << " - " << continent->getContinentID() << "\n";
     if (territories.empty()) return true;
 
     set<Territory*> visited;
-    DFS(territories[0], visited);  // Start DFS within the continent
+    DFSContinent(territories[0], visited, continent);  // Start DFS within the continent
 
     // Check if all territories in the continent were visited
     return visited.size() == territories.size();
 }
 
 bool Map::hasUniqueContinent() {
-    map<string, Territory*> continentAssignment;
+    set<Territory*> uniqueTerritories; // Set to track territories that have already been assigned
 
-    for (Territory* territory : *pTerritories) {
-        string continentID = territory->getContinentID();
-        if (continentAssignment.find(continentID) != continentAssignment.end()) {
-            return false;  // Territory belongs to multiple continents
+    for (Continent* continent : *pContinents) {
+        vector<Territory*> territories = continent->getCTerritories();
+        for (Territory* territory : territories) {
+            if (uniqueTerritories.find(territory) != uniqueTerritories.end()) {
+                return false;  // Duplicate territory found
+            }
+            uniqueTerritories.insert(territory);
         }
-        continentAssignment[continentID] = territory;  // Store the assignment
     }
     return true;
 }

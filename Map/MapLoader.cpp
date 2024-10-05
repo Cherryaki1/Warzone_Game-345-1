@@ -79,8 +79,22 @@ void MapLoader::loadFromFile(const string& filename) {
             }
 
             // Create Territory
-            Territory *territory = new Territory(name, owner, continent, 0);
-            territories->push_back(territory);  // Add to map's territories
+            Territory* territory = nullptr;
+
+            // Search for the existing territory
+            for (Territory* existingTerritory : *territories) {
+                if (existingTerritory->getName() == name) {
+                    territory = existingTerritory; // Use existing territory
+                    territory->setContinentID(continent);
+                    break;
+                }
+            }
+
+            // If the territory doesn't exist, create a new one
+            if (!territory) {
+                territory = new Territory(name, owner, continent, 0);
+                territories->push_back(territory);  // Add to map's territories
+            }
 
             // Add Territories to Continent
             for (auto& cont : *continents) {
@@ -97,9 +111,24 @@ void MapLoader::loadFromFile(const string& filename) {
 
             // Add neighbors as edges
             for (const auto& neighborName : neighbors) {
-                // Neighbors are defined as territory names
-                Territory *neighborTerritory = new Territory(neighborName, owner, continent, 0);
+                // Check if the neighbor already exists in the territories
+                Territory* neighborTerritory = nullptr;
 
+                // Search for the existing neighbor territory
+                for (Territory* existingTerritory : *territories) {
+                    if (existingTerritory->getName() == neighborName) {
+                        neighborTerritory = existingTerritory; // Use the existing one
+                        break;
+                    }
+                }
+
+                // If the neighbor doesn't exist, create a new one
+                if (!neighborTerritory) {
+                    neighborTerritory = new Territory(neighborName, owner, continent, 0);
+                    territories->push_back(neighborTerritory); // Add to territories
+                }
+
+                // Now, add the edge between the territory and its neighbor
                 map.add_edge(territory, neighborTerritory);  // Add edge between territory and neighbor
             }
         }

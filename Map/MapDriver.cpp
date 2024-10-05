@@ -11,7 +11,7 @@ extern Map* globalMap;
 
 int testLoadMap() {
     // Load the map
-    const string mapFile = "../Test.txt"; // Change the name of the map file HERE!!!
+    const string mapFile = "../DownloadedMaps/Europe 4B.map"; // Change the name of the map file HERE!!!
     MapLoader mapLoader(mapFile);
 
     cout << "MapLoader created" << endl;
@@ -28,8 +28,7 @@ int testLoadMap() {
         cout << "Map is invalid!" << endl;
     }
 
-    // Output the details of the map using the stream operator
-    cout << loadedMap << endl;
+    //cout << loadedMap << endl;
 
     return 0;
 }

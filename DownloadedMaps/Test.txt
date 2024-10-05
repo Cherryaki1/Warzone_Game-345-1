@@ -14,6 +14,6 @@ Asia=7
 Australia=2
 
 [Territories]
-Siam,270,139,Asia,China,India,Indonesia
-Japan,322,104,Asia,Kamchatka,Mongolia
-Ural,241,68,Asia,Siberia,China,Afghanistan,Ukraine
+Siam,270,139,Asia,Japan,China
+Japan,322,104,Asia,China,Siam
+China,241,68,Asia,Siam,Japan

@@ -30,6 +30,7 @@ public:
     Territory& operator=(const Territory &other);  // Assignment operator
     ~Territory();
 
+    bool operator==(const Territory& other) const;
     bool operator<(const Territory& other) const;  // Comparison for use in map
     friend std::ostream& operator<<(std::ostream& os, const Territory& territory);
 
@@ -82,6 +83,7 @@ class Map {
         void add_edge(Territory* u, Territory* v);
 
         void DFS(Territory* start, set<Territory*> &visited);
+        void DFSContinent(Territory* start, set<Territory*> &visited, Continent* continent);
         bool isGraphConnected();
         bool isContinentConnected(Continent* continent);
         bool hasUniqueContinent();
