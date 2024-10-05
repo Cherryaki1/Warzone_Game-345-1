@@ -140,7 +140,7 @@ void Continent::addTerritory(Territory* territory) {
 std::ostream& operator<<(std::ostream& os, const Continent& continent) {
     os << "Continent: " << continent.getContinentID()
     << ", Bonus: " << continent.getBonus()
-    << "\n-Territories:\n";
+    << "\n- Territories:\n";
     for (const auto& territory : continent.getCTerritories()) {
         os << " " <<*territory << std::endl;
     }
