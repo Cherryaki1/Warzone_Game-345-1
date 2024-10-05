@@ -97,25 +97,26 @@ void Territory::setNumberOfArmies(int number_of_armies) {
 
 Continent::Continent() {
     pContinentID = new string("");
-    pTerritories = new vector<Territory *>();
+    pCTerritories = new vector<Territory *>();
     pBonus = new int(0);
 }
 
 Continent::Continent(string continentID, int bonus) {
     pContinentID = new string(std::move(continentID));
+    pCTerritories = new vector<Territory *>();
     pBonus = new int(bonus);
 }
 
 Continent::Continent(const Continent &other) {
     pContinentID = new string(*other.pContinentID);
-    pTerritories = new vector<Territory *>(*other.pTerritories);
+    pCTerritories = new vector<Territory *>(*other.pCTerritories);
     pBonus = new int(*other.pBonus);
 }
 
 Continent& Continent::operator=(const Continent &other) {
     if (this != &other) {
         *pContinentID = *other.pContinentID;
-        *pTerritories = *other.pTerritories;
+        *pCTerritories = *other.pCTerritories;
         *pBonus = *other.pBonus;
     }
     return *this;
@@ -123,12 +124,12 @@ Continent& Continent::operator=(const Continent &other) {
 
 Continent::~Continent() {
     delete pContinentID;
-    delete pTerritories;
+    delete pCTerritories;
     delete pBonus;
 }
 
-void Continent::addTerritory(Territory* territory) const {
-    pTerritories->push_back(territory);
+void Continent::addTerritory(Territory* territory) {
+    pCTerritories->push_back(territory);
 }
 
 std::ostream& operator<<(std::ostream& os, const Continent& continent) {
@@ -152,11 +153,11 @@ void Continent::setContinentID(const string &continentID) {
 }
 
 vector <Territory *> Continent::getCTerritories() const {
-    return *pTerritories;
+    return *pCTerritories;
 }
 
 void Continent::setCTerritories(vector<Territory *> territories) {
-    *pTerritories = std::move(territories);
+    *pCTerritories = std::move(territories);
 }
 
 int Continent::getBonus() const {
@@ -195,9 +196,10 @@ void Map::DFS(Territory* start, set<Territory*> &visited) {
         Territory* current = s.top();
         s.pop();
 
+        const auto& neighbors = (*pAdjList)[current];
         if (visited.find(current) == visited.end()) {
             visited.insert(current);
-            for (Territory* neighbor : (*pAdjList)[current]) {
+            for (Territory* neighbor : neighbors) {
                 if (visited.find(neighbor) == visited.end()) {
                     s.push(neighbor);
                 }
@@ -270,19 +272,19 @@ std::ostream& operator<<(std::ostream& os, Map& map) {
 
     // Output continents
     os << "Continents:\n";
-    for (const auto& continent : map.getContinents()) {
+    for (const auto& continent : *map.getContinents()) {
         os << *continent << std::endl;  // Use the Continent's stream operator
     }
 
     // Output territories
     os << "\nTerritories:\n";
-    for (const auto& territory : map.getTerritories()) {
+    for (const auto& territory : *map.getTerritories()) {
         os << *territory << std::endl;  // Use the Territory's stream operator
     }
 
     // Output adjacency list
     os << "\nAdjacency List:\n";
-    for (const auto& entry : map.getAdjList()) {  // Dereference to get the map
+    for (const auto& entry : *map.getAdjList()) {  // Dereference to get the map
         os << entry.first->getName() << " -> ";
         for (const auto& neighbor : entry.second) {
             os << neighbor->getName() << ", ";
@@ -297,24 +299,24 @@ void Map::setAdjList(map<Territory*, list<Territory*>> *adjList) {
     pAdjList = adjList;
 }
 
-map<Territory*, list<Territory*>> Map::getAdjList() {
-    return *pAdjList;
+map<Territory*, list<Territory*>>* Map::getAdjList() {
+    return pAdjList;
 }
 
 void Map::setContinents(vector<Continent*> *continents) {
     pContinents = continents;
 }
 
-vector<Continent*> Map::getContinents() {
-    return *pContinents;
+vector<Continent*>* Map::getContinents() {
+    return pContinents;
 }
 
 void Map::setTerritories(vector<Territory*> *territories) {
     pTerritories = territories;
 }
 
-vector<Territory*> Map::getTerritories() {
-    return *pTerritories;
+vector<Territory*>* Map::getTerritories() {
+    return pTerritories;
 }
 
 

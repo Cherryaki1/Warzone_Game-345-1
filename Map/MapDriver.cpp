@@ -11,7 +11,7 @@ extern Map* globalMap;
 
 int testLoadMap() {
     // Load the map
-    const string mapFile = "../World 2007.map"; // Change the name of the map file HERE!!!
+    const string mapFile = "../Test.txt"; // Change the name of the map file HERE!!!
     MapLoader mapLoader(mapFile);
 
     cout << "MapLoader created" << endl;
@@ -19,7 +19,7 @@ int testLoadMap() {
     Map& loadedMap = mapLoader.getMap();
 
     // Output the number of territories loaded
-    cout << "Map loaded with " << loadedMap.getTerritories().size() << " territories." << endl;
+    cout << "Map loaded with " << loadedMap.getTerritories()->size() << " territories." << endl;
 
     // Validate the map
     if (loadedMap.validate()) {

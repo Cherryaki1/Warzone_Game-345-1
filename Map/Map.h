@@ -46,7 +46,7 @@ public:
 class Continent {
 private:
     string *pContinentID;
-    vector<Territory *> *pTerritories{};
+    vector<Territory *> *pCTerritories{};
     int *pBonus;
 
 public:
@@ -56,7 +56,7 @@ public:
     Continent& operator=(const Continent &other);  // Assignment operator
     ~Continent();
 
-    void addTerritory(Territory *territory) const;
+    void addTerritory(Territory *territory);
 
     friend std::ostream& operator<<(std::ostream& os, const Continent& continent);
 
@@ -90,11 +90,11 @@ class Map {
         friend std::ostream& operator<<(std::ostream& os, Map& map);
 
         void setAdjList(map<Territory*, list<Territory*>> *adjList);
-        map<Territory*, list<Territory*>> getAdjList();
+        map<Territory*, list<Territory*>>* getAdjList();
         void setContinents(vector<Continent*> *continents);
-        vector<Continent*> getContinents();
+        vector<Continent*>* getContinents();
         void setTerritories(vector<Territory*> *territories);
-        vector<Territory*> getTerritories();
+        vector<Territory*>* getTerritories();
 };
 
 

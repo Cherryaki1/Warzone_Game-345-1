@@ -124,7 +124,7 @@ void Player::issueOrder(const std::string& orderType) {
 vector<Territory*> Player::toDefend(Map& map) {
     // Logic to identify territories to defend
     vector<Territory*> defendList;
-    vector<Territory*> allTerritories = map.getTerritories();
+    vector<Territory*> allTerritories = *map.getTerritories();
 
     srand(time(0));  // Seed for random selection
 
@@ -141,7 +141,7 @@ vector<Territory*> Player::toDefend(Map& map) {
 vector<Territory*> Player::toAttack(Map& map) {
     // Logic to identify territories to attack'
     vector<Territory*> attackList;
-    vector<Territory*> allTerritories = map.getTerritories();
+    vector<Territory*> allTerritories = *map.getTerritories();
 
     srand(time(0));  // Seed for random selection
 

@@ -19,7 +19,7 @@ public:
 
     Map& getMap();
 private:
-    Map map; // Internal map object where loaded data is stored
+    Map map {}; // Internal map object where loaded data is stored
 };
 
 #endif
