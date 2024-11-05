@@ -28,4 +28,5 @@ add_executable(Warzone_Game_a1_COMP345
     Player/PlayerDriver.cpp
     MainDriver.cpp
     MainDriver.h
-        Map/MapLoader.cpp)
+        LogObserver/LoggingObserver.cpp
+        LogObserver/LoggingObserver.h)
