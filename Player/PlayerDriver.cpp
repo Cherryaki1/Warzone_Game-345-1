@@ -7,7 +7,7 @@ extern Map* globalMap;
 using namespace std;
 
 void testPlayers() {
-    string filename = "../World 2007.map";
+    string filename = "../DownloadedMaps/World 2007.map";
     MapLoader mapLoader(filename);
     mapLoader.loadFromFile(filename);
     Map& map = mapLoader.getMap();
