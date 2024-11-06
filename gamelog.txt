@@ -1,0 +1,6 @@
+Order Issued: Deploy
+Order Issued: Bomb
+Order Issued: Airlift
+Order Executed: Deploy
+Order Executed: Bomb
+Order Executed: Airlift
