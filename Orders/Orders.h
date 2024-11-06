@@ -5,9 +5,11 @@
 #include <string>
 #include <list>
 #include <stdbool.h>
+#include "LogObserver/LoggingObserver.h"
+
 void testOrdersLists();
 
-class Order {
+class Order : public Subject, public ILoggable{
 public:
     Order();
     Order(const std::string& orderType);
@@ -22,6 +24,8 @@ public:
 protected:
     std::string orderType;
     bool executed;
+
+    string stringToLog() override;
 };
 
 class DeployOrder : public Order {
@@ -60,7 +64,7 @@ public:
     void execute();
 };
 
-class OrdersList {
+class OrdersList : public Subject, public ILoggable{
 private:
     std::list<Order*> orders;
 
@@ -76,6 +80,8 @@ public:
     std::list<Order*>& getOrders();
 
     friend std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList);
+
+    string stringToLog() override;
 };
 
 

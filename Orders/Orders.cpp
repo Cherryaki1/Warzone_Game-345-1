@@ -14,7 +14,8 @@ bool Order::validate() {
 }
 
 void Order::execute() {
-    std::cout << "Executing base order: " << orderType << std::endl;
+//    std::cout << "Executing base order: " << orderType << std::endl;
+    notify(this);
 }
 
 std::string Order::getOrderType() const {
@@ -34,6 +35,11 @@ std::ostream& operator<<(std::ostream& os, const Order& order) {
     return os;
 }
 
+string Order::stringToLog() {
+    return "Order Executed: " + orderType;
+};
+
+
 // Deploy Order implementations
 DeployOrder::DeployOrder() : Order("Deploy") {}
 void DeployOrder::execute() {
@@ -44,6 +50,7 @@ void DeployOrder::execute() {
 // Advance Order implementations
 AdvanceOrder::AdvanceOrder() : Order("Advance") {}
 void AdvanceOrder::execute() {
+    Order::execute();
     std::cout << "Using Advance card" << std::endl;
     executed = true;
 }
@@ -51,6 +58,7 @@ void AdvanceOrder::execute() {
 // Bomb Order implementations
 BombOrder::BombOrder() : Order("Bomb") {}
 void BombOrder::execute() {
+    Order::execute();
     std::cout << "Using Bomb card" << std::endl;
     executed = true;
 }
@@ -58,6 +66,7 @@ void BombOrder::execute() {
 // Blockade Order implementations
 BlockadeOrder::BlockadeOrder() : Order("Blockade") {}
 void BlockadeOrder::execute() {
+    Order::execute();
     std::cout << "Using Blockade card" << std::endl;
     executed = true;
 }
@@ -65,6 +74,7 @@ void BlockadeOrder::execute() {
 // Airlift Order implementations
 AirliftOrder::AirliftOrder() : Order("Airlift") {}
 void AirliftOrder::execute() {
+    Order::execute();
     std::cout << "Using Airlift card" << std::endl;
     executed = true;
 }
@@ -72,6 +82,7 @@ void AirliftOrder::execute() {
 // Negotiate Order implementations
 NegotiateOrder::NegotiateOrder() : Order("Negotiate") {}
 void NegotiateOrder::execute() {
+    Order::execute();
     std::cout << "Using Negotiate card" << std::endl;
     executed = true;
 }
@@ -86,6 +97,7 @@ OrdersList::~OrdersList() {
 
 void OrdersList::addOrder(Order* order) {
     orders.push_back(order);
+    notify(this);
 }
 
 void OrdersList::move(int fromPosition, int toPosition) {
@@ -126,4 +138,8 @@ std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList) {
         os << index++ << ": " << *order << std::endl;
     }
     return os;
+}
+
+string OrdersList::stringToLog(){
+    return "Order Issued: " + orders.back()->getOrderType() ;
 }
