@@ -141,5 +141,5 @@ std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList) {
 }
 
 string OrdersList::stringToLog(){
-    return "Order Issued: " + orders.back()->getOrderType() ;
+    return "Order Issued: " + orders.back()->getOrderType();
 }

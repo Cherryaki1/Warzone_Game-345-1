@@ -32,4 +32,5 @@ add_executable(Warzone_Game_a1_COMP345
     LogObserver/LoggingObserver.cpp
     LogObserver/LoggingObserver.h
         Commands/CommandProcessing.cpp
-        Commands/CommandProcessing.h)
+        Commands/CommandProcessing.h
+        LogObserver/LoggingObserverDriver.cpp)

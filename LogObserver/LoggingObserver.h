@@ -3,8 +3,10 @@
 
 #include <string>
 #include <vector>
+#include <list>
 using std::string;
 using std::vector;
+using std::list;
 
 class ILoggable{
 public:
@@ -16,16 +18,16 @@ public:
 class Observer{
 public:
     Observer() = default;
-    ~Observer() = default;
+    virtual ~Observer() = default;
     virtual void update(ILoggable* i) = 0;
 };
 
 class Subject{
 private:
-    vector<Observer*> observers;
+    list<Observer*> observers;
 public:
     Subject() = default;
-    ~Subject() = default;
+    ~Subject();
     void attach(Observer* o);
     void detach(Observer* o);
     void notify(ILoggable* i);
