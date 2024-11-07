@@ -114,6 +114,13 @@ bool StartUp::startUpPhase() {
     return true;
 }
 
+void Play::mainGameLoop() {
+    reinforcementPhase();
+    ordersIssuingPhase();
+    ordersExecutionPhase();
+}
+
+
 bool Play::reinforcementPhase() {
     cout << "... Reinforcement Phase ..." << endl;
     setInvalidCommand(false);

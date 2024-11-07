@@ -44,6 +44,8 @@ class Play {
     Play();
     ~Play(); // Destructor
 
+    void mainGameLoop();
+
     // PHASES
     bool reinforcementPhase();
     bool ordersIssuingPhase();
