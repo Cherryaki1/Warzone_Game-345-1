@@ -16,7 +16,7 @@ public:
     ~Order();
 
     bool validate();
-    void execute();  // Base execute method
+    virtual void execute();  // Base execute method
 
     std::string getOrderType() const;  // Getter for the order type
 
