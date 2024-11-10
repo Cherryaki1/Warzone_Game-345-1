@@ -18,6 +18,7 @@ class GameEngine {
     string* state; // Keeps track of current state
     string* command;
     bool* invalidCommand;
+
     public:
     GameEngine();
     ~GameEngine(); // Destructor

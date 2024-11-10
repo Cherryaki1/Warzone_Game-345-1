@@ -30,15 +30,15 @@ GameEngine::~GameEngine() {
     if(state != nullptr) {
         delete state;
     }
-
-// OPERATOR << FOR STARTUP
-ostream& operator<<(ostream& out, const GameEngine& gameEngine) {
-    out << "StartUp State: \n";
-    out << "Command: " << (gameEngine.command ? *gameEngine.command : "None") << "\n";
-    out << "Invalid Command: " << (*gameEngine.invalidCommand ? "true" : "false") << "\n";
-    return out;
 }
 
+    // OPERATOR << FOR STARTUP
+    ostream& operator<<(ostream& out, const GameEngine& gameEngine) {
+        out << "StartUp State: \n";
+        out << "Command: " << (gameEngine.command ? *gameEngine.command : "None") << "\n";
+        out << "Invalid Command: " << (*gameEngine.invalidCommand ? "true" : "false") << "\n";
+        return out;
+    }
 
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
 bool GameEngine::testStartUpPhase() {
@@ -128,7 +128,8 @@ bool GameEngine::reinforcementPhase() {
     return true;
 }
 
-bool GameEngine::ordersIssuingPhase() ;{
+
+bool GameEngine::ordersIssuingPhase() {
     cout << "... Orders Issuing Phase ..." << endl;
     setInvalidCommand(false);
 
