@@ -34,7 +34,7 @@ public:
 class CommandProcessor : public Subject, public ILoggable {
 private:
     vector<Command*> commands;
-    virtual void readCommand(); // Private, but can be overridden by adapter
+    virtual void readCommand();
 
 public:
     CommandProcessor() {}
@@ -61,6 +61,9 @@ protected:
 public:
     FileCommandProcessorAdapter(const string& filename);
     ~FileCommandProcessorAdapter();
+    void processFileCommands() {
+        readCommand();
+    }
 };
 
 // Free Function

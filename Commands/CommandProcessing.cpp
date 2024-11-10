@@ -22,7 +22,7 @@ void CommandProcessor::validate(Command* command) {
     string commandText = command->getCommandText();
     bool isValid = false;
 
-    // Example of basic validation
+    // Basic validation
     if (commandText == "loadmap") {
         isValid = true;
         command->saveEffect("Map loaded successfully.");
@@ -73,6 +73,7 @@ void FileCommandProcessorAdapter::readCommand() {
     }
 }
 
+// Driver free function
 void testCommandProcessor() {
     LogObserver logObserver;
     CommandProcessor consoleProcessor;
@@ -88,9 +89,9 @@ void testCommandProcessor() {
         FileCommandProcessorAdapter fileProcessor("commands.txt");
         fileProcessor.attach(&logObserver);
 
-        fileProcessor.readCommand();  // Reads first command from file
-        fileProcessor.readCommand();  // Reads second command from file
-        fileProcessor.readCommand();  // Reads third command from file
+        fileProcessor.processFileCommands();  // Reads first command from file
+        fileProcessor.processFileCommands();  // Reads second command from file
+        fileProcessor.processFileCommands();  // Reads third command from file
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
     }
