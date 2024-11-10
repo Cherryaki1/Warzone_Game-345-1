@@ -11,20 +11,18 @@ void testOrdersLists();
 
 class Order : public Subject, public ILoggable {
 public:
-    Order();
+    // Constructors and Destructor
+    Order(); 
     Order(const std::string& orderType);
-    ~Order();
-
-    bool validate();
-    virtual void execute();  // Base execute method
-
-    std::string getOrderType() const;  // Getter for the order type
-
+    virtual ~Order();
+    // Methods
+    virtual bool validate() = 0;  // Pure virtual method
+    virtual void execute() = 0;  // Pure virtual method
+    std::string getOrderType() const;
     friend std::ostream& operator<<(std::ostream& os, const Order& order);
 protected:
     std::string orderType;
     bool executed;
-
     string stringToLog() override;
 };
 
@@ -32,12 +30,14 @@ class DeployOrder : public Order {
 public:
     DeployOrder();
     void execute();
+    bool validate();
 };
 
 class AdvanceOrder : public Order {
 public:
     AdvanceOrder();
     void execute();
+    bool validate();
 };
 
 class BombOrder : public Order {
