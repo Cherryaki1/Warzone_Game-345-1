@@ -13,38 +13,17 @@
 using std::string;
 using std::ostream;
 
-
-
-class StartUp {
+class GameEngine {
     private:
+    string* state; // Keeps track of current state
     string* command;
     bool* invalidCommand;
     public:
-    StartUp();
-    ~StartUp(); // Destructor
-
-    // PHASE
-    bool startUpPhase();
-
-    // SETTERS ANG GETTERS FOR STARTUP
-    string getCommand() const;
-    void setCommand(const string& cmd);
-    bool getInvalidCommand()const;
-    void setInvalidCommand(bool value);
-
-    // Stream insertion operator
-    friend ostream& operator<<(ostream& out, const StartUp& startup);
-};
-
-class Play {
-    private:
-    string* command;
-    bool* invalidCommand;
-    public:
-    Play();
-    ~Play(); // Destructor
+    GameEngine();
+    ~GameEngine(); // Destructor
 
     // PHASES
+    bool testStartUpPhase();
     bool reinforcementPhase();
     bool ordersIssuingPhase();
     string ordersExecutionPhase();
@@ -57,7 +36,7 @@ class Play {
     void setInvalidCommand(bool value);
 
     // Stream insertion operator
-    friend ostream& operator<<(ostream& out, const Play& play);
+    friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);
 };
 
 void testGameStates();

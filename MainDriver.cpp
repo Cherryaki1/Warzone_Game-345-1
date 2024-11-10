@@ -24,18 +24,18 @@ using namespace std;
 
 // Main Class
 int main(){
-  testLoadMap();
-  testGameStates();
-  testPlayers();
-  testOrdersLists();
-  testCards();
+  //testLoadMap();
+  //testGameStates();
+  //testPlayers();
+  //testOrdersLists();
+  //testCards();
 
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;
 
   // PROMPT FOR MAP SELECTION
   while(menuLoop) {
-    cout << "To begin, choose your map...  Map 1: Test , Map 2: World 2007, Map 3: InvalidPlaceHolder" << endl;
+    cout << "To begin, choose your map...  Map 1: Test , Map 2: World 2007 (Invalid), Map 3: Europe 4B/" << endl;
     cout << "Enter the number of the map as your choice: ";
     cin >> chosenMap;
     cout << chosenMap << endl;
@@ -43,6 +43,7 @@ int main(){
       case 1:
         mapName = "Test.txt";
       // Load map passing the name and returning boolean value
+
       cout << mapName << " successfully loaded..." << endl;
       menuLoop = false;
       break;
@@ -53,7 +54,7 @@ int main(){
       menuLoop = false;
       break;
       case 3:
-        mapName = "InvalidPlaceHolder.txt";
+        mapName = "Europe 4B.map";
       // Load map passing the name and returning boolean value
       cout << mapName << " successfully loaded..." << endl;
       menuLoop = false;

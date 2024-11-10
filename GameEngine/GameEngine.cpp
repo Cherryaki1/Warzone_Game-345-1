@@ -8,59 +8,40 @@
 
 #include <iostream>
 #include "GameEngine.h"
+#include "MapLoader.h"
+#include "Map.h"
 
 using namespace std;
 
-// STARTUP CONSTRUCTOR
-StartUp::StartUp() {
+// GAMEENGINE CONSTRUCTOR
+GameEngine::GameEngine() {
+    state = new string("StartUp");
     invalidCommand = new bool(false); // Dynamically Allocate Memory
     command = nullptr; // To avoid dereferencing issues
 }
 
-// PLAY CONSTRUCTOR
-Play::Play() {
-    invalidCommand = new bool(false); // Dynamically Allocate Memory
-    command = nullptr; // To avoid dereferencing issues
-}
-
-// DESTRUCTORS TO FREE ALLOCATED MEMORY
-StartUp::~StartUp() {
+GameEngine::~GameEngine() {
     if (invalidCommand != nullptr) {
         delete invalidCommand;  // Free the allocated memory of new
     }
     if(command != nullptr) {
         delete command; // Free memory for command if it is allocated
     }
-}
-
-Play::~Play() {
-    if (invalidCommand != nullptr) {
-        delete invalidCommand;  // Free the allocated memory of new
+    if(state != nullptr) {
+        delete state;
     }
-    if(command != nullptr) {
-        delete command; // Free memory for command if it is allocated
-    }
-}
 
 // OPERATOR << FOR STARTUP
-ostream& operator<<(ostream& out, const StartUp& startup) {
+ostream& operator<<(ostream& out, const GameEngine& gameEngine) {
     out << "StartUp State: \n";
-    out << "Command: " << (startup.command ? *startup.command : "None") << "\n";
-    out << "Invalid Command: " << (*startup.invalidCommand ? "true" : "false") << "\n";
-    return out;
-}
-
-// OPERATOR << FOR PLAY
-ostream& operator<<(ostream& out, const Play& play) {
-    out << "Play State: \n";
-    out << "Command: " << (play.command ? *play.command : "None") << "\n";
-    out << "Invalid Command: " << (*play.invalidCommand ? "true" : "false") << "\n";
+    out << "Command: " << (gameEngine.command ? *gameEngine.command : "None") << "\n";
+    out << "Invalid Command: " << (*gameEngine.invalidCommand ? "true" : "false") << "\n";
     return out;
 }
 
 
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
-bool StartUp::startUpPhase() {
+bool GameEngine::testStartUpPhase() {
     cout << "... Starting up Phase ..." << endl;
 
     // Allocate memory for `command` before using it
@@ -74,6 +55,9 @@ bool StartUp::startUpPhase() {
         cin >> *command;
         if(getCommand() == "loadmap") {
             // Call loadmap function
+
+            // loadMap <fileName>
+
             setInvalidCommand(true);
         }else {
             cerr << "Invalid command!" << endl;
@@ -85,6 +69,9 @@ bool StartUp::startUpPhase() {
         cin >> *command;
         if(getCommand() == "validatemap") {
             // Call validateMap Function
+
+            // validate call function
+
             setInvalidCommand(true);
         }else {
             cerr << "Invalid command!" << endl;
@@ -96,6 +83,12 @@ bool StartUp::startUpPhase() {
         cin >> *command;
         if(getCommand() == "addplayer") {
             // Call to addPlayer Function
+
+            // addplayer <playername> inside a function that loops till i-1 players
+            // 50 armies for everyplayer
+            // Set Random palyer order
+            // Each player draws two cards
+
             setInvalidCommand(true);
         }else {
             cerr << "Invalid command!" << endl;
@@ -114,7 +107,7 @@ bool StartUp::startUpPhase() {
     return true;
 }
 
-bool Play::reinforcementPhase() {
+bool GameEngine::reinforcementPhase() {
     cout << "... Reinforcement Phase ..." << endl;
     setInvalidCommand(false);
 
@@ -135,7 +128,7 @@ bool Play::reinforcementPhase() {
     return true;
 }
 
-bool Play::ordersIssuingPhase() {
+bool GameEngine::ordersIssuingPhase() ;{
     cout << "... Orders Issuing Phase ..." << endl;
     setInvalidCommand(false);
 
@@ -156,7 +149,7 @@ bool Play::ordersIssuingPhase() {
     return true;
 }
 
-string Play::ordersExecutionPhase() {
+string GameEngine::ordersExecutionPhase() {
     cout << "... Orders Execution Phase ..." << endl;
     setInvalidCommand(false);
 
@@ -178,51 +171,30 @@ string Play::ordersExecutionPhase() {
 }
 
 
-bool Play::endPhase() {
+bool GameEngine::endPhase() {
     cout << "... End Phase ..." << endl;
     // Validate win
     return true;
 }
 
-// SETTERS AND GETTERS FOR STARTUP
-string StartUp::getCommand() const {
-    if(command == nullptr) {
-        return ""; // Return empty string if command is initialized
-    }
-    return *command; // Dereference and return the actual value
-}
-void StartUp::setCommand(const string& cmd) {
-    if(command == nullptr) {
-        command = new string(cmd); // Allocate memory and set command if it is initialized
-    }else {
-        *command = cmd; // Assign new value if already allocated
-    }
-}
-bool StartUp::getInvalidCommand() const {
-    return *invalidCommand;     // Dereference and get value
-}
-void StartUp::setInvalidCommand(bool value){
-    *invalidCommand = value;        // Dereference and assign new value
-}
-
 // SETTERS AND GETTERS FOR PLAY
-string Play::getCommand() const {
+string GameEngine::getCommand() const {
     if(command == nullptr) {
         return ""; // Return empty string if command is initialized
     }
     return *command; // Dereference and return the actual value
 }
-void Play::setCommand(const string& cmd) {
+void GameEngine::setCommand(const string& cmd) {
     if(command == nullptr) {
         command = new string(cmd); // Allocate memory and set command if it is initialized
     }else {
         *command = cmd; // Assign new value if already allocated
     }
 }
-bool Play::getInvalidCommand() const {
+bool GameEngine::getInvalidCommand() const {
     return *invalidCommand;     // Dereference and get value
 }
-void Play::setInvalidCommand(bool value){
+void GameEngine::setInvalidCommand(bool value){
     *invalidCommand = value;        // Dereference and assign new value
 }
 
