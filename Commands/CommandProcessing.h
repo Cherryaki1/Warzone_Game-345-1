@@ -5,28 +5,65 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <iostream>
+#include <fstream>
 #include "LogObserver/LoggingObserver.h"
 
 using std::string;
 using std::vector;
 using std::list;
 
-class Command: public Subject, ILoggable{
+class Command : public Subject, public ILoggable {
 private:
-    string effect;
-    string command;
+    string* commandText;
+    string* effect;
+
 public:
-    void saveEffect();
+    Command(const string& commandText);
+    ~Command();
+
+    void saveEffect(const string& effect);
+
+    string getCommandText() const;
+
+    string stringToLog() override;
 };
 
-class CommandProcessor: public Subject, ILoggable{
+class CommandProcessor : public Subject, public ILoggable {
 private:
     vector<Command*> commands;
-    void readCommand();
+    virtual void readCommand();
+
 public:
-    string getCommand();
-    void validate();
+    CommandProcessor();
+    virtual ~CommandProcessor();
+    vector<Command*>* getCommands();
+    void saveCommand(const string& commandText);
+    void validate(Command* command);
+    string stringToLog() override;
+
+    void processCommands() {
+        readCommand();
+    }
+    // Deleted copy constructor and assignment operator
+    CommandProcessor(const CommandProcessor&) = delete;
+    CommandProcessor& operator=(const CommandProcessor&) = delete;
 };
+
+class FileCommandProcessorAdapter : public CommandProcessor {
+private:
+    std::ifstream fileStream;
+
+protected:
+    void readCommand() override;
+
+public:
+    FileCommandProcessorAdapter(const string& filename);
+    ~FileCommandProcessorAdapter();
+};
+
+// Free Function
+void testCommandProcessor();
 
 
 

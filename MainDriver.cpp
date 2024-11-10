@@ -19,12 +19,14 @@
 #include "Orders.h"
 #include "Cards.h"
 #include "MapDriver.h"
+#include "Commands/CommandProcessing.h"
 
 using namespace std;
 
 // Main Class
 int main(){
-  testLoadMap();
+  testCommandProcessor();
+  /*testLoadMap();
   testGameStates();
   testPlayers();
   testOrdersLists();
@@ -87,7 +89,7 @@ int main(){
       default: cout << "Invalid choice! Try Again" << endl;
     }
   }
-
+  */
   // MAX 32 CONTINENTS
   // MAX 10 ADJACENT TERRITORIES
   // MAX 255 TERRITORIES
