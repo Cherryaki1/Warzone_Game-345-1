@@ -12,7 +12,7 @@ class ILoggable{
 public:
     ILoggable() = default;
     virtual ~ILoggable() = default;
-    virtual string stringToLog() const = 0;
+    virtual string stringToLog() = 0;
 };
 
 class Observer{

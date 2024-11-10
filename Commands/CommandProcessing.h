@@ -15,20 +15,18 @@ using std::list;
 
 class Command : public Subject, public ILoggable {
 private:
-    string commandText;
-    string effect;
+    string* commandText;
+    string* effect;
 
 public:
-    Command(const string& commandText) : commandText(commandText) {}
-    void saveEffect(const string& effect) {
-        this->effect = effect;
-        notify(this);  // Notify observers after saving the effect
-    }
-    string getCommandText() const { return commandText; }
+    Command(const string& commandText);
+    ~Command();
 
-    string stringToLog() const override {
-        return "Command: " + commandText + ", Effect: " + effect;
-    }
+    void saveEffect(const string& effect);
+
+    string getCommandText() const;
+
+    string stringToLog() override;
 };
 
 class CommandProcessor : public Subject, public ILoggable {
@@ -37,15 +35,16 @@ private:
     virtual void readCommand();
 
 public:
-    CommandProcessor() {}
-    virtual ~CommandProcessor() {
-        for (Command* cmd : commands) delete cmd;
-    }
-    Command* getCommand();
+    CommandProcessor();
+    virtual ~CommandProcessor();
+    vector<Command*>* getCommands();
     void saveCommand(const string& commandText);
     void validate(Command* command);
-    string stringToLog() const override;
+    string stringToLog() override;
 
+    void processCommands() {
+        readCommand();
+    }
     // Deleted copy constructor and assignment operator
     CommandProcessor(const CommandProcessor&) = delete;
     CommandProcessor& operator=(const CommandProcessor&) = delete;
@@ -61,9 +60,6 @@ protected:
 public:
     FileCommandProcessorAdapter(const string& filename);
     ~FileCommandProcessorAdapter();
-    void processFileCommands() {
-        readCommand();
-    }
 };
 
 // Free Function

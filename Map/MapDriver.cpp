@@ -30,7 +30,6 @@ int testLoadMap() {
         cout << " !! MAP IS INVALID !!" << endl;
     }
 
-
-
     return 0;
 }
+

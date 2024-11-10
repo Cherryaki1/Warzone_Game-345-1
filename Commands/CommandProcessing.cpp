@@ -1,6 +1,34 @@
 #include "CommandProcessing.h"
 
+// Command methods
+Command::Command(const string& commandText)
+    : commandText(new string(commandText)), effect(new string("")) {}
+
+Command::~Command() {
+    delete commandText;  // Clean up allocated memory for commandText
+    delete effect;       // Clean up allocated memory for effect
+}
+
+void Command::saveEffect(const string& effectText) {
+    *effect = effectText;  // Set the effect value
+    notify(this);          // Notify observers after saving the effect
+}
+
+string Command::getCommandText() const {
+    return *commandText;  // Dereference to access the actual string value
+}
+
+string Command::stringToLog() {
+    return "Command: " + *commandText + ", Effect: " + *effect;
+}
+
 // CommandProcessor methods
+CommandProcessor::CommandProcessor() {}
+
+CommandProcessor::~CommandProcessor() {
+    for (Command* cmd : commands) delete cmd;
+}
+
 void CommandProcessor::readCommand() {
     string commandText;
     std::cout << "Enter command: ";
@@ -14,22 +42,24 @@ void CommandProcessor::saveCommand(const string& commandText) {
     validate(command);
 }
 
-Command* CommandProcessor::getCommand() {
-    return commands.empty() ? nullptr : commands.back();
+vector<Command*>* CommandProcessor::getCommands() {
+    return &commands;
 }
 
 void CommandProcessor::validate(Command* command) {
     string commandText = command->getCommandText();
+    std::cout << commandText << std::endl;
     bool isValid = false;
 
-    // Basic validation
-    if (commandText == "loadmap") {
+    if (commandText.substr(0,7) == "loadmap") {
+        string fileName = commandText.substr(9);
         isValid = true;
         command->saveEffect("Map loaded successfully.");
     } else if (commandText == "validatemap") {
         isValid = true;
         command->saveEffect("Map validated successfully.");
-    } else if (commandText == "addplayer") {
+    } else if (commandText.substr(0,9) == "addplayer") {
+        string playerName = commandText.substr(11);
         isValid = true;
         command->saveEffect("Player added successfully.");
     } else if (commandText == "gamestart") {
@@ -44,7 +74,7 @@ void CommandProcessor::validate(Command* command) {
     }
 }
 
-string CommandProcessor::stringToLog() const {
+string CommandProcessor::stringToLog() {
     return commands.empty() ? "No commands processed yet." : commands.back()->stringToLog();
 }
 
@@ -70,29 +100,5 @@ void FileCommandProcessorAdapter::readCommand() {
         } else {
             std::cerr << "End of command file reached or read error occurred." << std::endl;
         }
-    }
-}
-
-// Driver free function
-void testCommandProcessor() {
-    LogObserver logObserver;
-    CommandProcessor consoleProcessor;
-    consoleProcessor.attach(&logObserver);
-
-    // Simulating reading commands from console
-    consoleProcessor.saveCommand("loadmap");
-    consoleProcessor.saveCommand("invalidcommand");
-    consoleProcessor.saveCommand("addplayer");
-
-    std::cout << "\nReading commands from file...\n";
-    try {
-        FileCommandProcessorAdapter fileProcessor("commands.txt");
-        fileProcessor.attach(&logObserver);
-
-        fileProcessor.processFileCommands();  // Reads first command from file
-        fileProcessor.processFileCommands();  // Reads second command from file
-        fileProcessor.processFileCommands();  // Reads third command from file
-    } catch (const std::runtime_error& e) {
-        std::cerr << e.what() << std::endl;
     }
 }
