@@ -9,7 +9,7 @@
 
 void testOrdersLists();
 
-class Order : public Subject, public ILoggable{
+class Order : public Subject, public ILoggable {
 public:
     Order();
     Order(const std::string& orderType);
@@ -85,4 +85,4 @@ public:
 };
 
 
-#endif
+#endif // ORDERS_H
