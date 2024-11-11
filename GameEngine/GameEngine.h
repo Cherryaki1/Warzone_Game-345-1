@@ -10,6 +10,9 @@
 #define GAMEENGINE_H
 #include <string>
 #include <iostream>
+#include <vector>
+
+#include "Player.h"
 using std::string;
 using std::ostream;
 
@@ -18,6 +21,7 @@ class GameEngine {
     string* state; // Keeps track of current state
     string* command;
     bool* invalidCommand;
+    vector<Player*>* players;
 
     public:
     GameEngine();
@@ -42,8 +46,11 @@ class GameEngine {
 
     // Stream insertion operator
     friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);
+
 };
 
 void testGameStates();
+void testStartUpPhase();
+void testMainGameLoop();
 #endif
 
