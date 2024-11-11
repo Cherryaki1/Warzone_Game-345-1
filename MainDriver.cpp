@@ -19,12 +19,15 @@
 #include "Orders.h"
 #include "Cards.h"
 #include "MapDriver.h"
+
 #include "Commands/CommandProcessing.h"
 
-using namespace std;
 
+using namespace std;
+extern void testLoggingObserver();
 // Main Class
 int main(){
+
   // ************** Assignment 1 **************
   //testLoadMap();
   //testGameStates();
@@ -41,6 +44,7 @@ int main(){
 
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;
+
 
 
   return 0;
