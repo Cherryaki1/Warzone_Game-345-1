@@ -65,7 +65,8 @@ void AdvanceOrder::execute() {
     if (sourceTerritory->getOwner() == player->getPlayerName()) {
         if (sourceTerritory->isAdjacent(targetTerritory)) {
             if (targetTerritory->getOwner() == player->getPlayerName()) {
-                // call advance order method on the target territory
+                targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
+                sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - numUnits);
                 notify(this);
                 executed = true;
             }
