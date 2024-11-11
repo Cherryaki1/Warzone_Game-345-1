@@ -26,15 +26,11 @@
 using namespace std;
 extern void testLoggingObserver();
 
-void validateMap();
-
 // Main Class
 int main(){
 
   // ************** Assignment 1 **************
   //testLoadMap("Test.txt");
-  Map& loadedMap = loadMap("Test.txt");
-  validateMap(loadedMap);
   //testGameStates();
   //testPlayers();
   //testOrdersLists();
@@ -43,8 +39,7 @@ int main(){
 
   // ************** Assignment Part 2 **************
   //testCommandProcessor();     // Part 1
-  //testStartUpPhase();         // Part 2
-
+  testStartUpPhase("Test.txt");         // Part 2
 
   // ************** Assignment 3 **************
 

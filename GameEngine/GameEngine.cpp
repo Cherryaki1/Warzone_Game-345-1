@@ -52,13 +52,12 @@ bool GameEngine::startUpPhase(string mapFile) {
 
     // COMMANDS WRITTEN IN A FILE
     // TODO Check if loadmap command valid
-    // Map& loadedMap = loadMap(mapFile);
+    Map& loadedMap = loadMap("Test.txt");
     *state = "maploaded";
 
     // TODO Check if validate command valid
-
+    if(validateMap(loadedMap)) {
         *state = "mapvalidated";
-
         int playerCount = 0;
         while(playerCount < 6) {
             // TODO Check if addplayer command is valid
@@ -69,6 +68,7 @@ bool GameEngine::startUpPhase(string mapFile) {
                 players.push_back(new Player(name));
                 playerCount++;
                 cout << "Adding Player: " << name << endl;
+
             } else if (command != "addplayer") {
                 cout << "No more players to add. Starting game with " << playerCount << " players.\n";
                 break;
@@ -82,11 +82,19 @@ bool GameEngine::startUpPhase(string mapFile) {
         }
         *state = "playersadded";
 
-        // TODO Check is gamestart commnand is valid
+        // TODO Check is gamestart command is valid
 
+        // Distribute All Territories
+
+        // Randomize the order of players in the array
+
+        // GIve players 2 cards with draw()
+        for(int i = 0; i < players.size(); i++) {
+
+        }
 
         //mainGameLoop(); // Chain with the rest of the game
-
+    }
 
 
     // COMMANDS WRITTEN ON THE CONSOLE

@@ -8,5 +8,5 @@
 
 void testLoadMap(string name);
 Map& loadMap(string name);
-void validateMap(Map& loadedMap);
+bool validateMap(Map& loadedMap);
 #endif //MAPDRIVER_H
