@@ -99,7 +99,14 @@ void Territory::setNumberOfArmies(int number_of_armies) {
 }
 
 bool Territory::isAdjacent(Territory* other) {
-    return std::find(adjacentTerritories.begin(), adjacentTerritories.end(), other) != adjacentTerritories.end();
+    bool found = false;
+    for (const auto& territory : adjacentTerritories) {
+        if (territory == other) { // Assumes operator== is defined for the type
+            found = true;
+            break;
+        }
+    }
+    return found;
 }
 
 // Continent Class Implementation
