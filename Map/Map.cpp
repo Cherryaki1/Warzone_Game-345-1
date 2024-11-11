@@ -49,7 +49,7 @@ Territory::~Territory() {
 }
 
 bool Territory::operator==(const Territory& other) const {
-    return *this->pName == *other.pName;
+    return pName == other.pName && pOwner == other.pOwner && pContinentID == other.pContinentID;
 }
 
 bool Territory::operator<(const Territory &other) const {
