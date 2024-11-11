@@ -1,7 +1,5 @@
 #ifndef MAP_H
 #define MAP_H
-
-
 #include <string>
 #include <list>
 #include <map>

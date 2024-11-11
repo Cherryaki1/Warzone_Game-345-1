@@ -29,7 +29,7 @@ extern void testLoggingObserver();
 int main(){
 
   // ************** Assignment 1 **************
-  testLoadMap("Europe 4B.map");
+  testLoadMap("Test.txt");
   //testGameStates();
   //testPlayers();
   //testOrdersLists();
