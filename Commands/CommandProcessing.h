@@ -39,7 +39,8 @@ private:
     ~CommandProcessor() override;
     vector<Command*>* getCommands();
     void saveCommand(const string& commandText);
-    void validate(Command* command);
+    bool validate(Command* command);
+    Command* getCommand();
     string stringToLog() override;
 
     void processCommands() {

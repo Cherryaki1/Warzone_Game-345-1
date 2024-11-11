@@ -10,10 +10,11 @@
 # include "GameEngine.h"
 using namespace std;
 
-GameEngine gameEngine;
+
 
 void testStartUpPhase(string mapFile) {
-    gameEngine.startUpPhase(mapFile);
+    GameEngine engine;
+    engine.startUpPhase();
 }
 
 void testMainGameLoop() {
@@ -21,18 +22,18 @@ void testMainGameLoop() {
 }
 
 void testGameStates() {
-
-    if(gameEngine.startUpPhase("../DownloadedMaps/Europe 4B.map") == true) {
+    GameEngine gameEngine;
+//    if(gameEngine.startUpPhase("../DownloadedMaps/Europe 4B.map")) {
         cout << "Game Engine StartUpPhase Completed, proceeding to Reinforcement Phase" << std::endl;
-        if(gameEngine.reinforcementPhase() == true) {
+        if(gameEngine.reinforcementPhase()) {
             cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;
-            if(gameEngine.ordersIssuingPhase() == true) {
+            if(gameEngine.ordersIssuingPhase()) {
                 cout << "Orders Issuing Phase Completed, proceeding to Orders Execution" << endl;
                 if(gameEngine.ordersExecutionPhase() == "endexecorders") {
                     cout << "Orders Execution Phase Completed, checking End Phase" << endl;
                     testGameStates();
                 }else {
-                    if(gameEngine.endPhase() == true) {
+                    if(gameEngine.endPhase()) {
                         cout << "Congratulations, a player has won!" << endl;
                         cout << "Thank you for playing!" << endl;
                     }else {
@@ -44,4 +45,4 @@ void testGameStates() {
             }
         }
     }
-}
+//}

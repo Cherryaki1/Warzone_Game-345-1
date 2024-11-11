@@ -34,6 +34,7 @@ public:
 
     void setPlayerName(string name);
     string getPlayerName() const;
+    Hand* getPlayerHand();
 
     vector<Territory*> toDefend(Map& map);
     vector<Territory*> toAttack(Map& map);

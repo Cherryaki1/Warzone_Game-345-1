@@ -14,6 +14,8 @@
 #include "Commands/CommandProcessing.h"
 
 #include "Player.h"
+#include "Cards.h"
+
 using std::string;
 using std::ostream;
 
@@ -23,6 +25,8 @@ class GameEngine {
     string* command;
     bool* invalidCommand;
     vector<Player*> players;
+    Deck* deck;
+    CommandProcessor *processor;
 
     public:
     GameEngine();
@@ -31,7 +35,8 @@ class GameEngine {
     void mainGameLoop();
 
     // PHASES
-    bool startUpPhase(string mapFile);
+    void startUpPhase();
+    bool startUpPhase2(string mapFile);
     bool reinforcementPhase();
     bool ordersIssuingPhase();
     string ordersExecutionPhase();
@@ -44,6 +49,8 @@ class GameEngine {
     void setCommand(const string& cmd);
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
+    void addPlayer(Player *player);
+
 
     // Stream insertion operator
     friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);

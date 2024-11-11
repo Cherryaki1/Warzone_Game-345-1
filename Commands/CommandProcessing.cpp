@@ -39,27 +39,32 @@ void CommandProcessor::readCommand() {
 void CommandProcessor::saveCommand(const string& commandText) {
     Command* command = new Command(commandText);
     commands.push_back(command);
-    validate(command);
+//    validate(command);
 }
 
 vector<Command*>* CommandProcessor::getCommands() {
     return &commands;
 }
 
-void CommandProcessor::validate(Command* command) {
+Command* CommandProcessor::getCommand() {
+    readCommand();
+    return commands.back();
+}
+
+bool CommandProcessor::validate(Command* command) {
     string commandText = command->getCommandText();
-    std::cout << commandText << std::endl;
+//    std::cout << commandText << std::endl;
     bool isValid = false;
 
     if (commandText.substr(0,7) == "loadmap") {
-        string fileName = commandText.substr(9);
+//        string fileName = commandText.substr(9);
         isValid = true;
         command->saveEffect("Map loaded successfully.");
     } else if (commandText == "validatemap") {
         isValid = true;
         command->saveEffect("Map validated successfully.");
     } else if (commandText.substr(0,9) == "addplayer") {
-        string playerName = commandText.substr(11);
+//        string playerName = commandText.substr(11);
         isValid = true;
         command->saveEffect("Player added successfully.");
     } else if (commandText == "gamestart") {
@@ -72,6 +77,7 @@ void CommandProcessor::validate(Command* command) {
     if (!isValid) {
         notify(this);  // Notify about invalid command
     }
+    return isValid;
 }
 
 string CommandProcessor::stringToLog() {

@@ -18,6 +18,7 @@ using namespace std;
 GameEngine::GameEngine() {
     state = new string("StartUp");
     invalidCommand = new bool(false); // Dynamically Allocate Memory
+    processor = new CommandProcessor();
     command = nullptr; // To avoid dereferencing issues
 }
 
@@ -34,6 +35,7 @@ GameEngine::~GameEngine() {
     for (Player* player : players) {
         delete player;
     }
+    delete processor;
 }
 
     // OPERATOR << FOR STARTUP
@@ -45,7 +47,98 @@ GameEngine::~GameEngine() {
     }
 
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
-bool GameEngine::startUpPhase(string mapFile) {
+
+void GameEngine::startUpPhase() {
+    cout << "... Starting up Phase ..." << endl;
+    // Current State
+    *state = "start";
+    Command *currentCommand;
+    Map loadedMap;
+
+    do {
+        cout << "Please enter loadmap and the filename of the map (separated by space) " <<endl;
+        currentCommand = processor->getCommand();
+        if(!processor->validate(currentCommand)){ //should not test whether the file is valid - only that the command is valid in current state
+            cout << "Invalid command at this point! Try again" <<endl;
+            continue;
+        }
+
+        string fileName;
+        try{
+            fileName = currentCommand->getCommandText().substr(8);
+            loadedMap = loadMap(fileName);
+            *state = "maploaded";
+            if(loadedMap.getTerritories()->empty()) *state="start";
+        } catch (...){
+            cout << "Error - non-existent file name"<<endl;
+        }
+    } while  (currentCommand == nullptr|| !processor->validate(currentCommand) || *state!="maploaded");
+
+    do {
+        cout<< "Please enter validatemap to proceed" << endl;
+        currentCommand = processor->getCommand();
+        if(!processor->validate(currentCommand)){
+            cout << "Invalid command at this point! Try again" <<endl;
+            continue;
+        }
+        if(validateMap(loadedMap)){
+            cout << "Map has been validated!" <<endl;
+            *state = "mapvalidated";
+        }
+
+    } while (!processor->validate(currentCommand));
+    int playerCount= 0;
+
+    do{
+        cout << "Please enter addplayer and the player name (separated by space) - you may add a maximum of 6 players, minimum of 2 player" <<endl;
+        cout << "You have " << playerCount << " player(s) so far" << endl;
+        currentCommand = processor->getCommand();
+        if(!processor->validate(currentCommand)){
+            cout << "Invalid command at this point! Try again" <<endl;
+            continue;
+        }
+
+        try{
+            string playerName = currentCommand->getCommandText().substr(10);
+            auto *player = new Player(playerName);
+            addPlayer(player);
+            playerCount++;
+            *state = "playersadded";
+            if(playerCount>=2){
+                cout << "WRITE stop TO STOP ADDING PLAYERS" << endl;
+                currentCommand = processor->getCommand();
+                if (currentCommand->getCommandText() == "stop") break;
+            }
+        } catch (...){
+            cout << "Error - non-existent player name"<<endl;
+        }
+
+    }while (playerCount <= 6);
+
+    do {
+        cout<< "Please enter gamestart to proceed" << endl;
+        currentCommand = processor->getCommand();
+        if(!processor->validate(currentCommand)){
+            cout << "Invalid command at this point! Try again" <<endl;
+            continue;
+        }
+
+//        a) fairly distribute all the territories to the players
+//        b) determine randomly the order of play of the players in the game
+//        c) give 50 initial army units to the players, which are placed in their respective reinforcement pool
+//        d) let each player draw 2 initial cards from the deck using the deck’s draw() method
+        for (auto player : players){
+            player->getPlayerHand()->place(deck->draw());
+            player->getPlayerHand()->place(deck->draw());
+        }
+//        e) switch the game to the play phase
+        *state = "play";
+
+    } while (!processor->validate(currentCommand));
+
+}
+
+bool GameEngine::startUpPhase2(string mapFile) {
     cout << "... Starting up Phase ..." << endl;
     // Current State
     *state = "start";
@@ -215,5 +308,10 @@ bool GameEngine::getInvalidCommand() const {
 }
 void GameEngine::setInvalidCommand(bool value){
     *invalidCommand = value;        // Dereference and assign new value
+}
+
+void GameEngine::addPlayer(Player *player) {
+    players.push_back(player);
+    cout << player->getPlayerName() << " has been added to the game!" << endl;
 }
 

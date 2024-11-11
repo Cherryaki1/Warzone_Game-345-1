@@ -159,3 +159,7 @@ ostream& operator<<(ostream& os, const Player& player) {
     os << "Player Name: " << *(player.playerName);
     return os;
 }
+
+Hand *Player::getPlayerHand(){
+    return playerHand;
+}
