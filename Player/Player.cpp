@@ -243,6 +243,3 @@ ostream& operator<<(ostream& os, const Player& player) {
     return os;
 }
 
-Hand *Player::getPlayerHand(){
-    return playerHand;
-}
