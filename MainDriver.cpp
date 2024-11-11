@@ -24,15 +24,23 @@ using namespace std;
 
 // Main Class
 int main(){
+  // Assignment 1
   //testLoadMap();
   //testGameStates();
   //testPlayers();
   //testOrdersLists();
   //testCards();
 
+  // Assignment Part 2
+
+
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;
 
+
+
+
+  /*
   // PROMPT FOR MAP SELECTION
   while(menuLoop) {
     cout << "To begin, choose your map...  Map 1: Test , Map 2: World 2007 (Invalid), Map 3: Europe 4B/" << endl;
@@ -62,32 +70,7 @@ int main(){
       default: cout << "Invalid choice! Try Again" << endl;
     }
   }
-
-  menuLoop = true;
-
-  while(menuLoop) {
-    // PROMPT FOR PLAYERS START UP
-    cout << "Enter the number of players (MAX: 4): ";
-    cin >> numOfPlayers;
-    switch(numOfPlayers) {
-      case 1:
-        cout << "You need more players!" << endl;
-      break;
-      case 2:
-        cout << "2 Players chosen! Do stuff..." << endl;
-      menuLoop = false;
-      break;
-      case 3:
-        cout << "3 Players chosen! Do stuff..." << endl;
-      menuLoop = false;
-      break;
-      case 4:
-        cout << "4 Players chosen! Do stuff..." << endl;
-      menuLoop = false;
-      break;
-      default: cout << "Invalid choice! Try Again" << endl;
-    }
-  }
+  */
 
   // MAX 32 CONTINENTS
   // MAX 10 ADJACENT TERRITORIES
