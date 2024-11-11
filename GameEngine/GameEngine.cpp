@@ -8,6 +8,9 @@
 
 #include <iostream>
 #include "GameEngine.h"
+
+#include <MapDriver.h>
+
 #include "MapLoader.h"
 #include "Map.h"
 
@@ -41,9 +44,13 @@ GameEngine::~GameEngine() {
     }
 
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
-bool GameEngine::testStartUpPhase() {
+bool GameEngine::testStartUpPhase(string mapFile) {
     cout << "... Starting up Phase ..." << endl;
 
+    // Call Loadmap
+    Map& loadedNap = loadMap(mapFile);
+
+    /*
     // Allocate memory for `command` before using it
     if(command == nullptr) {
         command = new string("");  // Allocate memory for command
@@ -54,10 +61,7 @@ bool GameEngine::testStartUpPhase() {
         cout << "Type \"loadmap\" to transition to the next state"<< endl;
         cin >> *command;
         if(getCommand() == "loadmap") {
-            // Call loadmap function
-
-            // loadMap <fileName>
-
+            // Call loadmap
             setInvalidCommand(true);
         }else {
             cerr << "Invalid command!" << endl;
@@ -104,6 +108,7 @@ bool GameEngine::testStartUpPhase() {
             cerr << "Invalid command!" << endl;
         }
     }
+    */
     return true;
 }
 

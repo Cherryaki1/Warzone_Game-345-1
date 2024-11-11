@@ -24,7 +24,7 @@ class GameEngine {
     ~GameEngine(); // Destructor
 
     // PHASES
-    bool testStartUpPhase();
+    bool testStartUpPhase(string mapFile);
     bool reinforcementPhase();
     bool ordersIssuingPhase();
     string ordersExecutionPhase();
