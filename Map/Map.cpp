@@ -98,6 +98,10 @@ void Territory::setNumberOfArmies(int number_of_armies) {
     *pNumber_of_armies = number_of_armies;
 }
 
+bool Territory::isAdjacent(Territory* other) {
+    return std::find(adjacentTerritories.begin(), adjacentTerritories.end(), other) != adjacentTerritories.end();
+}
+
 // Continent Class Implementation
 
 Continent::Continent() {
@@ -321,6 +325,7 @@ bool Map::validate() {
     // If all checks pass
     return true;
 }
+
 
 std::ostream& operator<<(std::ostream& os, Map& map) {
     os << "\n... MAP DETAILS ...\n";

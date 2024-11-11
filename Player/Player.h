@@ -25,6 +25,7 @@ private:
     Hand* playerHand;
     OrdersList* ordersList;
     string* playerName;
+
 public:
     Player();
     Player(string name);

@@ -1,5 +1,7 @@
 #include "Orders.h"
 #include "Cards/Cards.h" // Include the header file for the Hand class
+#include "Player/Player.h"
+#include "Map/Map.h"
 #include <iostream>
 #include <iterator>
 #include <algorithm>
