@@ -19,23 +19,24 @@ void testLoadMap(string name) {
     // Output the number of territories loaded
     cout << "Map loaded with " << loadedMap.getTerritories()->size() << " territories." << endl;
 
-    // Validate the map
-    if (loadedMap.validate()) {
-        cout << " ** MAP IS VALID **" << endl;
-        // FULL MAP:
-        cout << loadedMap << endl;
-    } else {
-        cout << " !! MAP IS INVALID !!" << endl;
-    }
 }
 
+Map& loadMap(string name) {
+    const string mapFile = "../DownloadedMaps/" + name;
+    MapLoader mapLoader(mapFile);
+    cout << "MapLoader created" << endl;
+    Map& loadedMap = mapLoader.getMap();
+
+    // Output the number of territories loaded
+    cout << "Map loaded with " << loadedMap.getTerritories()->size() << " territories." << endl;
+    return loadedMap;
+}
 void validateMap(Map& loadedMap) {
     // Validate the map
     if (loadedMap.validate()) {
         cout << " ** MAP IS VALID **" << endl;
         // FULL MAP:
         cout << loadedMap << endl;
-
     } else {
         cout << " !! MAP IS INVALID !!" << endl;
 

@@ -25,11 +25,16 @@
 
 using namespace std;
 extern void testLoggingObserver();
+
+void validateMap();
+
 // Main Class
 int main(){
 
   // ************** Assignment 1 **************
-  testLoadMap("Test.txt");
+  //testLoadMap("Test.txt");
+  Map& loadedMap = loadMap("Test.txt");
+  validateMap(loadedMap);
   //testGameStates();
   //testPlayers();
   //testOrdersLists();

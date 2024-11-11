@@ -7,5 +7,6 @@
 #include "Map.h"
 
 void testLoadMap(string name);
+Map& loadMap(string name);
 void validateMap(Map& loadedMap);
 #endif //MAPDRIVER_H
