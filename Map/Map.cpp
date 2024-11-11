@@ -114,7 +114,9 @@ Continent::Continent(string continentID, int bonus) {
 
 Continent::Continent(const Continent &other) {
     pContinentID = new string(*other.pContinentID);
-    pCTerritories = new vector<Territory *>(*other.pCTerritories);
+    if(!(other.pCTerritories == nullptr)) {
+        pCTerritories = new vector<Territory *>(*other.pCTerritories);
+    }
     pBonus = new int(*other.pBonus);
 }
 
@@ -176,15 +178,15 @@ void Continent::setBonus(int bonus) {
 // Map Class Implementation
 
 Map::Map() {
-    pAdjList = new map<Territory*, list<Territory*>>();
     pContinents = new vector<Continent*>();
     pTerritories = new vector<Territory*>();
+    pAdjList = new map<Territory*, list<Territory*>>();
 }
 
 Map::~Map() {
-    delete pAdjList;
     delete pContinents;
     delete pTerritories;
+    delete pAdjList;
 }
 
 void Map::add_edge(Territory* u, Territory* v) {
