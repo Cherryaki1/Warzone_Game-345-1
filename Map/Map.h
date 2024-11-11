@@ -42,6 +42,8 @@ public:
     void setContinentID(const string &continentID);
     int getNumberOfArmies() const;
     void setNumberOfArmies(int number_of_armies);
+    bool isAdjacent(Territory* other);
+    vector<Territory*> adjacentTerritories;
 };
 
 class Continent {
@@ -88,6 +90,7 @@ class Map {
         bool isContinentConnected(Continent* continent);
         bool hasUniqueContinent();
         bool validate();
+        
 
         friend std::ostream& operator<<(std::ostream& os, Map& map);
 

@@ -7,6 +7,8 @@
 #include <stdbool.h>
 #include "LogObserver/LoggingObserver.h"
 #include "Player/Player.h"
+#include "Map/Map.h"
+
 
 void testOrdersLists();
 
