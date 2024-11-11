@@ -12,19 +12,18 @@ using namespace std;
 
 
 void testGameStates() {
-    StartUp start;
-    Play play;
-    if(start.startUpPhase() == true) {
+    GameEngine gameEngine;
+    if(gameEngine.testStartUpPhase() == true) {
         cout << "Game Engine StartUpPhase Completed, proceeding to Reinforcement Phase" << std::endl;
-        if(play.reinforcementPhase() == true) {
+        if(gameEngine.reinforcementPhase() == true) {
             cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;
-            if(play.ordersIssuingPhase() == true) {
+            if(gameEngine.ordersIssuingPhase() == true) {
                 cout << "Orders Issuing Phase Completed, proceeding to Orders Execution" << endl;
-                if(play.ordersExecutionPhase() == "endexecorders") {
+                if(gameEngine.ordersExecutionPhase() == "endexecorders") {
                     cout << "Orders Execution Phase Completed, checking End Phase" << endl;
                     testGameStates();
                 }else {
-                    if(play.endPhase() == true) {
+                    if(gameEngine.endPhase() == true) {
                         cout << "Congratulations, a player has won!" << endl;
                         cout << "Thank you for playing!" << endl;
                     }else {
