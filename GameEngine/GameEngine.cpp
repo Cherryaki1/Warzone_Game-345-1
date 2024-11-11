@@ -132,8 +132,8 @@ void GameEngine::startUpPhase() {
 //        c) give 50 initial army units to the players, which are placed in their respective reinforcement pool
 //        d) let each player draw 2 initial cards from the deck using the deck’s draw() method
         for (auto player : players){
-            player->getPlayerHand()->place(deck->draw());
-            player->getPlayerHand()->place(deck->draw());
+            player->getHand()->place(deck->draw());
+            player->getHand()->place(deck->draw());
         }
 //        e) switch the game to the play phase
         *state = "play";
