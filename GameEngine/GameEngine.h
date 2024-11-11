@@ -22,7 +22,7 @@ class GameEngine {
     string* state; // Keeps track of current state
     string* command;
     bool* invalidCommand;
-    vector<Player*>* players;
+    vector<Player*> players;
 
     public:
     GameEngine();

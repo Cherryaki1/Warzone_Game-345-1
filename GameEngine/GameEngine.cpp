@@ -31,10 +31,9 @@ GameEngine::~GameEngine() {
     if(state != nullptr) {
         delete state;
     }
-    for (Player* player : *players) {
+    for (Player* player : players) {
         delete player;
     }
-    delete players;
 }
 
     // OPERATOR << FOR STARTUP
@@ -67,7 +66,7 @@ bool GameEngine::startUpPhase(string mapFile) {
             string name = "joe"; // To remove after
 
             if(command == "addplayer" && !name.empty()) {
-                players->push_back(new Player(name));
+                players.push_back(new Player(name));
                 playerCount++;
                 cout << "Adding Player: " << name << endl;
             } else if (command != "addplayer") {
