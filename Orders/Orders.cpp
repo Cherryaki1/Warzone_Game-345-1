@@ -11,7 +11,6 @@
 // ----------------------------------------------------------
 Order::Order() : executed(false) {}
 Order::Order(const std::string& orderType) : orderType(orderType), executed(false) {}
-Order::~Order() {}
 
 bool Order::validate() {
     std::cout << "Validating order: " << orderType << std::endl;
@@ -38,7 +37,7 @@ std::ostream& operator<<(std::ostream& os, const Order& order) {
 
 string Order::stringToLog() {
     return "Order Executed: " + orderType;
-};
+}
 
 
 // ----------------------------------------------------------
@@ -86,7 +85,7 @@ void AdvanceOrder::execute() {
 // Bomb Order implementations
 // BombOrder::BombOrder() : Order("Bomb") {}
 void BombOrder::execute() { // Waiting for implementation of ownedTerritories
-    Order::execute();
+//    Order::execute();
     std::cout << "Using Bomb card" << std::endl;
     notify(this);
     executed = true;
@@ -95,7 +94,7 @@ void BombOrder::execute() { // Waiting for implementation of ownedTerritories
 // Blockade Order implementations
 // BlockadeOrder::BlockadeOrder() : Order("Blockade") {}
 void BlockadeOrder::execute() {
-    Order::execute();
+//    Order::execute();
     std::cout << "Using Blockade card" << std::endl;
     notify(this);
     executed = true;
@@ -128,7 +127,7 @@ void AirliftOrder::execute() {
 // Negotiate Order implementations
 // NegotiateOrder::NegotiateOrder() : Order("Negotiate") {}
 void NegotiateOrder::execute() {
-    Order::execute();
+//    Order::execute();
     std::cout << "Using Negotiate card" << std::endl;
     notify(this);
     executed = true;

@@ -19,7 +19,7 @@ void testOrdersLists();
 class Order : public Subject, public ILoggable {
     public:
         // Constructors and Destructor
-        Order() = default; 
+        Order();
         virtual ~Order() = default;
         Order(const std::string& orderType);
 
@@ -46,6 +46,7 @@ private:
     int numUnits;
 
 public:
+    DeployOrder()=default;
     DeployOrder(Player* player, Territory* target, int units) : player(player), targetTerritory(target), numUnits(units) {}
     void execute() override;
 };
@@ -60,6 +61,7 @@ private:
     bool executed;
 
 public:
+    AdvanceOrder() = default;
     AdvanceOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
     void execute() override;
 };
@@ -73,6 +75,7 @@ private:
     bool executed;
 
 public:
+    BombOrder() = default;
     BombOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
     void execute() override;
 };
@@ -85,6 +88,7 @@ private:
     bool executed;
 
 public:
+    BlockadeOrder() = default;
     BlockadeOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
     void execute() override;
 };
@@ -99,6 +103,7 @@ private:
     bool executed;
 
 public:
+    AirliftOrder() = default;
     AirliftOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
     void execute() override;
 };
@@ -111,6 +116,7 @@ private:
     bool executed;
 
 public:
+    NegotiateOrder() = default;
     NegotiateOrder(Player* player, Player* target) : player(player), targetPlayer(target) {}
     void execute() override;
 };

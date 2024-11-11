@@ -28,10 +28,6 @@ void testLoggingObserver(){
     auto two = new BombOrder(john, testTerritory);
     auto three = new AirliftOrder(john, testTerritory, testTerritory, 0);
 
-    one->attach(&observer);
-    two->attach(&observer);
-    three->attach(&observer);
-
     ordersList.addOrder(one);
     ordersList.addOrder(two);
     ordersList.addOrder(three);
