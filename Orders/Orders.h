@@ -6,8 +6,8 @@
 #include <list>
 #include <stdbool.h>
 #include "LogObserver/LoggingObserver.h"
-#include "Player/Player.h"
 #include "Map/Map.h"
+class Player;
 
 
 void testOrdersLists();
@@ -29,10 +29,10 @@ class Order : public Subject, public ILoggable {
         std::string getOrderType() const;
         friend std::ostream& operator<<(std::ostream& os, const Order& order);
 
-protected:
-    std::string orderType;
-    bool executed;
-    string stringToLog() override;
+    private:
+        std::string orderType;
+        bool executed;
+        string stringToLog() override;
 };
 
 // ----------------------------------------------------------
@@ -42,6 +42,7 @@ class DeployOrder : public Order {
 private:
     Player* player;
     Territory* targetTerritory;
+    bool executed;
     int numUnits;
 
 public:
@@ -56,6 +57,7 @@ private:
     Territory* sourceTerritory;
     Territory* targetTerritory;
     int numUnits;
+    bool executed;
 
 public:
     AdvanceOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
@@ -68,6 +70,7 @@ class BombOrder : public Order {
 private:
     Player* player;
     Territory* targetTerritory;
+    bool executed;
 
 public:
     BombOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
@@ -79,6 +82,7 @@ class BlockadeOrder : public Order {
 private:
     Player* player;
     Territory* targetTerritory;
+    bool executed;
 
 public:
     BlockadeOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
@@ -92,6 +96,7 @@ private:
     Territory* sourceTerritory;
     Territory* targetTerritory;
     int numUnits;
+    bool executed;
 
 public:
     AirliftOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
@@ -103,6 +108,7 @@ class NegotiateOrder : public Order {
 private:
     Player* player;
     Player* targetPlayer;
+    bool executed;
 
 public:
     NegotiateOrder(Player* player, Player* target) : player(player), targetPlayer(target) {}

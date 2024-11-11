@@ -1,12 +1,14 @@
 #include "Orders.h"
 #include "Cards/Cards.h" // Include the header file for the Hand class
-#include "Player/Player.h"
 #include "Map/Map.h"
 #include <iostream>
 #include <iterator>
 #include <algorithm>
 
-// Base Order class implementations
+
+// ----------------------------------------------------------
+//              Base Order class implementations
+// ----------------------------------------------------------
 Order::Order() : executed(false) {}
 Order::Order(const std::string& orderType) : orderType(orderType), executed(false) {}
 Order::~Order() {}
@@ -16,10 +18,6 @@ bool Order::validate() {
     return true;
 }
 
-void Order::execute() {
-    // std::cout << "Executing base order: " << orderType << std::endl;
-    // notify(this);
-}
 
 std::string Order::getOrderType() const {
     return orderType;
@@ -42,6 +40,10 @@ string Order::stringToLog() {
     return "Order Executed: " + orderType;
 };
 
+
+// ----------------------------------------------------------
+//              execute() of Derived Order classes
+// ----------------------------------------------------------
 
 // Deploy Order implementations
 // DeployOrder::DeployOrder() {}
@@ -78,13 +80,11 @@ void AdvanceOrder::execute() {
     else {
         std::cout << "Invalid advance order: " << sourceTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
     }
-    notify(this);
-    executed = true;
 }
 
 // Bomb Order implementations
 // BombOrder::BombOrder() : Order("Bomb") {}
-void BombOrder::execute() {
+void BombOrder::execute() { // Waiting for implementation of ownedTerritories
     Order::execute();
     std::cout << "Using Bomb card" << std::endl;
     notify(this);
@@ -106,7 +106,7 @@ void AirliftOrder::execute() {
     if (player->getHand()->hasCard("Airlift")) {
         if (sourceTerritory->getOwner() == player->getPlayerName()) {
             if (targetTerritory->getOwner() == player->getPlayerName()) {
-            // call airlift order method on the source territory
+            // create airlift order if all conditions are met
             notify(this);
             executed = true;
             }
