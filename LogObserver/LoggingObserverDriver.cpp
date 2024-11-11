@@ -23,9 +23,10 @@ void testLoggingObserver(){
     OrdersList ordersList;
     ordersList.attach(&observer);
 
-    auto one = new DeployOrder();
-    auto two = new BombOrder();
-    auto three = new AirliftOrder();
+    auto testTerritory = new Territory();
+    auto one = new DeployOrder(john, testTerritory, 0);
+    auto two = new BombOrder(john, testTerritory);
+    auto three = new AirliftOrder(john, testTerritory, testTerritory, 0);
 
     one->attach(&observer);
     two->attach(&observer);
@@ -36,6 +37,7 @@ void testLoggingObserver(){
     ordersList.addOrder(three);
 
     for(Order *order : ordersList.getOrders()){
+        order->attach(&observer);
         order->execute();
     }
 };
