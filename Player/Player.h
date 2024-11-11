@@ -22,50 +22,27 @@ using std::vector;
 
 class Player {
 private:
-    static int numOfPlayers;
-
-    vector<Territory*> ownedTerritories;
     Hand* playerHand;
     OrdersList* ordersList;
     string* playerName;
 
 public:
-    //Default constructor
     Player();
-
-    //Parameterized constructors
     Player(string name);
-    Player(Hand* initialHand, vector<Territory *> &initialTerritories, string name);
-
-    // Copy constructor
-    Player(const Player& other);
-
-    // Assignment operator
-    Player& operator=(const Player& other);
-
-    //Destructor
+    Player(const Player& other);       // Copy constructor
+    Player& operator=(const Player& other); // Assignment operator
     ~Player();
-
-    vector<Territory *> getOwnedTerritories() const;
-    void addOwnedTerritory(Territory *territory);
-    Territory *removeOwnedTerritory(const Territory *territory);
-
-    Hand* getHand() const;
-
-    OrdersList* getOrdersList() const;
 
     void setPlayerName(string name);
     string getPlayerName() const;
-
+    Hand* getHand() const;
     bool hasCard(string cardType);
 
     vector<Territory*> toDefend(Map& map);
     vector<Territory*> toAttack(Map& map);
-
     void issueOrder(const std::string& orderType);
 
-    //Stream insertion operator
-    friend std::ostream& operator<<(std::ostream& os, const Player& player);
+    friend std::ostream& operator<<(std::ostream& os, const Player& player); // Stream insertion operator
 
 };
 
