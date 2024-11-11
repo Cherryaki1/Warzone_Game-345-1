@@ -64,6 +64,7 @@ public:
     void remove(Card* card); //Removes a card ptr from the hand
     vector<Card*>* getHand(); //Returns a ptr to the hand's cards vector
     Player* getOwner();
+    bool hasCard(string cardType); //Checks if the hand has a card of a certain type
 
 private:
     vector<Card*> cards; //Vector of card pointers

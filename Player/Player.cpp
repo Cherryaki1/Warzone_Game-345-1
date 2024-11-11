@@ -69,6 +69,22 @@ string Player::getPlayerName() const {
     return *playerName;
 }
 
+// Method to get player hand
+Hand* Player::getHand() const {
+    return playerHand;
+}
+
+// Method to check if player has a card of a certain type
+bool Player::hasCard(string cardType) {
+    vector<Card*>* hand = playerHand->getHand();
+    for (Card* card : *hand) {
+        if (card->getType() == cardType) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // Method for issuing an order (placeholder implementation)
 void Player::issueOrder(const std::string& orderType) {
     Order* newOrder = nullptr;
