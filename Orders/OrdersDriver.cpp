@@ -4,7 +4,8 @@
 void testOrdersLists() {
     OrdersList ordersList;
     std::cout << "Orders List created." << std::endl;
-
+    LogObserver observer;
+    ordersList.attach(&observer);
     // Adding 8 orders
     ordersList.addOrder(new DeployOrder());
     ordersList.addOrder(new BombOrder());
@@ -14,6 +15,8 @@ void testOrdersLists() {
     ordersList.addOrder(new NegotiateOrder());
     ordersList.addOrder(new DeployOrder());
     ordersList.addOrder(new BombOrder());
+
+
 
     std::cout << "Initial Orders List: " << std::endl;
     std::cout << ordersList;

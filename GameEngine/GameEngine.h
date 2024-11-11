@@ -23,6 +23,8 @@ class GameEngine {
     GameEngine();
     ~GameEngine(); // Destructor
 
+    void mainGameLoop();
+
     // PHASES
     bool testStartUpPhase(string mapFile);
     bool reinforcementPhase();

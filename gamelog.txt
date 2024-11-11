@@ -1,0 +1,4 @@
+
+Command: quit, Effect: Invalid command in the current state.
+Command: replay, Effect: Invalid command in the current state.
+Command: quit, Effect: Invalid command in the current state.

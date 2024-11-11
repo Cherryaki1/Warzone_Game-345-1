@@ -19,6 +19,7 @@
 #include "Orders.h"
 #include "Cards.h"
 #include "MapDriver.h"
+#include "Commands/CommandProcessing.h"
 
 using namespace std;
 
@@ -32,6 +33,12 @@ int main(){
   //testCards();
 
   // Assignment Part 2
+  //testCommandProcessor();
+  /*testLoadMap();
+  testGameStates();
+  testPlayers();
+  testOrdersLists();
+  testCards();
 
 
   // WELCOME MESSAGE

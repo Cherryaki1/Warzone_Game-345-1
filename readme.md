@@ -18,7 +18,7 @@
 
 ### Iterations:
 * Assignment 1: Oct 4, 2024
-* Assignment 2: TBD
+* Assignment 2: Nov 10, 2024
 * Assignment 3: TBD
 
 ### Components:

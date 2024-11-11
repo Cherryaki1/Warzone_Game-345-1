@@ -112,7 +112,18 @@ bool GameEngine::testStartUpPhase(string mapFile) {
     return true;
 }
 
+
 bool GameEngine::reinforcementPhase() {
+=======
+void Play::mainGameLoop() {
+    reinforcementPhase();
+    ordersIssuingPhase();
+    ordersExecutionPhase();
+}
+
+
+bool GameEngine::reinforcementPhase() {
+
     cout << "... Reinforcement Phase ..." << endl;
     setInvalidCommand(false);
 

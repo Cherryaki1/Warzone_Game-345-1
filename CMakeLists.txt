@@ -20,6 +20,7 @@ add_executable(Warzone_Game_a1_COMP345
     Map/Map.cpp
     Map/Map.h
     Map/MapDriver.cpp
+    Map/MapLoader.cpp
     Orders/Orders.cpp
     Orders/Orders.h
     Orders/OrdersDriver.cpp
@@ -28,4 +29,10 @@ add_executable(Warzone_Game_a1_COMP345
     Player/PlayerDriver.cpp
     MainDriver.cpp
     MainDriver.h
-        Map/MapLoader.cpp)
+    LogObserver/LoggingObserver.cpp
+    LogObserver/LoggingObserver.h
+        Commands/CommandProcessing.cpp
+        Commands/CommandProcessing.h
+        LogObserver/LoggingObserverDriver.cpp
+        Commands/CommandProcessingDriver.cpp
+)
