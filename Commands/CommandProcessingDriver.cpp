@@ -2,7 +2,7 @@
 // Created by gregl on 11/10/2024.
 //
 #include "CommandProcessing.h"
-
+#include "GameEngine.h"
 void testCommandProcessor() {
     LogObserver logObserver;
     CommandProcessor consoleProcessor;
@@ -13,6 +13,7 @@ void testCommandProcessor() {
     std::cout << "Enter choice:";
     std::getline(std::cin, choice);
 
+    GameEngine gm;
     if (choice == "console") {
         while(consoleProcessor.getCommands()->empty() || consoleProcessor.getCommands()->back()->getCommandText() != "quit") {
             consoleProcessor.processCommands();
@@ -28,6 +29,9 @@ void testCommandProcessor() {
             fileProcessor.processCommands();
             fileProcessor.processCommands();
             fileProcessor.processCommands();
+
+            // Begin the StartUpPhase
+            testStartUpPhase(fileName);
 
         } catch (const std::runtime_error& e) {
             std::cerr << e.what() << std::endl;

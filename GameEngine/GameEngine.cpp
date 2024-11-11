@@ -8,11 +8,10 @@
 
 #include <iostream>
 #include "GameEngine.h"
-
 #include <MapDriver.h>
-
 #include "MapLoader.h"
 #include "Map.h"
+#include "Commands/CommandProcessing.h";
 
 using namespace std;
 
@@ -33,6 +32,10 @@ GameEngine::~GameEngine() {
     if(state != nullptr) {
         delete state;
     }
+    for (Player* player : *players) {
+        delete player;
+    }
+    delete players;
 }
 
     // OPERATOR << FOR STARTUP
@@ -48,13 +51,14 @@ bool GameEngine::startUpPhase(string mapFile) {
     cout << "... Starting up Phase ..." << endl;
     // Current State
     *state = "start";
-    // Call Loadmap function
+
+    // COMMANDS WRITTEN IN A FILE
     // Check if loadmap command valid
     Map& loadedNap = loadMap(mapFile);
     *state = "maploaded";
     // Call to validateMap function
     // Check if validate command valid
-    if(!validateMap(loadedNap)) {
+    if(validateMap(loadedNap)) {
         *state = "mapvalidated";
         // Call addplayer function
         // Check if addplayer command is valid
@@ -63,7 +67,12 @@ bool GameEngine::startUpPhase(string mapFile) {
         // Check is gamestart commnand is valid
 
         //mainGameLoop(); // Chain with the rest of the game
+    }else {
+        return false;
     }
+
+    // COMMANDS WRITTEN ON THE CONSOLE
+
     return true;
 }
 

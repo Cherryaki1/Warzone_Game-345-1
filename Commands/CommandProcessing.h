@@ -36,7 +36,7 @@ private:
 
     public:
     CommandProcessor();
-    virtual ~CommandProcessor();
+    ~CommandProcessor() override;
     vector<Command*>* getCommands();
     void saveCommand(const string& commandText);
     void validate(Command* command);

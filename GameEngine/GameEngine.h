@@ -11,6 +11,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "Commands/CommandProcessing.h"
 
 #include "Player.h"
 using std::string;
@@ -50,7 +51,7 @@ class GameEngine {
 };
 
 void testGameStates();
-void testStartUpPhase();
+void testStartUpPhase(string mapFile);
 void testMainGameLoop();
 #endif
 

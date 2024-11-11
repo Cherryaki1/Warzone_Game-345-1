@@ -13,7 +13,7 @@ using namespace std;
 GameEngine gameEngine;
 
 void testStartUpPhase(string mapFile) {
-    //gameEngine.startUpPhase(mapFile);
+    gameEngine.startUpPhase(mapFile);
 }
 
 void testMainGameLoop() {
@@ -22,7 +22,7 @@ void testMainGameLoop() {
 
 void testGameStates() {
 
-    if(gameEngine.startUpPhase() == true) {
+    if(gameEngine.startUpPhase("Europe 4B.map") == true) {
         cout << "Game Engine StartUpPhase Completed, proceeding to Reinforcement Phase" << std::endl;
         if(gameEngine.reinforcementPhase() == true) {
             cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;
