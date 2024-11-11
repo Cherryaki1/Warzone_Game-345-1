@@ -19,18 +19,33 @@
 #include "Orders.h"
 #include "Cards.h"
 #include "MapDriver.h"
-#include "LogObserver/LoggingObserver.h"
+
+#include "Commands/CommandProcessing.h"
+
 
 using namespace std;
 extern void testLoggingObserver();
 // Main Class
 int main(){
 
-    testLoggingObserver();
+  // ************** Assignment 1 **************
+  //testLoadMap();
+  //testGameStates();
+  //testPlayers();
+  //testOrdersLists();
+  //testCards();
 
-  // MAX 32 CONTINENTS
-  // MAX 10 ADJACENT TERRITORIES
-  // MAX 255 TERRITORIES
+  // ************** Assignment Part 2 **************
+  testCommandProcessor();     // Part 1
+  //testStartUpPhase();         // Part 2
+
+  // ************** Assignment 3 **************
+
+
+  // WELCOME MESSAGE
+  cout << "**** Welcome to our CLI Warzone! ****" << endl;
+
+
 
   return 0;
 }

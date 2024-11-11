@@ -10,56 +10,48 @@
 #define GAMEENGINE_H
 #include <string>
 #include <iostream>
+#include <vector>
+#include "Commands/CommandProcessing.h"
+
+#include "Player.h"
 using std::string;
 using std::ostream;
 
-
-
-class StartUp {
+class GameEngine {
     private:
+    string* state; // Keeps track of current state
     string* command;
     bool* invalidCommand;
+    vector<Player*>* players;
+
     public:
-    StartUp();
-    ~StartUp(); // Destructor
+    GameEngine();
+    ~GameEngine(); // Destructor
 
-    // PHASE
-    bool startUpPhase();
-
-    // SETTERS ANG GETTERS FOR STARTUP
-    string getCommand() const;
-    void setCommand(const string& cmd);
-    bool getInvalidCommand()const;
-    void setInvalidCommand(bool value);
-
-    // Stream insertion operator
-    friend ostream& operator<<(ostream& out, const StartUp& startup);
-};
-
-class Play {
-    private:
-    string* command;
-    bool* invalidCommand;
-    public:
-    Play();
-    ~Play(); // Destructor
+    void mainGameLoop();
 
     // PHASES
+    bool startUpPhase(string mapFile);
     bool reinforcementPhase();
     bool ordersIssuingPhase();
     string ordersExecutionPhase();
     bool endPhase();
 
     // SETTERS AND GETTERS FOR PLAY
+    string getState() const;
+    void setState(string st);
     string getCommand() const;
     void setCommand(const string& cmd);
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
 
     // Stream insertion operator
-    friend ostream& operator<<(ostream& out, const Play& play);
+    friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);
+
 };
 
 void testGameStates();
+void testStartUpPhase(string mapFile);
+void testMainGameLoop();
 #endif
 

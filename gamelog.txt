@@ -1,6 +1,6 @@
-Order Issued: Deploy
-Order Issued: Bomb
-Order Issued: Airlift
-Order Executed: Deploy
-Order Executed: Bomb
-Order Executed: Airlift
+
+
+Command: quit, Effect: Invalid command in the current state.
+Command: replay, Effect: Invalid command in the current state.
+Command: quit, Effect: Invalid command in the current state.
+

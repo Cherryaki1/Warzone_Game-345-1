@@ -4,7 +4,9 @@
 
 #ifndef MAPDRIVER_H
 #define MAPDRIVER_H
+#include "Map.h"
 
-int testLoadMap();
-
+bool testLoadMap();
+Map& loadMap(string mapFile);
+bool validateMap(Map& loadedMap);
 #endif //MAPDRIVER_H
