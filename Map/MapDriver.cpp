@@ -19,19 +19,28 @@ void testLoadMap(string name) {
     //Output the number of territories loaded
     cout << "Map loaded succesfully with " << loadedMap.getTerritories()->size() << " territories." << endl;
 
-    validateMap(loadedMap);
-}
-
-bool validateMap(Map& loadedMap) {
     // Validate the map
     if (loadedMap.validate()) {
         cout << " ** MAP IS VALID **" << endl;
         // FULL MAP:
         cout << loadedMap << endl;
-        return true;
+
     } else {
         cout << " !! MAP IS INVALID !!" << endl;
-        return false;
+
+    }
+}
+
+void validateMap(Map& loadedMap) {
+    // Validate the map
+    if (loadedMap.validate()) {
+        cout << " ** MAP IS VALID **" << endl;
+        // FULL MAP:
+        cout << loadedMap << endl;
+
+    } else {
+        cout << " !! MAP IS INVALID !!" << endl;
+
     }
 }
 

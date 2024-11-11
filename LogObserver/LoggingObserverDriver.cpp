@@ -1,7 +1,7 @@
 #include "LoggingObserver.h"
 #include "Orders.h"
 #include "Player.h"
-#include "fstream";
+#include "fstream"
 
 void testLoggingObserver(){
     //demonstrates that (1) The

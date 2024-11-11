@@ -35,9 +35,11 @@ int main(){
   //testOrdersLists();
   //testCards();
 
+
   // ************** Assignment Part 2 **************
   //testCommandProcessor();     // Part 1
   //testStartUpPhase();         // Part 2
+
 
   // ************** Assignment 3 **************
 

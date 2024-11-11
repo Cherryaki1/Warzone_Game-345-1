@@ -53,7 +53,7 @@ bool GameEngine::startUpPhase(string mapFile) {
 
     // COMMANDS WRITTEN IN A FILE
     // TODO Check if loadmap command valid
-
+    // Map& loadedMap = loadMap(mapFile);
     *state = "maploaded";
 
     // TODO Check if validate command valid
