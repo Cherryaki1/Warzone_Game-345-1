@@ -7,8 +7,12 @@
 // It contains the class and function implementations for the Game Engine composed of two objects, StartUp and Play
 
 #include <iostream>
+#include <algorithm>
+#include <random>
 #include "GameEngine.h"
 #include <MapDriver.h>
+
+#include "Cards.h"
 #include "MapLoader.h"
 #include "Map.h"
 
@@ -59,10 +63,11 @@ bool GameEngine::startUpPhase(string mapFile) {
     if(validateMap(loadedMap)) {
         *state = "mapvalidated";
         int playerCount = 0;
+        string name = "A";
         while(playerCount < 6) {
             // TODO Check if addplayer command is valid
             string command = "addplayer"; // To remove after
-            string name = "joe"; // To remove after
+            name += "B"; // To remove after
 
             if(command == "addplayer" && !name.empty()) {
                 players.push_back(new Player(name));
@@ -87,13 +92,19 @@ bool GameEngine::startUpPhase(string mapFile) {
         // Distribute All Territories
 
         // Randomize the order of players in the array
+        // Seed a random number generator
+        random_device rd;
+        default_random_engine rng(rd());
+        // Shuffle the vector
+        shuffle(players.begin(), players.end(), rng);
 
-        // GIve players 2 cards with draw()
+        // Give players 2 cards with draw()
         for(int i = 0; i < players.size(); i++) {
-
+            // Give 50 armies to everyone
+            //players[i]->playerHand->cards
         }
 
-        //mainGameLoop(); // Chain with the rest of the game
+        //mainGameLoop(); // Chain with the rest of the game - Play phase
     }
 
 
