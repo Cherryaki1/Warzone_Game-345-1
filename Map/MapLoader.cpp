@@ -18,18 +18,15 @@ using std::cout;
 using std::endl;
 
 MapLoader::MapLoader(const string& filename) {
-    loadFromFile(filename);
+    Map map = Map();
+    loadFromFile(filename, map);
 }
 
 MapLoader::~MapLoader() {
     // Destructor
 }
 
-Map &MapLoader::getMap() {
-    return map;
-}
-
-void MapLoader::loadFromFile(const string& filename) {
+void MapLoader::loadFromFile(const string& filename, Map &map) {
 
     ifstream file(filename);
     if (!file.is_open()) {
@@ -38,8 +35,6 @@ void MapLoader::loadFromFile(const string& filename) {
     }
 
     string line, section;
-    vector<Continent*>* continents = map.getContinents();
-    vector<Territory*>* territories = map.getTerritories();
     while (getline(file, line)) {
         if (line.empty() || line[0] == ';') continue;  // Skip comments or empty lines
 
@@ -51,25 +46,33 @@ void MapLoader::loadFromFile(const string& filename) {
 
         stringstream ss(line);
         if (section == "[Continents]") {
+            stringstream continentLineStream(line);
             string continentName;
-            int bonus;
+            string bonusStr;
 
-            // Read continent name and bonus
-            getline(ss, continentName, '=');
-            ss >> bonus;
+            while (getline(ss, line)) {
+                // Create Continent
+                getline(continentLineStream, continentName, '=');
+                getline(continentLineStream, bonusStr);
 
-            // Create and store the continent
-            Continent* continent = new Continent(continentName, bonus);
-            continents->push_back(continent);
+                int bonus = stoi(bonusStr);
 
+                cout << "Continent " << continentName << " created with bonus " << bonus << endl;
+
+                Continent *continent = new Continent(continentName, bonus);
+                map.getContinents()->push_back(continent);
+            }
         } else if (section == "[Territories]") {
-            string name, continent, owner = "N/A", skip;
+            string name, continent, owner, skip;
             int x, y;
-            vector<string> neighbors = {};
+            vector<string> neighbors;
 
             getline(ss, name, ',');  // Territory name
+
+            // Coordinates (not used here, but could be stored)
             getline(ss, skip, ',');  // Skip x
             getline(ss, skip, ',');  // Skip y
+
             getline(ss, continent, ',');  // Continent name
 
             string neighbor;
@@ -78,32 +81,10 @@ void MapLoader::loadFromFile(const string& filename) {
                 neighbors.push_back(neighbor);
             }
 
-            // Create Territory
-            Territory* territory = nullptr;
+            cout << "Territory " << name << " in continent " << continent << endl;
+            Territory *territory = new Territory(name, owner, continent, 0);
 
-            // Search for the existing territory
-            for (Territory* existingTerritory : *territories) {
-                if (existingTerritory->getName() == name) {
-                    territory = existingTerritory; // Use existing territory
-                    territory->setContinentID(continent);
-                    break;
-                }
-            }
-
-            // If the territory doesn't exist, create a new one
-            if (!territory) {
-                territory = new Territory(name, owner, continent, 0);
-                territories->push_back(territory);  // Add to map's territories
-            }
-
-            // Add Territories to Continent
-            for (auto& cont : *continents) {
-                if (cont->getContinentID() == continent) {
-                    cont->addTerritory(territory);  // Add territory to continent
-                    break;
-                }
-            }
-
+            map.getTerritories()->push_back(territory);
             // Initialize adjacency list entry if it doesn't exist
             if (map.getAdjList()->find(territory) == map.getAdjList()->end()) {
                 (*map.getAdjList())[territory] = list<Territory*>();
@@ -111,28 +92,15 @@ void MapLoader::loadFromFile(const string& filename) {
 
             // Add neighbors as edges
             for (const auto& neighborName : neighbors) {
-                // Check if the neighbor already exists in the territories
-                Territory* neighborTerritory = nullptr;
+                // Neighbors are defined as territory names
+                Territory *neighbor = new Territory(neighborName, owner, continent, 0);
 
-                // Search for the existing neighbor territory
-                for (Territory* existingTerritory : *territories) {
-                    if (existingTerritory->getName() == neighborName) {
-                        neighborTerritory = existingTerritory; // Use the existing one
-                        break;
-                    }
-                }
+                cout << "Territory adj " << neighbor->getName() << " in continent " << territory->getContinentID()
+                << " connected to " << territory->getName() << endl;
 
-                // If the neighbor doesn't exist, create a new one
-                if (!neighborTerritory) {
-                    neighborTerritory = new Territory(neighborName, owner, continent, 0);
-                    territories->push_back(neighborTerritory); // Add to territories
-                }
-
-                // Now, add the edge between the territory and its neighbor
-                map.add_edge(territory, neighborTerritory);  // Add edge between territory and neighbor
+                map.add_edge(territory, neighbor);
             }
         }
-
     }
   file.close();
 }
