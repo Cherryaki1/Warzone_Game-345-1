@@ -9,24 +9,17 @@ using namespace std;
 extern Map* globalMap;
 
 
-bool testLoadMap() {
+void testLoadMap(string name) {
     // Load the map
-    const string mapFile = "../DownloadedMaps/Europe 4B.map"; // Change the name of the map file HERE!!!
+    const string mapFile = "../DownloadedMaps/" + name; // Change the name of the map file HERE!!!
 
-
-    Map& loadedMap = loadMap(mapFile);
-
-
-    return validateMap(loadedMap);;
-}
-
-Map& loadMap(string mapFile) {
     MapLoader mapLoader(mapFile);
     cout << "MapLoader created" << endl;
     Map& loadedMap = mapLoader.getMap();
-    // Output the number of territories loaded
-    //cout << "Map loaded with " << loadedMap.getTerritories()->size() << " territories." << endl;
-    return loadedMap;
+    //Output the number of territories loaded
+    cout << "Map loaded succesfully with " << loadedMap.getTerritories()->size() << " territories." << endl;
+
+    validateMap(loadedMap);
 }
 
 bool validateMap(Map& loadedMap) {

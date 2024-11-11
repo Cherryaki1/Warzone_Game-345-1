@@ -26,14 +26,14 @@ using namespace std;
 // Main Class
 int main(){
   // ************** Assignment 1 **************
-  //testLoadMap();
+  testLoadMap("Europe 4B.map");
   //testGameStates();
   //testPlayers();
   //testOrdersLists();
   //testCards();
 
   // ************** Assignment Part 2 **************
-  testCommandProcessor();     // Part 1
+  //testCommandProcessor();     // Part 1
   //testStartUpPhase();         // Part 2
 
   // ************** Assignment 3 **************

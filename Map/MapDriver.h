@@ -6,7 +6,6 @@
 #define MAPDRIVER_H
 #include "Map.h"
 
-bool testLoadMap();
-Map& loadMap(string mapFile);
+void testLoadMap(string name);
 bool validateMap(Map& loadedMap);
 #endif //MAPDRIVER_H

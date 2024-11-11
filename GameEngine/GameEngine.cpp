@@ -11,7 +11,6 @@
 #include <MapDriver.h>
 #include "MapLoader.h"
 #include "Map.h"
-#include "Commands/CommandProcessing.h";
 
 using namespace std;
 
@@ -53,23 +52,43 @@ bool GameEngine::startUpPhase(string mapFile) {
     *state = "start";
 
     // COMMANDS WRITTEN IN A FILE
-    // Check if loadmap command valid
-    Map& loadedNap = loadMap(mapFile);
+    // TODO Check if loadmap command valid
+
     *state = "maploaded";
-    // Call to validateMap function
-    // Check if validate command valid
-    if(validateMap(loadedNap)) {
+
+    // TODO Check if validate command valid
+
         *state = "mapvalidated";
-        // Call addplayer function
-        // Check if addplayer command is valid
+
+        int playerCount = 0;
+        while(playerCount < 6) {
+            // TODO Check if addplayer command is valid
+            string command = "addplayer"; // To remove after
+            string name = "joe"; // To remove after
+
+            if(command == "addplayer" && !name.empty()) {
+                players->push_back(new Player(name));
+                playerCount++;
+                cout << "Adding Player: " << name << endl;
+            } else if (command != "addplayer") {
+                cout << "No more players to add. Starting game with " << playerCount << " players.\n";
+                break;
+            }
+            if (playerCount >= 2 && playerCount < 6) {
+                std::cout << "You can add more players or type another command to stop adding.\n";
+            } else if (playerCount == 6) {
+                std::cout << "Maximum player limit reached.\n";
+                break;
+            }
+        }
         *state = "playersadded";
 
-        // Check is gamestart commnand is valid
+        // TODO Check is gamestart commnand is valid
+
 
         //mainGameLoop(); // Chain with the rest of the game
-    }else {
-        return false;
-    }
+
+
 
     // COMMANDS WRITTEN ON THE CONSOLE
 
@@ -87,6 +106,7 @@ bool GameEngine::reinforcementPhase() {
 
     cout << "... Reinforcement Phase ..." << endl;
     setInvalidCommand(false);
+    *state = "assignreinforcement";
 
     if(command == nullptr) {
         command = new string("");  // Allocate memory for command
@@ -152,6 +172,7 @@ string GameEngine::ordersExecutionPhase() {
 bool GameEngine::endPhase() {
     cout << "... End Phase ..." << endl;
     // Validate win
+    *state = "win";
     return true;
 }
 
