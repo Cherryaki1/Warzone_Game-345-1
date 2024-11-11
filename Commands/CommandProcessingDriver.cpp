@@ -22,7 +22,6 @@ void testCommandProcessor() {
             string fileName;
             std::cout << "Write the File Name:";
             std::cin >> fileName;
-
             FileCommandProcessorAdapter fileProcessor("../" + fileName);
             fileProcessor.attach(&logObserver);
 
@@ -34,6 +33,6 @@ void testCommandProcessor() {
             std::cerr << e.what() << std::endl;
         }
     } else {
-        std::cout << "Get some help gay ass bigger";
+        std::cout << "Invalid choice" << std::endl;
     }
 }

@@ -44,78 +44,30 @@ GameEngine::~GameEngine() {
     }
 
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
-bool GameEngine::testStartUpPhase(string mapFile) {
+bool GameEngine::startUpPhase(string mapFile) {
     cout << "... Starting up Phase ..." << endl;
-
-    // Call Loadmap
+    // Current State
+    *state = "start";
+    // Call Loadmap function
+    // Check if loadmap command valid
     Map& loadedNap = loadMap(mapFile);
+    *state = "maploaded";
+    // Call to validateMap function
+    // Check if validate command valid
+    if(!validateMap(loadedNap)) {
+        *state = "mapvalidated";
+        // Call addplayer function
+        // Check if addplayer command is valid
+        *state = "playersadded";
 
-    /*
-    // Allocate memory for `command` before using it
-    if(command == nullptr) {
-        command = new string("");  // Allocate memory for command
+        // Check is gamestart commnand is valid
+
+        //mainGameLoop(); // Chain with the rest of the game
     }
-
-    setInvalidCommand(false);
-    while(!getInvalidCommand()){
-        cout << "Type \"loadmap\" to transition to the next state"<< endl;
-        cin >> *command;
-        if(getCommand() == "loadmap") {
-            // Call loadmap
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
-        }
-    }
-    setInvalidCommand(false);
-    while(!getInvalidCommand()) {
-        cout << "Type \"validatemap\" to transition to the next state" << endl;
-        cin >> *command;
-        if(getCommand() == "validatemap") {
-            // Call validateMap Function
-
-            // validate call function
-
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
-        }
-    }
-    setInvalidCommand(false);
-    while(!getInvalidCommand()) {
-        cout << "Type \"addplayer\" to transition to the next state" << endl;
-        cin >> *command;
-        if(getCommand() == "addplayer") {
-            // Call to addPlayer Function
-
-            // addplayer <playername> inside a function that loops till i-1 players
-            // 50 armies for everyplayer
-            // Set Random palyer order
-            // Each player draws two cards
-
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
-        }
-    }
-    setInvalidCommand(false);
-    while(!getInvalidCommand()) {
-        cout << "Type \"assigncountries\" to transition to the next state" << endl;
-        cin >> *command;
-        if(getCommand() == "assigncountries") {
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
-        }
-    }
-    */
     return true;
 }
 
-
-bool GameEngine::reinforcementPhase() {
-=======
-void Play::mainGameLoop() {
+void GameEngine::mainGameLoop() {
     reinforcementPhase();
     ordersIssuingPhase();
     ordersExecutionPhase();
@@ -195,6 +147,19 @@ bool GameEngine::endPhase() {
 }
 
 // SETTERS AND GETTERS FOR PLAY
+string GameEngine::getState() const {
+    if(state == nullptr) {
+        return "start";
+    }
+    return *state;
+}
+void GameEngine::setState(string st) {
+    if(state == nullptr) {
+        state = new string("start");
+    }else {
+        *state = st;
+    }
+}
 string GameEngine::getCommand() const {
     if(command == nullptr) {
         return ""; // Return empty string if command is initialized

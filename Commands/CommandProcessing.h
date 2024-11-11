@@ -34,7 +34,7 @@ private:
     vector<Command*> commands;
     virtual void readCommand();
 
-public:
+    public:
     CommandProcessor();
     virtual ~CommandProcessor();
     vector<Command*>* getCommands();
@@ -64,8 +64,5 @@ public:
 
 // Free Function
 void testCommandProcessor();
-
-
-
 
 #endif //COMMANDPROCESSING_H

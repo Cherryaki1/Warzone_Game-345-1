@@ -9,15 +9,15 @@ using namespace std;
 extern Map* globalMap;
 
 
-int testLoadMap() {
+bool testLoadMap() {
     // Load the map
     const string mapFile = "../DownloadedMaps/Europe 4B.map"; // Change the name of the map file HERE!!!
 
 
     Map& loadedMap = loadMap(mapFile);
-    validateMap(loadedMap);
 
-    return 0;
+
+    return validateMap(loadedMap);;
 }
 
 Map& loadMap(string mapFile) {
@@ -29,14 +29,16 @@ Map& loadMap(string mapFile) {
     return loadedMap;
 }
 
-void validateMap(Map& loadedMap) {
+bool validateMap(Map& loadedMap) {
     // Validate the map
     if (loadedMap.validate()) {
         cout << " ** MAP IS VALID **" << endl;
         // FULL MAP:
         cout << loadedMap << endl;
+        return true;
     } else {
         cout << " !! MAP IS INVALID !!" << endl;
+        return false;
     }
 }
 

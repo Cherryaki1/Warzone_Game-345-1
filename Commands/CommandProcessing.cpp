@@ -102,3 +102,6 @@ void FileCommandProcessorAdapter::readCommand() {
         }
     }
 }
+
+
+

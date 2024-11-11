@@ -10,10 +10,19 @@
 # include "GameEngine.h"
 using namespace std;
 
+GameEngine gameEngine;
+
+void testStartUpPhase(string mapFile) {
+    //gameEngine.startUpPhase(mapFile);
+}
+
+void testMainGameLoop() {
+    // Call the main game loop here
+}
 
 void testGameStates() {
-    GameEngine gameEngine;
-    if(gameEngine.testStartUpPhase() == true) {
+
+    if(gameEngine.startUpPhase() == true) {
         cout << "Game Engine StartUpPhase Completed, proceeding to Reinforcement Phase" << std::endl;
         if(gameEngine.reinforcementPhase() == true) {
             cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;

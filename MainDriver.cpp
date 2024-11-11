@@ -25,63 +25,23 @@ using namespace std;
 
 // Main Class
 int main(){
-  // Assignment 1
+  // ************** Assignment 1 **************
   //testLoadMap();
   //testGameStates();
   //testPlayers();
   //testOrdersLists();
   //testCards();
 
-  // Assignment Part 2
-  //testCommandProcessor();
-  /*testLoadMap();
-  testGameStates();
-  testPlayers();
-  testOrdersLists();
-  testCards();
+  // ************** Assignment Part 2 **************
+  //testCommandProcessor();     // Part 1
+  //testStartUpPhase();         // Part 2
+
+  // ************** Assignment 3 **************
 
 
   // WELCOME MESSAGE
   cout << "**** Welcome to our CLI Warzone! ****" << endl;
 
-
-
-
-  /*
-  // PROMPT FOR MAP SELECTION
-  while(menuLoop) {
-    cout << "To begin, choose your map...  Map 1: Test , Map 2: World 2007 (Invalid), Map 3: Europe 4B/" << endl;
-    cout << "Enter the number of the map as your choice: ";
-    cin >> chosenMap;
-    cout << chosenMap << endl;
-    switch(chosenMap) {
-      case 1:
-        mapName = "Test.txt";
-      // Load map passing the name and returning boolean value
-
-      cout << mapName << " successfully loaded..." << endl;
-      menuLoop = false;
-      break;
-      case 2:
-        mapName = "World 2007.map";
-      // Load map passing the name and returning boolean value
-      cout << mapName << " successfully loaded." << endl;
-      menuLoop = false;
-      break;
-      case 3:
-        mapName = "Europe 4B.map";
-      // Load map passing the name and returning boolean value
-      cout << mapName << " successfully loaded..." << endl;
-      menuLoop = false;
-      break;
-      default: cout << "Invalid choice! Try Again" << endl;
-    }
-  }
-  */
-
-  // MAX 32 CONTINENTS
-  // MAX 10 ADJACENT TERRITORIES
-  // MAX 255 TERRITORIES
 
   return 0;
 }

@@ -26,13 +26,15 @@ class GameEngine {
     void mainGameLoop();
 
     // PHASES
-    bool testStartUpPhase(string mapFile);
+    bool startUpPhase(string mapFile);
     bool reinforcementPhase();
     bool ordersIssuingPhase();
     string ordersExecutionPhase();
     bool endPhase();
 
     // SETTERS AND GETTERS FOR PLAY
+    string getState() const;
+    void setState(string st);
     string getCommand() const;
     void setCommand(const string& cmd);
     bool getInvalidCommand()const;
