@@ -177,6 +177,13 @@ vector<Card*>* Hand::getHand(){ //Returns a pointer to the hand's card vector
     return &cards;
 }
 
+bool Hand::hasCard(string cardType) { //Checks if the hand has a card of a certain type
+    for (int i = 0; i<cards.size(); i++){
+        if(cards.at(i)->getType()==cardType) return true;
+    }
+    return false;
+}
+
 Player* Hand::getOwner() {
     return owner;
 }

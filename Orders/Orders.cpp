@@ -1,4 +1,5 @@
 #include "Orders.h"
+#include "Cards/Cards.h" // Include the header file for the Hand class
 #include <iostream>
 #include <iterator>
 #include <algorithm>
@@ -41,24 +42,46 @@ string Order::stringToLog() {
 
 
 // Deploy Order implementations
-DeployOrder::DeployOrder() : Order("Deploy") {}
+// DeployOrder::DeployOrder() {}
 void DeployOrder::execute() {
-    std::cout << "Using Deploy card" << std::endl;
-    notify(this);
-    executed = true;
+    if (targetTerritory->getOwner() == player->getPlayerName()) {
+        // call deploy order method on the target territory
+        notify(this);
+        executed = true;
+    }
+    else {
+        std::cout << "Invalid deploy order: " << targetTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
+    }
+    
 }
 
 // Advance Order implementations
-AdvanceOrder::AdvanceOrder() : Order("Advance") {}
+// AdvanceOrder::AdvanceOrder() : Order("Advance") {}
 void AdvanceOrder::execute() {
-    Order::execute();
-    std::cout << "Using Advance card" << std::endl;
+    if (sourceTerritory->getOwner() == player->getPlayerName()) {
+        if (sourceTerritory->isAdjacent(targetTerritory)) {
+            if (targetTerritory->getOwner() == player->getPlayerName()) {
+                // call advance order method on the target territory
+                notify(this);
+                executed = true;
+            }
+            else { // Perform attack simulation when using execute()
+
+            }
+        }
+        else {
+            std::cout << "Invalid advance order: " << sourceTerritory->getName() << " is not adjacent to " << targetTerritory->getName() << std::endl;
+        }
+    }
+    else {
+        std::cout << "Invalid advance order: " << sourceTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
+    }
     notify(this);
     executed = true;
 }
 
 // Bomb Order implementations
-BombOrder::BombOrder() : Order("Bomb") {}
+// BombOrder::BombOrder() : Order("Bomb") {}
 void BombOrder::execute() {
     Order::execute();
     std::cout << "Using Bomb card" << std::endl;
@@ -67,7 +90,7 @@ void BombOrder::execute() {
 }
 
 // Blockade Order implementations
-BlockadeOrder::BlockadeOrder() : Order("Blockade") {}
+// BlockadeOrder::BlockadeOrder() : Order("Blockade") {}
 void BlockadeOrder::execute() {
     Order::execute();
     std::cout << "Using Blockade card" << std::endl;
@@ -76,16 +99,31 @@ void BlockadeOrder::execute() {
 }
 
 // Airlift Order implementations
-AirliftOrder::AirliftOrder() : Order("Airlift") {}
+// AirliftOrder::AirliftOrder() : Order("Airlift") {}
 void AirliftOrder::execute() {
-    Order::execute();
-    std::cout << "Using Airlift card" << std::endl;
-    notify(this);
-    executed = true;
+    if (player->getHand()->hasCard("Airlift")) {
+        if (sourceTerritory->getOwner() == player->getPlayerName()) {
+            if (targetTerritory->getOwner() == player->getPlayerName()) {
+            // call airlift order method on the source territory
+            notify(this);
+            executed = true;
+            }
+            else {
+                std::cout << "Invalid airlift order: " << targetTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
+            }
+        }
+        else {
+            std::cout << "Invalid airlift order: " << sourceTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
+        }
+    }
+    else {
+        std::cout << "Invalid airlift order: " << player->getPlayerName() << " does not have an Airlift card" << std::endl;
+    }
+    
 }
 
 // Negotiate Order implementations
-NegotiateOrder::NegotiateOrder() : Order("Negotiate") {}
+// NegotiateOrder::NegotiateOrder() : Order("Negotiate") {}
 void NegotiateOrder::execute() {
     Order::execute();
     std::cout << "Using Negotiate card" << std::endl;

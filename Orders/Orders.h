@@ -6,64 +6,110 @@
 #include <list>
 #include <stdbool.h>
 #include "LogObserver/LoggingObserver.h"
+#include "Player/Player.h"
 
 void testOrdersLists();
 
+
+// ----------------------------------------------------------
+//                        Order class
+// ----------------------------------------------------------
 class Order : public Subject, public ILoggable {
-public:
-    // Constructors and Destructor
-    Order(); 
-    Order(const std::string& orderType);
-    virtual ~Order();
-    // Methods
-    virtual bool validate() = 0;  // Pure virtual method
-    virtual void execute() = 0;  // Pure virtual method
-    std::string getOrderType() const;
-    friend std::ostream& operator<<(std::ostream& os, const Order& order);
+    public:
+        // Constructors and Destructor
+        Order() = default; 
+        virtual ~Order() = default;
+        Order(const std::string& orderType);
+
+        // Methods
+        bool validate();
+        virtual void execute() = 0; // Pure virtual method
+        std::string getOrderType() const;
+        friend std::ostream& operator<<(std::ostream& os, const Order& order);
+
 protected:
     std::string orderType;
     bool executed;
     string stringToLog() override;
 };
 
+// ----------------------------------------------------------
+//                    Derived Order classes
+// ----------------------------------------------------------
 class DeployOrder : public Order {
+private:
+    Player* player;
+    Territory* targetTerritory;
+    int numUnits;
+
 public:
-    DeployOrder();
-    void execute();
-    bool validate();
+    DeployOrder(Player* player, Territory* target, int units) : player(player), targetTerritory(target), numUnits(units) {}
+    void execute() override;
 };
+
 
 class AdvanceOrder : public Order {
+private:
+    Player* player;
+    Territory* sourceTerritory;
+    Territory* targetTerritory;
+    int numUnits;
+
 public:
-    AdvanceOrder();
-    void execute();
-    bool validate();
+    AdvanceOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
+    void execute() override;
 };
+
+
 
 class BombOrder : public Order {
+private:
+    Player* player;
+    Territory* targetTerritory;
+
 public:
-    BombOrder();
-    void execute();
+    BombOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
+    void execute() override;
 };
+
 
 class BlockadeOrder : public Order {
+private:
+    Player* player;
+    Territory* targetTerritory;
+
 public:
-    BlockadeOrder();
-    void execute();
+    BlockadeOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
+    void execute() override;
 };
+
 
 class AirliftOrder : public Order {
+private:
+    Player* player;
+    Territory* sourceTerritory;
+    Territory* targetTerritory;
+    int numUnits;
+
 public:
-    AirliftOrder();
-    void execute();
+    AirliftOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
+    void execute() override;
 };
+
 
 class NegotiateOrder : public Order {
+private:
+    Player* player;
+    Player* targetPlayer;
+
 public:
-    NegotiateOrder();
-    void execute();
+    NegotiateOrder(Player* player, Player* target) : player(player), targetPlayer(target) {}
+    void execute() override;
 };
 
+// ----------------------------------------------------------
+//                        OrdersList class
+// ----------------------------------------------------------
 class OrdersList : public Subject, public ILoggable{
 private:
     std::list<Order*> orders;
