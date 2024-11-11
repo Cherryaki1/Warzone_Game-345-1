@@ -15,26 +15,47 @@
 
 using namespace std;
 
+int Player::numOfPlayers = 0;
+
 // Default constructor
 Player::Player() {
-    playerName = new string("Unknown");
+    ownedTerritories = {};
     playerHand = new Hand(this);        // Assuming Hand has a default constructor
     ordersList = new OrdersList();  // Assuming OrdersList has a default constructor
+    numOfPlayers++;
+    playerName = new string("Player " + to_string(numOfPlayers));
 }
 
-// Overloaded constructor
+// Parameterized constructors
 Player::Player(string name) {
-    playerName = new string(name);
+    ownedTerritories = {};
     playerHand = new Hand(this);        // Assuming Hand has a default constructor
     ordersList = new OrdersList();  // Assuming OrdersList has a default constructor
+    numOfPlayers++;
+    playerName = new string(string(name));
+}
+
+Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name)
+{
+    ownedTerritories = initialTerritories;
+    playerHand = initialHand;
+    ordersList = new OrdersList();
+    numOfPlayers++;
+    playerName = new string(string(name));
 }
 
 // Copy constructor
 Player::Player(const Player& other) {
-    playerName = new string(*(other.playerName));
+    // Perform a deep copy of each territory pointer in ownedTerritories
+    for (auto& territory : other.ownedTerritories) {
+        ownedTerritories.push_back(new Territory(*territory));  // Assuming Territory has a copy constructor
+    }
     playerHand = new Hand(*(other.playerHand));        // Assuming Hand has a copy constructor
     ordersList = new OrdersList(*(other.ordersList));  // Assuming OrdersList has a copy constructor
+    numOfPlayers++;
+    playerName = new string(*(other.playerName));
 }
+
 
 // Assignment operator
 Player& Player::operator=(const Player& other) {
@@ -43,11 +64,19 @@ Player& Player::operator=(const Player& other) {
         delete playerName;
         delete playerHand;
         delete ordersList;
+        for (auto& territory : ownedTerritories) {
+            delete territory;
+        }
+        ownedTerritories.clear();
 
         // Perform deep copy
         playerName = new string(*(other.playerName));
         playerHand = new Hand(*(other.playerHand));        // Assuming Hand has a copy constructor
         ordersList = new OrdersList(*(other.ordersList));  // Assuming OrdersList has a copy constructor
+        // Deep copy of each territory pointer in ownedTerritories
+        for (auto& territory : other.ownedTerritories) {
+            ownedTerritories.push_back(new Territory(*territory));  // Assuming Territory has a copy constructor
+        }
     }
     return *this;
 }
@@ -55,8 +84,18 @@ Player& Player::operator=(const Player& other) {
 // Destructor
 Player::~Player() {
     delete playerName;
+    playerName = nullptr;  // Set to nullptr after deletion
+
     delete playerHand;
+    playerHand = nullptr;  // Set to nullptr after deletion
+
     delete ordersList;
+    ordersList = nullptr;  // Set to nullptr after deletion
+
+    for (auto& territory : ownedTerritories) {
+        delete territory;
+        territory = nullptr;  // Set each pointer in the vector to nullptr after deletion
+    }
 }
 
 // Method to set player name
@@ -73,6 +112,34 @@ string Player::getPlayerName() const {
 Hand* Player::getHand() const {
     return playerHand;
 }
+
+OrdersList* Player::getOrdersList() const {
+    return ordersList;
+}
+
+vector<Territory *> Player::getOwnedTerritories() const {
+    return ownedTerritories;
+}
+
+// Pushes a new territory onto the player's list of owned territories.
+void Player::addOwnedTerritory(Territory *territory)
+{
+    ownedTerritories.push_back(territory);
+}
+
+// Pops an existing territory from the player's list of owned territories. Returns its reference.
+Territory* Player::removeOwnedTerritory(const Territory* territory) {
+    for (auto it = ownedTerritories.begin(); it != ownedTerritories.end(); ++it) {
+        if (*it == territory) {
+            Territory* poppedTerritory = *it;
+            ownedTerritories.erase(it);
+            return poppedTerritory;
+        }
+    }
+    return nullptr;
+}
+
+
 
 // Method to check if player has a card of a certain type
 bool Player::hasCard(string cardType) {
@@ -174,8 +241,4 @@ vector<Territory*> Player::toAttack(Map& map) {
 ostream& operator<<(ostream& os, const Player& player) {
     os << "Player Name: " << *(player.playerName);
     return os;
-}
-
-Hand *Player::getPlayerHand(){
-    return playerHand;
 }
