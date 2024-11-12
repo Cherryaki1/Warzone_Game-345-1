@@ -187,70 +187,210 @@ void GameEngine::mainGameLoop() {
     ordersExecutionPhase();
 }
 
-bool GameEngine::reinforcementPhase() {
+void GameEngine::reinforcementPhase() {
+    for (auto player : players)
+    {
+        // Check which continents player occupies
+        /*
+        vector<Continent> continentsOccupied;
+        for (auto continent : gameMap->continents)
+        {
+            // assume its occupied and go through the list
+            bool occupied = true;
+            for (auto territory : continent->continentTerritories)
+            {
+                if (territory->occupierName.compare(player->getPlayerName()) != 0)
+                {
+                    occupied = false;
+                    break;
+                }
+            }
 
-    cout << "... Reinforcement Phase ..." << endl;
-    setInvalidCommand(false);
-    *state = "assignreinforcement";
+            if (occupied)
+            {
+                continentsOccupied.push_back(*continent);
+            }
+        }
+        */
 
-    if(command == nullptr) {
-        command = new string("");  // Allocate memory for command
-    }
+        // Give player continent bonus(es)
+        int continentBonus = 0;
+        /*
+        for (auto continent : continentsOccupied)
+        {
+            continentBonus += continent.controlBonus;
+        }
+        */
 
-    // Call to assignCountries Function which assign troops to countries
-    while(!getInvalidCommand()) {
-        cout << "Type \"issueorder\" to transition to the next state" << endl;
-        cin >> *command;
-        if(getCommand() == "issueorder") {
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
+
+        // Allocate units to player
+        int units = player->getOwnedTerritories().size() / 3 + continentBonus;
+        if (units >= 3)
+        {
+            std::cout << "+" << units << " units in " << player->getPlayerName() << "'s reinforcement pool" << std::endl;
+            player->setReinforcementPool(units);
+        }
+        else
+        {
+            std::cout << "+3 units in " << player->getPlayerName() << "'s reinforcement pool" << std::endl;
+
+            player->setReinforcementPool(3);
         }
     }
-    return true;
 }
 
 
-bool GameEngine::ordersIssuingPhase() {
-    cout << "... Orders Issuing Phase ..." << endl;
-    setInvalidCommand(false);
+void GameEngine::ordersIssuingPhase() {
+     for (auto player : players)
+    {
+        vector<Territory *> territoriesToAttack = player->toAttack();
 
-    if(command == nullptr) {
-        command = new string("");  // Allocate memory for command
-    }
-
-    // Call to issueOrder Function
-    while(!getInvalidCommand()) {
-        cout << "Type \"endissueorders\" to transition to the next state" << endl;
-        cin >> *command;
-        if(getCommand() == "endissueorders") {
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
+        vector<Territory *> territoriesToDefend = player->toDefend();
+        /*
+            Deploy units from reinforcement pool
+        */
+        string territoryList = "";
+        for (int i = 0; i < territoriesToDefend.size(); i++)
+        {
+            territoryList += territoriesToDefend[i]->getName() + "( " + std::to_string(i) + " ), ";
         }
+
+        int numUnits = player->getReinforcementPool();
+        int unitsDeployed = 0;
+        while (unitsDeployed < numUnits)
+        {
+            std::cout << "Deploy units to which territory? " << territoryList << std::endl;
+            string territory;
+            std::cin >> territory;
+            int tIndex = std::stoi(territory);
+
+            if (!(tIndex >= 0 && tIndex < territoriesToDefend.size()))
+            {
+                std::cout << "Invalid territory number/index" << std::endl;
+            }
+
+            std::cout << "How many units? " << std::endl;
+            string units;
+            std::cin >> units;
+            int unitsI = std::stoi(units);
+
+            if (unitsI > 0 && unitsI + unitsDeployed <= numUnits)
+            {
+
+                // Deploy order(territories[tIndex], unitsI);
+                player->issueOrder("Deploy");
+                unitsDeployed += unitsI;
+            }
+            else
+            {
+                std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
+            }
+        }
+
+        /*
+            Advance orders
+        */
+
+        // Advance to defend
+        for (auto territory1 : territoriesToDefend)
+        {
+            for (auto territory2 : territoriesToDefend)
+            {
+                if (territory1->getName().compare(territory2->getName()) != 0)
+                {
+                    std::cout << "Advance units from " << territory1->getName() << " to " << territory2->getName() << "? (y/n)" << std::endl;
+                    string answer;
+                    std::cin >> answer;
+                    if (answer.compare("y") == 0)
+                    {
+                        std::cout << "How many units? " << std::endl;
+                        string units;
+                        std::cin >> units;
+
+                        //Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
+                        player->issueOrder("Advance");
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Advance to attack
+        for (auto territory1 : territoriesToDefend)
+        {
+            for (auto territory2 : territoriesToAttack)
+            {
+                if (territory1->getName().compare(territory2->getName()) != 0)
+                {
+                    std::cout << "Advance units from " << territory1->getName() << " to " << territory2->getName() << "? (y/n)" << std::endl;
+                    string answer;
+                    std::cin >> answer;
+                    if (answer.compare("y") == 0)
+                    {
+                        std::cout << "How many units? " << std::endl;
+                        string units;
+                        std::cin >> units;
+
+                        //Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
+                        player->issueOrder("Advance");
+                        break;
+                    }
+                }
+            }
+        }
+
+        /*
+            Issue order from one card in hand
+        */
+        /*
+        for (auto card : player->getHand()->returnMyCards())
+        {
+            string cardType = "";
+
+            if (dynamic_cast<Card_Airlift *>(card) != nullptr)
+            {
+                cardType = "an Airlift";
+            }
+            else if (dynamic_cast<Card_Blockade *>(card) != nullptr)
+            {
+                cardType = "a Blockade";
+            }
+            else if (dynamic_cast<Card_Bomb *>(card) != nullptr)
+            {
+                cardType = "a Bomb";
+            }
+            else if (dynamic_cast<Card_Diplomacy *>(card) != nullptr)
+            {
+                cardType = "a Diplomacy";
+            }
+            else
+            {
+                cardType = "a Reinforcement";
+            }
+
+            std::cout << "Play " << cardType << "card? (y/n)" << std::endl;
+            string answer;
+            std::cin >> answer;
+            if (answer.compare("y") == 0)
+            {
+                card->play();
+                break;
+            }
+        }
+        */
     }
-    return true;
 }
 
-string GameEngine::ordersExecutionPhase() {
-    cout << "... Orders Execution Phase ..." << endl;
-    setInvalidCommand(false);
-
-    if(command == nullptr) {
-        command = new string("");  // Allocate memory for command
-    }
-
-    // Call to executeOrders Function
-    while(!getInvalidCommand()) {
-        cout << "Type \"endexecorders\" to keep playing or \"win\" to end the game" << endl;
-        cin >> *command;
-        if(getCommand() == "endexecorders" || getCommand() == "win") {
-            setInvalidCommand(true);
-        }else {
-            cerr << "Invalid command!" << endl;
+void GameEngine::ordersExecutionPhase() {
+    for (auto player : players)
+    {
+        OrdersList *orderList = player->getOrdersList();
+        Order *nextOrder = orderList->getNextOrder();
+        while (nextOrder != nullptr)
+        {
+            nextOrder->execute();
         }
     }
-    return getCommand();
 }
 
 

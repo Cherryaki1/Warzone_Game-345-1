@@ -32,6 +32,7 @@ Map& loadMap(string name) {
     cout << "Map loaded with " << loadedMap.getTerritories()->size() << " territories." << endl;
     return loadedMap;
 }
+
 bool validateMap(Map& loadedMap) {
     // Validate the map
     if (loadedMap.validate()) {

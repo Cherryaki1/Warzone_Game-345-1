@@ -131,6 +131,16 @@ int Player::getArmies() const {
     return *armies;
 }
 
+int Player::getReinforcementPool()
+{
+    return reinforcementPool;
+}
+
+void Player::setReinforcementPool(int numUnits)
+{
+    reinforcementPool = numUnits;
+}
+
 vector<Territory *> Player::getOwnedTerritories() const {
     return ownedTerritories;
 }
@@ -170,36 +180,27 @@ void Player::issueOrder(const std::string& orderType) {
     // Create the correct subclass of Order based on the orderType
     if (orderType == "Bomb") {
         newOrder = new BombOrder();
-        cout << "Bomb order issued.\n";
+        cout << "Bomb order issued."<< endl;
     }
     else if (orderType == "Blockade") {
         newOrder = new BlockadeOrder();
-        cout << "Blockade order issued.\n";
+        cout << "Blockade order issued."<< endl;
     }
     else if (orderType == "Airlift") {
         newOrder = new AirliftOrder();
-        cout << "Airlift order issued.\n";
+        cout << "Airlift order issued."<< endl;
     }
     else if (orderType == "Negotiate") {
         newOrder = new NegotiateOrder();
-        cout << "Negotiate order issued.\n";
+        cout << "Negotiate order issued."<< endl;
     }
-    else if (orderType == "Reinforcement") {
-        // Player can either deploy or advance troops when playing a reinforcement card
-        cout << "Reinforcement card played. Choose an action: \n";
-        cout << "1. Deploy troops\n";
-        cout << "2. Advance troops\n";
-        int choice;
-        cin >> choice;
-
-        if (choice == 1) {
-            newOrder = new DeployOrder();
-            cout << "Deploy order issued." << endl;
-        }
-        else if (choice == 2) {
-            newOrder = new AdvanceOrder();
-            cout << "Advance order issued." << endl;
-        }
+    else if (orderType == "Deploy") {
+        newOrder = new DeployOrder();
+        cout << "Deploy order issued." << endl;
+    }
+    else if (orderType == "Advance") {
+        newOrder = new AdvanceOrder();
+        cout << "Advance order issued." << endl;
     }
     else {
         cout << "Unknown order type: " << orderType << endl;
@@ -215,34 +216,25 @@ void Player::issueOrder(const std::string& orderType) {
 
 
 // Method to identify territories to defend (placeholder implementation)
-vector<Territory*> Player::toDefend(Map& map) {
+vector<Territory*> Player::toDefend() {
     // Logic to identify territories to defend
-    vector<Territory*> defendList;
-    vector<Territory*> allTerritories = *map.getTerritories();
-
-    srand(time(0));  // Seed for random selection
-
-    // Randomly select 3 territories to defend (you can adjust the number)
-    for (int i = 0; i < 3 && i < allTerritories.size(); ++i) {
-        int randomIndex = rand() % allTerritories.size();
-        defendList.push_back(allTerritories.at(randomIndex));
-    }
-
+    vector<Territory*> defendList = getOwnedTerritories();
     return defendList;
 }
 
 // Method to identify territories to attack (placeholder implementation)
-vector<Territory*> Player::toAttack(Map& map) {
+vector<Territory*> Player::toAttack() {
     // Logic to identify territories to attack'
-    vector<Territory*> attackList;
-    vector<Territory*> allTerritories = *map.getTerritories();
-
-    srand(time(0));  // Seed for random selection
-
-    // Randomly select 3 territories to attack (you can adjust the number)
-    for (int i = 0; i < 3 && i < allTerritories.size(); ++i) {
-        int randomIndex = rand() % allTerritories.size();
-        attackList.push_back(allTerritories.at(randomIndex));
+    vector<Territory *> attackList;
+    for (auto territory : getOwnedTerritories())
+    {
+        for (auto neighbor : territory->adjacentTerritories)
+        {
+            if (neighbor->getOwner().compare(*playerName) != 0)
+            {
+                attackList.push_back(neighbor);
+            }
+        }
     }
 
     return attackList;

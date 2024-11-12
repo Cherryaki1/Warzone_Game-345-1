@@ -28,6 +28,7 @@ private:
     Hand* playerHand;
     OrdersList* ordersList;
     string* playerName;
+    int reinforcementPool = 0;
 
 public:
     //Default constructor
@@ -56,12 +57,17 @@ public:
 
     void setArmies(int* armies);
     int getArmies() const;
+
     void setPlayerName(string name);
     string getPlayerName() const;
+
+    int getReinforcementPool();
+    void setReinforcementPool(int numUnits);
+
     bool hasCard(string cardType);
 
-    vector<Territory*> toDefend(Map& map);
-    vector<Territory*> toAttack(Map& map);
+    vector<Territory*> toDefend();
+    vector<Territory*> toAttack();
 
     void issueOrder(const std::string& orderType);
 
