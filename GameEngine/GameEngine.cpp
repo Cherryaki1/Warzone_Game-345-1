@@ -187,18 +187,34 @@ void GameEngine::mainGameLoop() {
     ordersExecutionPhase();
 }
 
-void GameEngine::reinforcementPhase() {
-    for (auto player : players)
-    {
+bool GameEngine::reinforcementPhase() {
+
+    if (!globalMap) {
+        std::cerr << "Error: globalMap is uninitialized." << std::endl;
+        return false;
+    }
+
+    if (globalMap->getContinents()->empty()) {
+        std::cerr << "Warning: globalMap has no continents." << std::endl;
+        return false;
+    }
+
+    for (auto player : players){
+
         // Check which continents player occupies
 
         vector<Continent> continentsOccupied;
-        for (auto continent : *globalMap->getContinents())
-        {
+        std::cout << "Before continent loop"<<endl;
+        for (auto continent : *globalMap->getContinents()){
+            std::cout << "Inside continent loop"<<endl;
+
             // assume its occupied and go through the list
             bool occupied = true;
-            for (auto territory : continent->getCTerritories())
-            {
+
+            std::cout << "Before territory loop"<<endl;
+            for (auto territory : continent->getCTerritories()){
+
+                std::cout << "Inside territory loop"<<endl;
                 if (territory->getName().compare(player->getPlayerName()) != 0)
                 {
                     occupied = false;
@@ -235,15 +251,16 @@ void GameEngine::reinforcementPhase() {
             player->setReinforcementPool(3);
         }
     }
+    return true;
 }
 
 
-void GameEngine::ordersIssuingPhase() {
-     for (auto player : players)
-    {
+bool GameEngine::ordersIssuingPhase() {
+     for (auto player : players){
         vector<Territory *> territoriesToAttack = player->toAttack();
 
         vector<Territory *> territoriesToDefend = player->toDefend();
+
         /*
             Deploy units from reinforcement pool
         */
@@ -275,8 +292,8 @@ void GameEngine::ordersIssuingPhase() {
             if (unitsI > 0 && unitsI + unitsDeployed <= numUnits)
             {
 
-                // Deploy order(territories[tIndex], unitsI);
-                player->issueOrder("Deploy");
+                Order* deployOrder =  new DeployOrder(player, territoriesToDefend[tIndex], unitsI);
+                player->issueOrder(deployOrder);
                 unitsDeployed += unitsI;
             }
             else
@@ -290,13 +307,13 @@ void GameEngine::ordersIssuingPhase() {
         */
 
         // Advance to defend
-        for (auto territory1 : territoriesToDefend)
+        for (auto sourceTerritory : territoriesToDefend)
         {
-            for (auto territory2 : territoriesToDefend)
+            for (auto targetTerritory : territoriesToDefend)
             {
-                if (territory1->getName().compare(territory2->getName()) != 0)
+                if (sourceTerritory->getName().compare(targetTerritory->getName()) != 0)
                 {
-                    std::cout << "Advance units from " << territory1->getName() << " to " << territory2->getName() << "? (y/n)" << std::endl;
+                    std::cout << "Advance units from " << sourceTerritory->getName() << " to " << targetTerritory->getName() << "? (y/n)" << std::endl;
                     string answer;
                     std::cin >> answer;
                     if (answer.compare("y") == 0)
@@ -304,9 +321,10 @@ void GameEngine::ordersIssuingPhase() {
                         std::cout << "How many units? " << std::endl;
                         string units;
                         std::cin >> units;
+                        int unitsI = std::stoi(units);
 
-                        //Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
-                        player->issueOrder("Advance");
+                        Order* advanceOrder = new AdvanceOrder(player, sourceTerritory, targetTerritory, unitsI);
+                        player->issueOrder(advanceOrder);
                         break;
                     }
                 }
@@ -314,13 +332,13 @@ void GameEngine::ordersIssuingPhase() {
         }
 
         // Advance to attack
-        for (auto territory1 : territoriesToDefend)
+        for (auto sourceTerritory  : territoriesToDefend)
         {
-            for (auto territory2 : territoriesToAttack)
+            for (auto targetTerritory  : territoriesToAttack)
             {
-                if (territory1->getName().compare(territory2->getName()) != 0)
+                if (sourceTerritory ->getName().compare(targetTerritory ->getName()) != 0)
                 {
-                    std::cout << "Advance units from " << territory1->getName() << " to " << territory2->getName() << "? (y/n)" << std::endl;
+                    std::cout << "Advance units from " << sourceTerritory ->getName() << " to " << targetTerritory->getName() << "? (y/n)" << std::endl;
                     string answer;
                     std::cin >> answer;
                     if (answer.compare("y") == 0)
@@ -328,9 +346,11 @@ void GameEngine::ordersIssuingPhase() {
                         std::cout << "How many units? " << std::endl;
                         string units;
                         std::cin >> units;
+                        int unitsI = std::stoi(units);
 
-                        //Advance *advance = new Advance(player, std::stoi(units), territory1, territory2);
-                        player->issueOrder("Advance");
+
+                        Order* advanceOrder = new AdvanceOrder(player, sourceTerritory, targetTerritory, unitsI);
+                        player->issueOrder(advanceOrder);
                         break;
                     }
                 }
@@ -340,46 +360,35 @@ void GameEngine::ordersIssuingPhase() {
         /*
             Issue order from one card in hand
         */
-        /*
-        for (auto card : player->getHand()->returnMyCards())
-        {
-            string cardType = "";
 
-            if (dynamic_cast<Card_Airlift *>(card) != nullptr)
-            {
-                cardType = "an Airlift";
-            }
-            else if (dynamic_cast<Card_Blockade *>(card) != nullptr)
-            {
-                cardType = "a Blockade";
-            }
-            else if (dynamic_cast<Card_Bomb *>(card) != nullptr)
-            {
-                cardType = "a Bomb";
-            }
-            else if (dynamic_cast<Card_Diplomacy *>(card) != nullptr)
-            {
-                cardType = "a Diplomacy";
-            }
-            else
-            {
-                cardType = "a Reinforcement";
-            }
+         auto handCards = *player->getHand()->getHand();
 
-            std::cout << "Play " << cardType << "card? (y/n)" << std::endl;
-            string answer;
-            std::cin >> answer;
-            if (answer.compare("y") == 0)
-            {
-                card->play();
-                break;
-            }
+         std::cout << "Cards in your hand:" << std::endl;
+         for (size_t i = 0; i < handCards.size(); ++i) {
+             std::cout << i << ": " << handCards[i]->getType() << " card" << std::endl;
+         }
+
+         int cardIndex = -1;
+        std::cout << "Enter the number of the card you want to play, or -1 to skip: ";
+        std::cin >> cardIndex;
+
+        // Validate the choice
+        if (cardIndex >= 0 && cardIndex < static_cast<int>(handCards.size())) {
+            Card* selectedCard = handCards[cardIndex];
+            selectedCard->play();
         }
-        */
+        else if (cardIndex == -1) {
+            std::cout << "You chose not to play any card." << std::endl;
+        }
+        else {
+            std::cout << "Invalid choice. No card played." << std::endl;
+        }
     }
+    return true;
 }
 
-void GameEngine::ordersExecutionPhase() {
+
+string GameEngine::ordersExecutionPhase() {
     for (auto player : players)
     {
         OrdersList *orderList = player->getOrdersList();
@@ -389,6 +398,7 @@ void GameEngine::ordersExecutionPhase() {
             nextOrder->execute();
         }
     }
+    return getCommand();
 }
 
 

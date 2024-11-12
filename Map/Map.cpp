@@ -125,9 +125,7 @@ Continent::Continent(string continentID, int bonus) {
 
 Continent::Continent(const Continent &other) {
     pContinentID = new string(*other.pContinentID);
-    if(!(other.pCTerritories == nullptr)) {
-        pCTerritories = new vector<Territory *>(*other.pCTerritories);
-    }
+    pCTerritories = new vector<Territory*>(*other.pCTerritories);  // Deep copy
     pBonus = new int(*other.pBonus);
 }
 
@@ -147,8 +145,12 @@ Continent::~Continent() {
 }
 
 void Continent::addTerritory(Territory* territory) {
-    pCTerritories->push_back(territory);
+    if (!pCTerritories) {
+        pCTerritories = new std::vector<Territory*>();
+    }
+    pCTerritories->push_back(territory);  // Add the territory to the vector
 }
+
 
 std::ostream& operator<<(std::ostream& os, const Continent& continent) {
     os << "Continent: " << continent.getContinentID()
@@ -170,12 +172,20 @@ void Continent::setContinentID(const string &continentID) {
     *pContinentID = continentID;
 }
 
-vector <Territory *> Continent::getCTerritories() const {
+const vector<Territory*>& Continent::getCTerritories() const {
+    if (!pCTerritories) {
+        static const vector<Territory*> empty;  // Empty vector if pCTerritories is null
+        return empty;
+    }
     return *pCTerritories;
 }
 
-void Continent::setCTerritories(vector<Territory *> territories) {
-    *pCTerritories = std::move(territories);
+
+void Continent::setCTerritories(vector<Territory*> territories) {
+    if (!pCTerritories) {
+        pCTerritories = new vector<Territory*>();  // Allocate if not initialized
+    }
+    *pCTerritories = std::move(territories);  // Move the territories into pCTerritories
 }
 
 int Continent::getBonus() const {
@@ -385,17 +395,3 @@ void Map::setTerritories(vector<Territory*> *territories) {
 vector<Territory*>* Map::getTerritories() {
     return pTerritories;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

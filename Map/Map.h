@@ -63,7 +63,7 @@ public:
 
     string getContinentID() const;
     void setContinentID(const string &continentID);
-    vector <Territory *> getCTerritories() const;
+    const vector<Territory*>& getCTerritories() const;  // Return a const reference to avoid copying
     void setCTerritories(vector<Territory *> territories);
     int getBonus() const;
     void setBonus(int bonus);

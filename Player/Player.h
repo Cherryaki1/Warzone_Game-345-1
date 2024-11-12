@@ -69,7 +69,7 @@ public:
     vector<Territory*> toDefend();
     vector<Territory*> toAttack();
 
-    void issueOrder(const std::string& orderType);
+    void issueOrder(Order* newOrder);
 
     //Stream insertion operator
     friend std::ostream& operator<<(std::ostream& os, const Player& player);
