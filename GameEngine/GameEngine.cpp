@@ -149,7 +149,7 @@ void GameEngine::startUpPhase() {
         for (auto player : players){
             player->getHand()->place(deck->draw());
             player->getHand()->place(deck->draw());
-            cout << "armies: " << player->getArmies() << endl;
+            //cout << "armies: " << player->getArmies() << endl;
         }
 //        e) switch the game to the play phase
         *state = "play";
