@@ -245,6 +245,7 @@ bool GameEngine::reinforcementPhase() {
 
 bool GameEngine::ordersIssuingPhase() {
      for (auto player : players){
+         std::cout << player->getPlayerName() << "'s orders issue phase" << std::endl;
         vector<Territory *> territoriesToAttack = player->toAttack();
 
         vector<Territory *> territoriesToDefend = player->toDefend();
@@ -261,7 +262,7 @@ bool GameEngine::ordersIssuingPhase() {
         int unitsDeployed = 0;
         while (unitsDeployed < numUnits)
         {
-            std::cout << "Deploy units to which territory? " << territoryList << std::endl;
+            std::cout << "Deploy units to which territory? (You have " << (numUnits-unitsDeployed) << " units left in your pool): " << territoryList << std::endl;
             string territory;
             std::cin >> territory;
             int tIndex = std::stoi(territory);
@@ -285,7 +286,7 @@ bool GameEngine::ordersIssuingPhase() {
             }
             else
             {
-                std::cout << "Invalid number of units (1 - units left in pool) " << std::endl;
+                std::cout << "Invalid number of units ( " << (numUnits-unitsDeployed)  << " units left in pool) " << std::endl;
             }
         }
 
