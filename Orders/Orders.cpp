@@ -178,6 +178,26 @@ bool OrdersList::isEmpty() {
     return orders.empty();
 }
 
+// get next order on the list
+Order *OrdersList::getNextOrder()
+{
+    std::cout << "getNextOrder() was called\n"
+              << std::endl;
+
+    // if list not empty, pop and return next order
+    if (!orders.empty())
+    {
+        Order *nextOrderPtr = orders.front();
+        orders.pop_front();
+        return nextOrderPtr;
+    }
+    else
+    { // if list is empty, print a message
+        std::cout << " -- Order list is empty !" << std::endl;
+        return nullptr;
+    }
+}
+
 std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList) {
     int index = 0;
     for (const auto& order : ordersList.orders) {

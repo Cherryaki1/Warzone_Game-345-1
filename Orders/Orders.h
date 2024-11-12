@@ -137,6 +137,9 @@ public:
     void remove(int position);
     bool isEmpty();
 
+    // get next order on the list
+    Order *getNextOrder();
+
     std::list<Order*>& getOrders();
 
     friend std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList);

@@ -37,9 +37,9 @@ class GameEngine : public Subject, public ILoggable {
     // PHASES
     void startUpPhase();
     bool startUpPhase2(string mapFile);
-    bool reinforcementPhase();
-    bool ordersIssuingPhase();
-    string ordersExecutionPhase();
+    void reinforcementPhase();
+    void ordersIssuingPhase();
+    void ordersExecutionPhase();
     bool endPhase();
 
     // SETTERS AND GETTERS FOR PLAY
