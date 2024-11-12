@@ -55,11 +55,10 @@ class GameEngine : public Subject, public ILoggable {
 
     // Stream insertion operator
     friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);
-
 };
 
 void testGameStates();
-void testStartUpPhase(string mapFile);
+void testStartUpPhase();
 void testMainGameLoop();
 #endif
 

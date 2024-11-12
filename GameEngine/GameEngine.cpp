@@ -93,10 +93,11 @@ void GameEngine::startUpPhase() {
         }
 
     } while (!processor->validate(currentCommand));
-    int playerCount= 0;
 
+    int playerCount= 0;
     do{
         cout << "Please enter addplayer and the player name (separated by space) - (2-6 players)" <<endl;
+        cout << "To exit the adding players phase: type exit" << endl;
         cout << "You have " << playerCount << " player(s) so far" << endl;
         currentCommand = processor->getCommand();
         if(!processor->validate(currentCommand, *state)){
@@ -110,11 +111,13 @@ void GameEngine::startUpPhase() {
             addPlayer(player);
             playerCount++;
             transition("playersadded");
+
             if(playerCount>=2){
                 cout << "** Would you like to stop adding players? Enter Y to stop, enter any other key to continue" << endl;
                 currentCommand = processor->getCommand();
                 if (currentCommand->getCommandText() == "Y") break;
             }
+
         } catch (...){
             cout << "Error - non-existent player name"<<endl;
         }
@@ -129,6 +132,7 @@ void GameEngine::startUpPhase() {
         }
 
 //        a) fairly distribute all the territories to the players
+
 //        b) determine randomly the order of play of the players in the game
         // Randomize the order of players in the array
         // Seed a random number generator
@@ -138,80 +142,18 @@ void GameEngine::startUpPhase() {
         shuffle(players.begin(), players.end(), rng);
         cout << "Players order has been randomized" << endl;
 //        c) give 50 initial army units to the players, which are placed in their respective reinforcement pool
+        // Done when you create a Player
 //        d) let each player draw 2 initial cards from the deck using the deck’s draw() method
         for (auto player : players){
             player->getHand()->place(deck->draw());
             player->getHand()->place(deck->draw());
+            // cout << "Armies: " << player->getArmies() << endl; // Check if armies got done well
         }
 //        e) switch the game to the play phase
         transition("play");
 
     } while (!processor->validate(currentCommand));
 
-}
-
-bool GameEngine::startUpPhase2(string mapFile) {
-    cout << "... Starting up Phase ..." << endl;
-    // Current State
-    *state = "start";
-
-    // COMMANDS WRITTEN IN A FILE
-    // TODO Check if loadmap command valid
-    Map& loadedMap = loadMap("Test.txt");
-    *state = "maploaded";
-
-    // TODO Check if validate command valid
-    if(validateMap(loadedMap)) {
-        *state = "mapvalidated";
-        int playerCount = 0;
-        string name = "A";
-        while(playerCount < 6) {
-            // TODO Check if addplayer command is valid
-            string command = "addplayer"; // To remove after
-            name += "B"; // To remove after
-
-            if(command == "addplayer" && !name.empty()) {
-                players.push_back(new Player(name));
-                playerCount++;
-                cout << "Adding Player: " << name << endl;
-
-            } else if (command != "addplayer") {
-                cout << "No more players to add. Starting game with " << playerCount << " players.\n";
-                break;
-            }
-            if (playerCount >= 2 && playerCount < 6) {
-                std::cout << "You can add more players or type another command to stop adding.\n";
-            } else if (playerCount == 6) {
-                std::cout << "Maximum player limit reached.\n";
-                break;
-            }
-        }
-        *state = "playersadded";
-
-        // TODO Check is gamestart command is valid
-
-        // Distribute All Territories
-
-        // Randomize the order of players in the array
-        // Seed a random number generator
-        random_device rd;
-        default_random_engine rng(rd());
-        // Shuffle the vector
-        shuffle(players.begin(), players.end(), rng);
-
-        // Give players 2 cards with draw()
-        for(int i = 0; i < players.size(); i++) {
-            // Give 50 armies to everyone
-            //players[i]->playerHand->cards
-        }
-
-        //mainGameLoop(); // Chain with the rest of the game - Play phase
-    }
-
-
-    // COMMANDS WRITTEN ON THE CONSOLE
-
-    return true;
 }
 
 void GameEngine::mainGameLoop() {

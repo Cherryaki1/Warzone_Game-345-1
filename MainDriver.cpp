@@ -39,7 +39,7 @@ int main(){
 
   // ************** Assignment Part 2 **************
   //testCommandProcessor();     // Part 1
-  testStartUpPhase("Test.txt");         // Part 2
+  testStartUpPhase();         // Part 2
   //testLoggingObserver();      // Part 3
   // ************** Assignment 3 **************
 

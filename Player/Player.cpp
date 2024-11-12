@@ -136,8 +136,7 @@ vector<Territory *> Player::getOwnedTerritories() const {
 }
 
 // Pushes a new territory onto the player's list of owned territories.
-void Player::addOwnedTerritory(Territory *territory)
-{
+void Player::addOwnedTerritory(Territory *territory){
     ownedTerritories.push_back(territory);
 }
 
@@ -152,8 +151,6 @@ Territory* Player::removeOwnedTerritory(const Territory* territory) {
     }
     return nullptr;
 }
-
-
 
 // Method to check if player has a card of a certain type
 bool Player::hasCard(string cardType) {

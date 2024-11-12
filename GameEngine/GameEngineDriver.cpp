@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-void testStartUpPhase(string mapFile) {
+void testStartUpPhase() {
     GameEngine engine;
     engine.startUpPhase();
 }
