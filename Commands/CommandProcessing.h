@@ -39,13 +39,16 @@ private:
     ~CommandProcessor() override;
     vector<Command*>* getCommands();
     void saveCommand(const string& commandText);
-    bool validate(Command* command);
+    bool validate(Command* command, string& state);
+    bool validate(Command *command);
+
     Command* getCommand();
     string stringToLog() override;
 
     void processCommands() {
         readCommand();
     }
+
     // Deleted copy constructor and assignment operator
     CommandProcessor(const CommandProcessor&) = delete;
     CommandProcessor& operator=(const CommandProcessor&) = delete;
