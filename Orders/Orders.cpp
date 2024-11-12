@@ -48,14 +48,19 @@ string Order::stringToLog() {
 // DeployOrder::DeployOrder() {}
 void DeployOrder::execute() {
     if (targetTerritory->getOwner() == player->getPlayerName()) {
-        // call deploy order method on the target territory
-        notify(this);
-        executed = true;
+        if (player->getReinforcementPool() >= numUnits) {
+            targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
+            player->setReinforcementPool(player->getReinforcementPool() - numUnits);
+            notify(this);
+            executed = true;
+        }
+        else {
+            std::cout << "Invalid deploy order: " << player->getPlayerName() << " does not have enough units to deploy" << std::endl;
+        }
     }
     else {
         std::cout << "Invalid deploy order: " << targetTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
     }
-    
 }
 
 // Advance Order implementations
@@ -69,8 +74,37 @@ void AdvanceOrder::execute() {
                 notify(this);
                 executed = true;
             }
-            else { // Perform attack simulation when using execute()
+            else { // Perform attack simulation
+                int attackerArmies = numUnits;
+                int defenderArmies = targetTerritory->getNumberOfArmies();
+                int attackerLosses = 0;
+                int defenderLosses = 0;
 
+                // Roll dice for attacker and defender
+                for (int i = 0; i < numUnits; i++) {
+                    int attackerRoll = rand() % 100 + 1; // Generate a number between 1 and 100
+                    int defenderRoll = rand() % 100 + 1; // Generate a number between 1 and 100
+
+                    if (attackerRoll <= 60 && defenderLosses < defenderArmies) { // 60% chance for attacker to kill a defender
+                        defenderLosses++;
+                    }
+                    if (defenderRoll <= 70 && attackerLosses < attackerArmies) { // 70% chance for defender to kill an attacker
+                        attackerLosses++;
+                    }
+                }
+
+                // Update armies
+                sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - attackerLosses);
+                targetTerritory->setNumberOfArmies(defenderArmies - defenderLosses);
+
+                // Check if defender has been defeated
+                if (targetTerritory->getNumberOfArmies() == 0) {
+                    targetTerritory->setOwner(player->getPlayerName());
+                    targetTerritory->setNumberOfArmies(attackerArmies - attackerLosses);
+
+                    // Award a card to the player if they conquered at least one territory
+                    player->getHand()->place(deck->draw());
+                }
             }
         }
         else {
