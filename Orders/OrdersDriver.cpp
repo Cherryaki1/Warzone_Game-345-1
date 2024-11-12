@@ -1,5 +1,47 @@
 #include <iostream>
 #include "Orders.h"
+#include "Player.h"
+#include "fstream"
+
+
+
+
+void testOrderExecution(){
+//    (1) each order is validated before being executed according to the above descriptions;
+    auto player1 = new Player("John");
+    auto player2 = new Player("Bob");
+    auto testTerritory1 = new Territory("territory1", player1->getPlayerName(), "0", 10);
+    auto testTerritory2 = new Territory("territory2", player2->getPlayerName(), "0", 20);
+
+    //3 valid orders
+    auto one = new DeployOrder(player1, testTerritory1, 1);
+    auto two = new BombOrder(player1, testTerritory2);
+    auto three = new NegotiateOrder(player1, player2);
+
+    //1 invalid order
+    auto four = new DeployOrder(player1, testTerritory2, 1);
+
+    std::cout<<"Three valid orders being executed"<<std::endl;
+    one->execute();
+    two->execute();
+    three->execute();
+    std::cout<<"One invalid order being executed"<<std::endl;
+    four->execute();
+
+
+//    (2) ownership of a territory is transferred to the attacking player if a territory is conquered as a result of an advance order;
+//    (3) one card is given to a player if they conquer at least one territory in a turn (not more than one card per turn);
+//    (4) the negotiate order prevents attacks between the two players involved;
+//    (5) the blockade order transfers ownership to the Neutral player;
+//    (6) all the orders described above can be issued by a player and executed by the game engine
+    delete player1;
+    delete player2;
+    delete testTerritory2;
+    delete testTerritory1;
+}
+
+
+
 
 void testOrdersLists() {
     OrdersList ordersList;

@@ -25,6 +25,7 @@
 
 using namespace std;
 extern void testLoggingObserver();
+extern void testOrderExecution();
 
 // Main Class
 int main(){
@@ -38,9 +39,11 @@ int main(){
 
 
   // ************** Assignment Part 2 **************
-  //testCommandProcessor();     // Part 1
-  testStartUpPhase();         // Part 2
+//  testCommandProcessor();     // Part 1
+//  testStartUpPhase();         // Part 2
   //testLoggingObserver();      // Part 3
+    testOrderExecution();       //Part 4
+//  testLoggingObserver();    //Part 5
   // ************** Assignment 3 **************
 
 
