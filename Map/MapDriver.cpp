@@ -24,6 +24,7 @@ void testLoadMap(string name) {
 Map& loadMap(string name) {
     const string mapFile = "../DownloadedMaps/" + name;
     MapLoader *mapLoader = new MapLoader(mapFile);
+    globalMap = &mapLoader->getMap();
     cout << "MapLoader created" << endl;
     Map& loadedMap = mapLoader->getMap();
 

@@ -1,3 +1,6 @@
 loadmap Europe 4B.map
 validatemap
 addplayer Joe
+addplayer Bob
+gamestart
+quit
