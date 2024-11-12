@@ -52,6 +52,35 @@ Command* CommandProcessor::getCommand() {
     return commands.back();
 }
 
+bool CommandProcessor::validate(Command* command, string& state) {
+    string commandText = command->getCommandText();
+    //    std::cout << commandText << std::endl;
+    bool isValid = false;
+
+    if (commandText.substr(0,7) == "loadmap" && (state == "start" || state == "maploaded")) {
+        //        string fileName = commandText.substr(9);
+        isValid = true;
+        command->saveEffect("Loads a map");
+    } else if (commandText == "validatemap" && state == "maploaded" ) {
+        isValid = true;
+        command->saveEffect("Validates a map");
+    } else if (commandText.substr(0,9) == "addplayer" && (state == "mapvalidated" || state == "playersadded")) {
+        //        string playerName = commandText.substr(11);
+        isValid = true;
+        command->saveEffect("Adds a player");
+    } else if (commandText == "gamestart" && state == "playersadded") {
+        isValid = true;
+        command->saveEffect("Starts the game");
+    } else if (commandText == "replay" && state == "win") {
+        isValid = true;
+        command->saveEffect("Replays");
+    } else {
+        command->saveEffect("Invalid command in the current state.");
+    }
+
+    return isValid;
+}
+
 bool CommandProcessor::validate(Command* command) {
     string commandText = command->getCommandText();
 //    std::cout << commandText << std::endl;

@@ -64,7 +64,7 @@ void GameEngine::startUpPhase() {
     do {
         cout << "Please enter loadmap and the filename of the map (separated by space) " <<endl;
         currentCommand = processor->getCommand();
-        if(!processor->validate(currentCommand)){ //should not test whether the file is valid - only that the command is valid in current state
+        if(!processor->validate(currentCommand, *state)){ //should not test whether the file is valid - only that the command is valid in current state
             cout << "Invalid command at this point! Try again" <<endl;
             continue;
         }
@@ -83,7 +83,7 @@ void GameEngine::startUpPhase() {
     do {
         cout<< "Please enter validatemap to proceed" << endl;
         currentCommand = processor->getCommand();
-        if(!processor->validate(currentCommand)){
+        if(!processor->validate(currentCommand, *state)){
             cout << "Invalid command at this point! Try again" <<endl;
             continue;
         }
@@ -99,7 +99,7 @@ void GameEngine::startUpPhase() {
         cout << "Please enter addplayer and the player name (separated by space) - maximum of 6 players, minimum of 2 players" <<endl;
         cout << "You have " << playerCount << " player(s) so far" << endl;
         currentCommand = processor->getCommand();
-        if(!processor->validate(currentCommand)){
+        if(!processor->validate(currentCommand, *state)){
             cout << "Invalid command at this point! Try again" <<endl;
             continue;
         }
@@ -124,7 +124,7 @@ void GameEngine::startUpPhase() {
     do {
         cout<< "Please enter gamestart to proceed" << endl;
         currentCommand = processor->getCommand();
-        if(!processor->validate(currentCommand)){
+        if(!processor->validate(currentCommand, *state)){
             cout << "Invalid command at this point! Try again" <<endl;
             continue;
         }
