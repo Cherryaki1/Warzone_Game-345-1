@@ -96,7 +96,7 @@ void GameEngine::startUpPhase() {
     int playerCount= 0;
 
     do{
-        cout << "Please enter addplayer and the player name (separated by space) - you may add a maximum of 6 players, minimum of 2 player" <<endl;
+        cout << "Please enter addplayer and the player name (separated by space) - maximum of 6 players, minimum of 2 players" <<endl;
         cout << "You have " << playerCount << " player(s) so far" << endl;
         currentCommand = processor->getCommand();
         if(!processor->validate(currentCommand)){
@@ -111,9 +111,9 @@ void GameEngine::startUpPhase() {
             playerCount++;
 
             if(playerCount>=2){
-                cout << "WRITE stop TO STOP ADDING PLAYERS" << endl;
+                cout << "** Would you like to stop adding players? Enter Y to stop, enter any other key to continue" << endl;
                 currentCommand = processor->getCommand();
-                if (currentCommand->getCommandText() == "stop") break;
+                if (currentCommand->getCommandText() == "Y") break;
             }
         } catch (...){
             cout << "Error - non-existent player name"<<endl;
