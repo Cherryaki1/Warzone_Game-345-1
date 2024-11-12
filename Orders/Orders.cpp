@@ -44,8 +44,7 @@ string Order::stringToLog() {
 //              execute() of Derived Order classes
 // ----------------------------------------------------------
 
-// Deploy Order implementations
-// DeployOrder::DeployOrder() {}
+// Deploy Order
 void DeployOrder::execute() {
     if (targetTerritory->getOwner() == player->getPlayerName()) {
         if (player->getReinforcementPool() >= numUnits) {
@@ -63,8 +62,7 @@ void DeployOrder::execute() {
     }
 }
 
-// Advance Order implementations
-// AdvanceOrder::AdvanceOrder() : Order("Advance") {}
+// Advance Order
 void AdvanceOrder::execute() {
     if (sourceTerritory->getOwner() == player->getPlayerName()) {
         if (sourceTerritory->isAdjacent(targetTerritory)) {
@@ -116,17 +114,37 @@ void AdvanceOrder::execute() {
     }
 }
 
-// Bomb Order implementations
-// BombOrder::BombOrder() : Order("Bomb") {}
-void BombOrder::execute() { // Waiting for implementation of ownedTerritories
-//    Order::execute();
-    std::cout << "Using Bomb card" << std::endl;
-    notify(this);
-    executed = true;
+// Bomb Order
+void BombOrder::execute() {
+    if (player->getHand()->hasCard("Bomb")) {
+        if (targetTerritory->getOwner() != player->getPlayerName()) {
+            //if the target territory is not adjacent to one of the territory owned by the player -> ionvalid
+            bool isAdjacent = false;
+            for (Territory* territory : player->getOwnedTerritories()) {
+                if (territory->isAdjacent(targetTerritory)) {
+                    isAdjacent = true;
+                    break;
+                }
+            }
+            if (isAdjacent) {
+                targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() / 2);
+                notify(this);
+                executed = true;
+            }
+            else {
+                std::cout << "Invalid bomb order:  " << player->getPlayerName() << " does not have any adjacent territory to " << targetTerritory->getName() << std::endl;
+            }
+        }
+        else {
+            std::cout << "Invalid bomb order: " << targetTerritory->getName() << " belongs to you" << std::endl;
+        }
+    }
+    else {
+        std::cout << "Invalid bomb order: " << player->getPlayerName() << " does not have a Bomb card" << std::endl;
+    }
 }
 
-// Blockade Order implementations
-// BlockadeOrder::BlockadeOrder() : Order("Blockade") {}
+// Blockade Order
 void BlockadeOrder::execute() {
 //    Order::execute();
     std::cout << "Using Blockade card" << std::endl;
@@ -134,13 +152,13 @@ void BlockadeOrder::execute() {
     executed = true;
 }
 
-// Airlift Order implementations
-// AirliftOrder::AirliftOrder() : Order("Airlift") {}
+// Airlift Order
 void AirliftOrder::execute() {
     if (player->getHand()->hasCard("Airlift")) {
         if (sourceTerritory->getOwner() == player->getPlayerName()) {
             if (targetTerritory->getOwner() == player->getPlayerName()) {
-            // create airlift order if all conditions are met
+            targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
+            sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - numUnits);
             notify(this);
             executed = true;
             }
@@ -158,8 +176,7 @@ void AirliftOrder::execute() {
     
 }
 
-// Negotiate Order implementations
-// NegotiateOrder::NegotiateOrder() : Order("Negotiate") {}
+// Negotiate Order
 void NegotiateOrder::execute() {
 //    Order::execute();
     std::cout << "Using Negotiate card" << std::endl;
