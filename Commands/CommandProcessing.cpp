@@ -22,6 +22,12 @@ string Command::stringToLog() {
     return "Command: " + *commandText + "\nCommand's Effect: " + *effect;
 }
 
+std::ostream& operator<<(std::ostream& os, const Command& cmd) {
+    os << "Command: " << *cmd.commandText;
+    if (cmd.effect) os << ", Effect: " << *cmd.effect;
+    return os;
+}
+
 // CommandProcessor methods
 CommandProcessor::CommandProcessor() {}
 
@@ -111,6 +117,14 @@ string CommandProcessor::stringToLog() {
     return commands.back()->stringToLog();
 }
 
+std::ostream& operator<<(std::ostream& os, const CommandProcessor& cp) {
+    os << "CommandProcessor with " << cp.commands.size() << " commands:\n";
+    for (const Command* cmd : cp.commands) {
+        os << *cmd << "\n";
+    }
+    return os;
+}
+
 // FileCommandProcessorAdapter methods
 FileCommandProcessorAdapter::FileCommandProcessorAdapter(const string& filename) {
     fileStream.open(filename);
@@ -134,6 +148,12 @@ void FileCommandProcessorAdapter::readCommand() {
             std::cerr << "End of command file reached or read error occurred." << std::endl;
         }
     }
+}
+
+std::ostream& operator<<(std::ostream& os, const FileCommandProcessorAdapter& fcp) {
+    os << "FileCommandProcessorAdapter reading from file:\n";
+    os << static_cast<const CommandProcessor&>(fcp);  // Reuse base class operator<<
+    return os;
 }
 
 
