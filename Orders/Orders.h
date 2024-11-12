@@ -86,6 +86,7 @@ private:
     Player* player;
     Territory* targetTerritory;
     bool executed;
+    Deck* deck;
 
 public:
     BlockadeOrder() = default;
