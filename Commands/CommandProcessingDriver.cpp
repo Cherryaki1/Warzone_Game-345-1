@@ -25,8 +25,9 @@ void testCommandProcessor() {
             std::cin >> fileName;
             FileCommandProcessorAdapter fileProcessor("../" + fileName);
             fileProcessor.attach(&logObserver);
-
+            std::cout << "Reading from file " << fileName << "..." << std::endl;
             fileProcessor.processCommands();
+
             fileProcessor.processCommands();
             fileProcessor.processCommands();
 

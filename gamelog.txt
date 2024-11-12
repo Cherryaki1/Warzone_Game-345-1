@@ -16,3 +16,13 @@ Game Engine new state: mapvalidated
 Game Engine new state: playersadded
 Game Engine new state: playersadded
 Game Engine new state: play
+Command: loadmap
+Command's Effect: Loads a map
+Command: loadmap Test.txt
+Command's Effect: Loads a map
+Command: loadmap
+Command's Effect: Loads a map
+Command: loadmap
+Command's Effect: Loads a map
+Command: loadmap Test.txt
+Command's Effect: Loads a map
