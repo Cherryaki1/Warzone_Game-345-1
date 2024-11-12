@@ -11,11 +11,10 @@
 #include <random>
 #include "GameEngine.h"
 #include <MapDriver.h>
-
 #include "Cards.h"
 #include "MapLoader.h"
 #include "Map.h"
-
+Map* globalMap = nullptr;
 using namespace std;
 
 // GAMEENGINE CONSTRUCTOR
@@ -132,7 +131,30 @@ void GameEngine::startUpPhase() {
         }
 
 //        a) fairly distribute all the territories to the players
-        //distributeTerritories( loadedMap.getTerritories(),players);
+        // Get all territories from the map
+        vector<Territory*> allTerritories = *globalMap->getTerritories();
+
+        // Shuffle territories to randomize the assignment
+        srand(time(0));  // Seed the random number generator
+        random_shuffle(allTerritories.begin(), allTerritories.end());
+
+        int playerIndex = 0;
+        // Distribute the territories to players
+        for (auto& territory : allTerritories) {
+            players[playerIndex]->addOwnedTerritory(territory);
+
+            // Move to the next player (round-robin)
+            playerIndex = (playerIndex + 1) % players.size();
+        }
+
+        // Output the territories each player owns
+        for (const auto& player : players) {
+            cout << player->getPlayerName() << " owns the following territories:" << endl;
+            for (const auto& territory : player->getOwnedTerritories()) {
+                cout << "- " << territory->getName() << endl;
+            }
+            cout << endl;
+        }
 //        b) determine randomly the order of play of the players in the game
         // Randomize the order of players in the array
         // Seed a random number generator
@@ -158,41 +180,12 @@ void GameEngine::startUpPhase() {
 
 }
 
-void GameEngine::distributeTerritories(vector<Territory>& territories, vector<Player>& players) {
-        /*
-    // Step 1: Shuffle territories randomly
-    random_device rd;
-    mt19937 g(rd());
-    shuffle(territories.begin(), territories.end(), g);
-
-    int numPlayers = players.size();
-    int territoriesPerPlayer = territories.size() / numPlayers;
-
-    // Step 2: Distribute territories to each player
-    auto territoryIt = territories.begin();
-    for (Player& player : players) {
-        player.getOwnedTerritories.clear(); // Clear any existing territories if necessary
-        for (int i = 0; i < territoriesPerPlayer && territoryIt != territories.end(); ++i) {
-            player.ownedTerritories.push_back(*territoryIt);
-            ++territoryIt;
-        }
-    }
-
-    // Step 3: If there are leftover territories, assign one to each player until done
-    int remainingTerritories = territories.size() % numPlayers;
-    for (int i = 0; i < remainingTerritories; ++i) {
-        players[i].ownedTerritories.push_back(*territoryIt);
-        ++territoryIt;
-    }
-    */
-}
 
 void GameEngine::mainGameLoop() {
     reinforcementPhase();
     ordersIssuingPhase();
     ordersExecutionPhase();
 }
-
 
 bool GameEngine::reinforcementPhase() {
 
