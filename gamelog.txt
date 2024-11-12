@@ -4,6 +4,15 @@ Order Issued: Negotiate
 Order Executed: Deploy
 Order Executed: Bomb
 Order Executed: Negotiate
+Command: dnfdfds
+Command's Effect: Invalid command in the current state.
+Command: diofdsnf
+Command's Effect: Invalid command in the current state.
 Command: stop
 Command's Effect: Invalid command in the current state.
 Game Engine new state: start
+Game Engine new state: maploaded
+Game Engine new state: mapvalidated
+Game Engine new state: playersadded
+Game Engine new state: playersadded
+Game Engine new state: play

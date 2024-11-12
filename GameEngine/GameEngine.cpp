@@ -24,6 +24,7 @@ GameEngine::GameEngine() {
     invalidCommand = new bool(false); // Dynamically Allocate Memory
     processor = new CommandProcessor();
     command = nullptr; // To avoid dereferencing issues
+    deck = new Deck();
 }
 
 GameEngine::~GameEngine() {
@@ -40,6 +41,7 @@ GameEngine::~GameEngine() {
         delete player;
     }
     delete processor;
+    delete deck;
 }
 
     // OPERATOR << FOR STARTUP
@@ -55,7 +57,7 @@ GameEngine::~GameEngine() {
 void GameEngine::startUpPhase() {
     cout << "... Starting up Phase ..." << endl;
     // Current State
-    *state = "start";
+    transition("start");
     Command *currentCommand;
     Map loadedMap;
 
@@ -71,7 +73,7 @@ void GameEngine::startUpPhase() {
         try{
             fileName = currentCommand->getCommandText().substr(8);
             loadedMap = loadMap(fileName);
-            *state = "maploaded";
+            transition("maploaded");
             if(loadedMap.getTerritories()->empty()) *state="start";
         } catch (...){
             cout << "Error - non-existent file name"<<endl;
@@ -87,7 +89,7 @@ void GameEngine::startUpPhase() {
         }
         if(validateMap(loadedMap)){
             cout << "Map has been validated!" <<endl;
-            *state = "mapvalidated";
+            transition("mapvalidated");
         }
 
     } while (!processor->validate(currentCommand));
@@ -107,7 +109,7 @@ void GameEngine::startUpPhase() {
             auto *player = new Player(playerName);
             addPlayer(player);
             playerCount++;
-            *state = "playersadded";
+            transition("playersadded");
             if(playerCount>=2){
                 cout << "** Would you like to stop adding players? Enter Y to stop, enter any other key to continue" << endl;
                 currentCommand = processor->getCommand();
@@ -136,7 +138,7 @@ void GameEngine::startUpPhase() {
             player->getHand()->place(deck->draw());
         }
 //        e) switch the game to the play phase
-        *state = "play";
+        transition("play");
 
     } while (!processor->validate(currentCommand));
 
@@ -294,12 +296,13 @@ string GameEngine::getState() const {
     }
     return *state;
 }
-void GameEngine::setState(string st) {
+void GameEngine::transition(std::string newState) {
     if(state == nullptr) {
         state = new string("start");
     }else {
-        *state = st;
+        *state = newState;
     }
+    notify(this);
 }
 string GameEngine::getCommand() const {
     if(command == nullptr) {
@@ -324,5 +327,9 @@ void GameEngine::setInvalidCommand(bool value){
 void GameEngine::addPlayer(Player *player) {
     players.push_back(player);
     cout << player->getPlayerName() << " has been added to the game!" << endl;
+}
+
+string GameEngine::stringToLog() {
+    return "Game Engine new state: " + *state;
 }
 
