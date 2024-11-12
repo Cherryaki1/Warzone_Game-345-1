@@ -191,15 +191,15 @@ void GameEngine::reinforcementPhase() {
     for (auto player : players)
     {
         // Check which continents player occupies
-        /*
+
         vector<Continent> continentsOccupied;
-        for (auto continent : gameMap->continents)
+        for (auto continent : *globalMap->getContinents())
         {
             // assume its occupied and go through the list
             bool occupied = true;
-            for (auto territory : continent->continentTerritories)
+            for (auto territory : continent->getCTerritories())
             {
-                if (territory->occupierName.compare(player->getPlayerName()) != 0)
+                if (territory->getName().compare(player->getPlayerName()) != 0)
                 {
                     occupied = false;
                     break;
@@ -211,17 +211,15 @@ void GameEngine::reinforcementPhase() {
                 continentsOccupied.push_back(*continent);
             }
         }
-        */
+
 
         // Give player continent bonus(es)
         int continentBonus = 0;
-        /*
+
         for (auto continent : continentsOccupied)
         {
-            continentBonus += continent.controlBonus;
+            continentBonus += continent.getBonus();
         }
-        */
-
 
         // Allocate units to player
         int units = player->getOwnedTerritories().size() / 3 + continentBonus;
