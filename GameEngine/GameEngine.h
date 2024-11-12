@@ -41,6 +41,7 @@ class GameEngine : public Subject, public ILoggable {
     bool ordersIssuingPhase();
     string ordersExecutionPhase();
     bool endPhase();
+    void distributeTerritories(vector<Territory>& territories, vector<Player>& players);
 
     // SETTERS AND GETTERS FOR PLAY
     string getState() const;
@@ -55,6 +56,7 @@ class GameEngine : public Subject, public ILoggable {
 
     // Stream insertion operator
     friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);
+
 };
 
 void testGameStates();

@@ -24,10 +24,11 @@ Card::Card(int type, Deck* origin) { //Constructor that takes a type and origina
     } else {
         cout << type << " is not a correct card type!\n";
     }
+    cardTypeID = new int(type);
 }
 Card::~Card() { //Destructor
-    delete type; //Deletes the card type pointer
-    delete cardTypeID; //Deletes the card type ID pointer
+    if (type != nullptr) delete type;
+    if (cardTypeID != nullptr) delete cardTypeID;
     origin = nullptr; //Nullifies the originating deck pointer
     hand = nullptr; //Nullifies the owning hand pointer
 }
