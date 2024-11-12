@@ -63,6 +63,7 @@ void DeployOrder::execute() {
 }
 
 // Advance Order
+extern Deck* deck;
 void AdvanceOrder::execute() {
     if (sourceTerritory->getOwner() == player->getPlayerName()) {
         if (sourceTerritory->isAdjacent(targetTerritory)) {
@@ -73,6 +74,10 @@ void AdvanceOrder::execute() {
                 executed = true;
             }
             else { // Perform attack simulation
+            if (player->hasTruceWith(targetTerritory->getOwner())) {
+                std::cout << "Invalid advance order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
+                return;
+            }
                 int attackerArmies = numUnits;
                 int defenderArmies = targetTerritory->getNumberOfArmies();
                 int attackerLosses = 0;
@@ -101,7 +106,9 @@ void AdvanceOrder::execute() {
                     targetTerritory->setNumberOfArmies(attackerArmies - attackerLosses);
 
                     // Award a card to the player if they conquered at least one territory
-                    player->getHand()->place(deck->draw());
+                    Card* drawnCard = deck->draw();
+                    player->getHand()->place(drawnCard);
+                    std::cout << "Player " << player->getPlayerName() << " has been rewarded a card for successfully conquering " << targetTerritory->getName() << std::endl;
                 }
             }
         }
@@ -116,6 +123,10 @@ void AdvanceOrder::execute() {
 
 // Bomb Order
 void BombOrder::execute() {
+    if (player->hasTruceWith(targetTerritory->getOwner())) {
+        std::cout << "Invalid bomb order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
+        return;
+    }
     if (player->getHand()->hasCard("Bomb")) {
         if (targetTerritory->getOwner() != player->getPlayerName()) {
             //if the target territory is not adjacent to one of the territory owned by the player -> ionvalid
@@ -146,14 +157,28 @@ void BombOrder::execute() {
 
 // Blockade Order
 void BlockadeOrder::execute() {
-//    Order::execute();
-    std::cout << "Using Blockade card" << std::endl;
-    notify(this);
-    executed = true;
+    if (player->getHand()->hasCard("Blockade")) {
+        if (targetTerritory->getOwner() == player->getPlayerName()) {
+            targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() * 2);
+            targetTerritory->setOwner("Neutral");
+            notify(this);
+            executed = true;
+        }
+        else {
+            std::cout << "Invalid blockade order: " << targetTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
+        }
+    }
+    else {
+        std::cout << "Invalid blockade order: " << player->getPlayerName() << " does not have a Blockade card" << std::endl;
+    }
 }
 
 // Airlift Order
 void AirliftOrder::execute() {
+    if (player->hasTruceWith(targetTerritory->getOwner())) {
+        std::cout << "Invalid airlift order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
+        return;
+    }
     if (player->getHand()->hasCard("Airlift")) {
         if (sourceTerritory->getOwner() == player->getPlayerName()) {
             if (targetTerritory->getOwner() == player->getPlayerName()) {
@@ -178,10 +203,20 @@ void AirliftOrder::execute() {
 
 // Negotiate Order
 void NegotiateOrder::execute() {
-//    Order::execute();
-    std::cout << "Using Negotiate card" << std::endl;
-    notify(this);
-    executed = true;
+    if(player->getHand()->hasCard("Diplomacy")){
+        if(player->getPlayerName() == targetPlayer->getPlayerName()){
+            std::cout << "Invalid negotiate order: " << player->getPlayerName() << " cannot negotiate with themselves" << std::endl;
+        }
+        else{ 
+            player->addTrucePlayer(targetPlayer->getPlayerName());
+            targetPlayer->addTrucePlayer(player->getPlayerName());
+            notify(this);
+            executed = true;
+        }
+    }
+    else{
+        std::cout << "Invalid negotiate order: " << player->getPlayerName() << " does not have a Diplomacy card" << std::endl;
+    }
 }
 
 // OrdersList implementations

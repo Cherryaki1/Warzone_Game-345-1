@@ -29,6 +29,7 @@ private:
     OrdersList* ordersList;
     string* playerName;
     int reinforcementPool = 0;
+    vector<string> trucePlayers;
 
 public:
     //Default constructor
@@ -68,6 +69,10 @@ public:
 
     vector<Territory*> toDefend();
     vector<Territory*> toAttack();
+
+    void addTrucePlayer(const string& playerName);
+    void clearTrucePlayers();
+    bool hasTruceWith(const string& playerName) const;
 
     void issueOrder(const std::string& orderType);
 
