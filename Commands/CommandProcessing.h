@@ -27,6 +27,8 @@ public:
     string getCommandText() const;
 
     string stringToLog() override;
+
+    friend std::ostream& operator<<(std::ostream& os, const Command& cmd);
 };
 
 class CommandProcessor : public Subject, public ILoggable {
@@ -52,6 +54,8 @@ private:
     // Deleted copy constructor and assignment operator
     CommandProcessor(const CommandProcessor&) = delete;
     CommandProcessor& operator=(const CommandProcessor&) = delete;
+
+    friend std::ostream& operator<<(std::ostream& os, const CommandProcessor& cp);
 };
 
 class FileCommandProcessorAdapter : public CommandProcessor {
@@ -64,6 +68,8 @@ protected:
 public:
     FileCommandProcessorAdapter(const string& filename);
     ~FileCommandProcessorAdapter();
+
+    friend std::ostream& operator<<(std::ostream& os, const FileCommandProcessorAdapter& fcp);
 };
 
 // Free Function
