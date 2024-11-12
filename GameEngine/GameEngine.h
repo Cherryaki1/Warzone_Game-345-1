@@ -12,14 +12,14 @@
 #include <iostream>
 #include <vector>
 #include "Commands/CommandProcessing.h"
-
+#include "LogObserver/LoggingObserver.h"
 #include "Player.h"
 #include "Cards.h"
 
 using std::string;
 using std::ostream;
 
-class GameEngine {
+class GameEngine : public Subject, public ILoggable {
     private:
     string* state; // Keeps track of current state
     string* command;
@@ -44,12 +44,13 @@ class GameEngine {
 
     // SETTERS AND GETTERS FOR PLAY
     string getState() const;
-    void setState(string st);
     string getCommand() const;
     void setCommand(const string& cmd);
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
     void addPlayer(Player *player);
+    void transition(string newState);
+    string stringToLog() override;
 
 
     // Stream insertion operator

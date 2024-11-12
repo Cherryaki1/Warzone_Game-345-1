@@ -101,7 +101,7 @@ void Territory::setNumberOfArmies(int number_of_armies) {
 bool Territory::isAdjacent(Territory* other) {
     bool found = false;
     for (const auto& territory : adjacentTerritories) {
-        if (territory == other) { // Assumes operator== is defined for the type
+        if (territory == other) {
             found = true;
             break;
         }
