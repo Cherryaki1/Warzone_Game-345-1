@@ -21,10 +21,11 @@ Card::Card(int type, Deck* origin) { //Constructor that takes a type and origina
     if(type<cardTypeLookup.size()){ //If the given card type index is valid, give the card the type and assign the originating deck ptr
         this->type = new string(cardTypeLookup[type]);
         this->origin = origin;
+        this->cardTypeID = new int(type);  // Initialize with given type
     } else {
         cout << type << " is not a correct card type!\n";
+        this->cardTypeID = nullptr;  // Set to nullptr if invalid
     }
-    cardTypeID = new int(type);
 }
 Card::~Card() { //Destructor
     if (type != nullptr) delete type;
@@ -33,8 +34,12 @@ Card::~Card() { //Destructor
     hand = nullptr; //Nullifies the owning hand pointer
 }
 Card::Card(const Card &other){
-    type=new string(*other.type);
-    cardTypeID=new int(*other.cardTypeID);
+    delete type; //Deletes the card type pointer
+    type = nullptr;
+    if (cardTypeID) {  // Check if cardTypeID is not nullptr
+        delete cardTypeID;
+        cardTypeID = nullptr; // Set to nullptr after deletion
+    }
     origin=other.origin;
     hand=other.hand;
 }
@@ -50,6 +55,7 @@ string Card::getType() { //Returns the type of the card
 
 void Card::setRandomType() { //Randomly generates number from 0-4 and uses it to assign a random type
     int typeID = rand()%5;
+    this->cardTypeID = new int(typeID);
     this->type = new string(cardTypeLookup[typeID]);
 }
 
@@ -57,41 +63,62 @@ void Card::setHand(Hand *hand) { //Assigns a owning hand ptr to a card
     this->hand = hand;
 }
 
-void Card::play() { //Creates the corresponding order of the card, removes it from Player's hand and returns it to the deck
-    // PLAY THE CARD, special order etc.
-    cout << "\t" <<this->getType() << " card played\n";
+void Card::play() {
+    cout << "\t" << this->getType() << " card played\n";
 
-    // Get the player who owns this hand and issue the order based on card type
-    Player* player = this->hand->getOwner();  // Get the owner of the card from the hand that the card belongs to
+    if (!hand) {
+        cout << "Error: Card has no associated hand.\n";
+        return;
+    }
+
+    // Get the player who owns this hand and create the order based on card type
+    Player* player = this->hand->getOwner();
 
     if (player) {
+        Order* newOrder = nullptr;
+
         if (getType() == "Bomb") {
-            player->issueOrder("Bomb");
+            Territory* targetTerritory = player->toAttack()[0];  // Example: first territory to attack
+            newOrder = new BombOrder(player, targetTerritory);
         }
         else if (getType() == "Blockade") {
-            player->issueOrder("Blockade");
+            Territory* targetTerritory = player->toDefend()[0];  // Example: first territory to defend
+            newOrder = new BlockadeOrder(player, targetTerritory);
         }
         else if (getType() == "Airlift") {
-            player->issueOrder("Airlift");
+            Territory* sourceTerritory = player->toDefend()[0];  // Example: first territory to defend
+            Territory* targetTerritory = player->toDefend()[1];  // Example: second territory to defend
+            int units = 5;  // Example unit count
+            newOrder = new AirliftOrder(player, sourceTerritory, targetTerritory, units);
         }
         else if (getType() == "Diplomacy") {
-            player->issueOrder("Negotiate");
+            Player* targetPlayer = player;  // Example target player (can be any other player in the game)
+            newOrder = new NegotiateOrder(player, targetPlayer);
         }
         else if (getType() == "Reinforcement") {
-            player->issueOrder("Reinforcement");
-        } else {
+            cout << "Reinforcement card does not issue an order directly.\n";
+            // Skip creating an order for Reinforcement
+            return;
+        }
+        else {
             cout << "Unknown card type!\n";
             return;
         }
+
+        // If an order was created, issue it
+        if (newOrder != nullptr) {
+            player->issueOrder(newOrder);  // Add the order to the player's order list
+        }
     }
 
-    this->origin->returnToDeck(this); //Returns card to deck
-    this->hand->remove(this);
+    // Return the card to the deck and remove it from the player's hand
+    this->origin->returnToDeck(this);  // Returns card to deck
+    this->hand->remove(this);  // Removes card from the player's hand
 }
 
 
 //**************************DECK**************************
-Deck::Deck() { initialize();} //Constructs a deck, using the initialize() function to do so.
+Deck::Deck() { srand(time(0)); initialize();} //Constructs a deck, using the initialize() function to do so.
 Deck::~Deck() { //Destroys a deck, going through each card pointer and deleting it
     for (int i = 0; i<cards.size(); i++){
         delete cards.at(i);
@@ -133,7 +160,6 @@ void Deck::summarize(){ //Summarizes the deck by displaying the number of cards 
 }
 
 Card* Deck::draw() { //Randomly draws from the deck of cards, returns the pointer to that card and removes it from the deck
-    srand(time(0));
     int index = rand()%(cards.size());
     Card* drawn = cards.at(index);
     cards.erase(cards.begin()+index);

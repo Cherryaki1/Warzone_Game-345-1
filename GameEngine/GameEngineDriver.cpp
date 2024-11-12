@@ -19,6 +19,9 @@ void testStartUpPhase() {
 
 void testMainGameLoop() {
     // Call the main game loop here
+    GameEngine engine;
+    engine.startUpPhase();
+    engine.mainGameLoop();
 }
 
 void testGameStates() {
