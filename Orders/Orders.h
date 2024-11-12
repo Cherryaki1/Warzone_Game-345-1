@@ -47,7 +47,7 @@ private:
 
 public:
     DeployOrder()=default;
-    DeployOrder(Player* player, Territory* target, int units) : player(player), targetTerritory(target), numUnits(units) {}
+    DeployOrder(Player* player, Territory* target, int units) : player(player), targetTerritory(target), numUnits(units), Order("Deploy") {}
     void execute() override;
 };
 
@@ -62,7 +62,7 @@ private:
 
 public:
     AdvanceOrder() = default;
-    AdvanceOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
+    AdvanceOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units), Order("Advance") {}
     void execute() override;
 };
 
@@ -76,7 +76,7 @@ private:
 
 public:
     BombOrder() = default;
-    BombOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
+    BombOrder(Player* player, Territory* target) : player(player), targetTerritory(target), Order("Bomb") {}
     void execute() override;
 };
 
@@ -89,7 +89,7 @@ private:
 
 public:
     BlockadeOrder() = default;
-    BlockadeOrder(Player* player, Territory* target) : player(player), targetTerritory(target) {}
+    BlockadeOrder(Player* player, Territory* target) : player(player), targetTerritory(target), Order("Blockade") {}
     void execute() override;
 };
 
@@ -104,7 +104,7 @@ private:
 
 public:
     AirliftOrder() = default;
-    AirliftOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units) {}
+    AirliftOrder(Player* player, Territory* source, Territory* target, int units) : player(player), sourceTerritory(source), targetTerritory(target), numUnits(units), Order("Airlift") {}
     void execute() override;
 };
 
@@ -117,7 +117,7 @@ private:
 
 public:
     NegotiateOrder() = default;
-    NegotiateOrder(Player* player, Player* target) : player(player), targetPlayer(target) {}
+    NegotiateOrder(Player* player, Player* target) : player(player), targetPlayer(target), Order("Negotiate") {}
     void execute() override;
 };
 

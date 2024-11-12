@@ -19,7 +19,7 @@ string Command::getCommandText() const {
 }
 
 string Command::stringToLog() {
-    return "Command: " + *commandText + ", Effect: " + *effect;
+    return "Command: " + *commandText + "\nCommand's Effect: " + *effect;
 }
 
 // CommandProcessor methods
@@ -39,7 +39,8 @@ void CommandProcessor::readCommand() {
 void CommandProcessor::saveCommand(const string& commandText) {
     Command* command = new Command(commandText);
     commands.push_back(command);
-//    validate(command);
+    validate(command);
+    notify(this);
 }
 
 vector<Command*>* CommandProcessor::getCommands() {
@@ -59,29 +60,26 @@ bool CommandProcessor::validate(Command* command) {
     if (commandText.substr(0,7) == "loadmap") {
 //        string fileName = commandText.substr(9);
         isValid = true;
-        command->saveEffect("Map loaded successfully.");
+        command->saveEffect("Loads a map");
     } else if (commandText == "validatemap") {
         isValid = true;
-        command->saveEffect("Map validated successfully.");
+        command->saveEffect("Validates a map");
     } else if (commandText.substr(0,9) == "addplayer") {
 //        string playerName = commandText.substr(11);
         isValid = true;
-        command->saveEffect("Player added successfully.");
+        command->saveEffect("Adds a player");
     } else if (commandText == "gamestart") {
         isValid = true;
-        command->saveEffect("Game started successfully.");
+        command->saveEffect("Starts the game");
     } else {
         command->saveEffect("Invalid command in the current state.");
     }
 
-    if (!isValid) {
-        notify(this);  // Notify about invalid command
-    }
     return isValid;
 }
 
 string CommandProcessor::stringToLog() {
-    return commands.empty() ? "No commands processed yet." : commands.back()->stringToLog();
+    return commands.back()->stringToLog();
 }
 
 // FileCommandProcessorAdapter methods
