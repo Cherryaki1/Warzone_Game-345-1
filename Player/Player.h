@@ -23,7 +23,7 @@ using std::vector;
 class Player {
 private:
     static int numOfPlayers;
-
+    int* armies;
     vector<Territory*> ownedTerritories;
     Hand* playerHand;
     OrdersList* ordersList;
@@ -54,9 +54,10 @@ public:
 
     OrdersList* getOrdersList() const;
 
+    void setArmies(int* armies);
+    int getArmies() const;
     void setPlayerName(string name);
     string getPlayerName() const;
-
     bool hasCard(string cardType);
 
     vector<Territory*> toDefend(Map& map);

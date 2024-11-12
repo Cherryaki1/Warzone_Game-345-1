@@ -24,6 +24,7 @@ Player::Player() {
     ordersList = new OrdersList();  // Assuming OrdersList has a default constructor
     numOfPlayers++;
     playerName = new string("Player " + to_string(numOfPlayers));
+    armies = new int(50);
 }
 
 // Parameterized constructors
@@ -33,6 +34,7 @@ Player::Player(string name) {
     ordersList = new OrdersList();  // Assuming OrdersList has a default constructor
     numOfPlayers++;
     playerName = new string(string(name));
+    armies = new int(50);
 }
 
 Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name)
@@ -42,6 +44,7 @@ Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, strin
     ordersList = new OrdersList();
     numOfPlayers++;
     playerName = new string(string(name));
+    armies = new int(50);
 }
 
 // Copy constructor
@@ -54,6 +57,7 @@ Player::Player(const Player& other) {
     ordersList = new OrdersList(*(other.ordersList));  // Assuming OrdersList has a copy constructor
     numOfPlayers++;
     playerName = new string(*(other.playerName));
+    armies = new int(other.getArmies());
 }
 
 
@@ -73,6 +77,7 @@ Player& Player::operator=(const Player& other) {
         playerName = new string(*(other.playerName));
         playerHand = new Hand(*(other.playerHand));        // Assuming Hand has a copy constructor
         ordersList = new OrdersList(*(other.ordersList));  // Assuming OrdersList has a copy constructor
+        armies = new int(other.getArmies());
         // Deep copy of each territory pointer in ownedTerritories
         for (auto& territory : other.ownedTerritories) {
             ownedTerritories.push_back(new Territory(*territory));  // Assuming Territory has a copy constructor
@@ -96,6 +101,9 @@ Player::~Player() {
         delete territory;
         territory = nullptr;  // Set each pointer in the vector to nullptr after deletion
     }
+    if(armies != nullptr) {
+        delete armies;
+    }
 }
 
 // Method to set player name
@@ -115,6 +123,12 @@ Hand* Player::getHand() const {
 
 OrdersList* Player::getOrdersList() const {
     return ordersList;
+}
+void Player::setArmies(int* arm) {
+    armies = arm;
+}
+int Player::getArmies() const {
+    return *armies;
 }
 
 vector<Territory *> Player::getOwnedTerritories() const {

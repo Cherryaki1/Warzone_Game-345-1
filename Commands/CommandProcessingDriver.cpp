@@ -31,7 +31,7 @@ void testCommandProcessor() {
             fileProcessor.processCommands();
 
             // Begin the StartUpPhase
-            testStartUpPhase(fileName);
+            //testStartUpPhase(fileName);
 
         } catch (const std::runtime_error& e) {
             std::cerr << e.what() << std::endl;

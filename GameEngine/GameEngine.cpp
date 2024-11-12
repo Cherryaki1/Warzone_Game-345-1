@@ -67,6 +67,7 @@ void GameEngine::startUpPhase() {
             continue;
         }
 
+        // ***************************** Load Map *****************************
         string fileName;
         try{
             fileName = currentCommand->getCommandText().substr(8);
@@ -78,6 +79,7 @@ void GameEngine::startUpPhase() {
         }
     } while  (currentCommand == nullptr|| !processor->validate(currentCommand) || *state!="maploaded");
 
+    // ***************************** Validate Map *****************************
     do {
         cout<< "Please enter validatemap to proceed" << endl;
         currentCommand = processor->getCommand();
@@ -93,8 +95,9 @@ void GameEngine::startUpPhase() {
     } while (!processor->validate(currentCommand));
     int playerCount= 0;
 
+    // ***************************** Add Players *****************************
     do{
-        cout << "Please enter addplayer and the player name (separated by space) - you may add a maximum of 6 players, minimum of 2 player" <<endl;
+        cout << "Please enter addplayer and the player name (separated by space) - you may add a maximum of 6 players, minimum of 2 players" <<endl;
         cout << "You have " << playerCount << " player(s) so far" << endl;
         currentCommand = processor->getCommand();
         if(!processor->validate(currentCommand)){
@@ -107,18 +110,21 @@ void GameEngine::startUpPhase() {
             auto *player = new Player(playerName);
             addPlayer(player);
             playerCount++;
-            *state = "playersadded";
             if(playerCount>=2){
                 cout << "WRITE stop TO STOP ADDING PLAYERS" << endl;
                 currentCommand = processor->getCommand();
-                if (currentCommand->getCommandText() == "stop") break;
+                if (currentCommand->getCommandText() == "stop") {
+                    break;
+                }
             }
         } catch (...){
             cout << "Error - non-existent player name"<<endl;
         }
 
     }while (playerCount <= 6);
+    *state = "playersadded";
 
+    // ***************************** Game Start *****************************
     do {
         cout<< "Please enter gamestart to proceed" << endl;
         currentCommand = processor->getCommand();
@@ -128,12 +134,22 @@ void GameEngine::startUpPhase() {
         }
 
 //        a) fairly distribute all the territories to the players
+
 //        b) determine randomly the order of play of the players in the game
+        // Randomize the order of players in the array
+        // Seed a random number generator
+        random_device rd;
+        default_random_engine rng(rd());
+        // Shuffle the vector
+        shuffle(players.begin(), players.end(), rng);
+        cout << "Order of players has been randomized" << endl;
 //        c) give 50 initial army units to the players, which are placed in their respective reinforcement pool
 //        d) let each player draw 2 initial cards from the deck using the deck’s draw() method
+        cout << "Drawing two cars for each player" << endl;
         for (auto player : players){
             player->getHand()->place(deck->draw());
             player->getHand()->place(deck->draw());
+            cout << "armies: " << player->getArmies() << endl;
         }
 //        e) switch the game to the play phase
         *state = "play";
@@ -148,11 +164,11 @@ bool GameEngine::startUpPhase2(string mapFile) {
     *state = "start";
 
     // COMMANDS WRITTEN IN A FILE
-    // TODO Check if loadmap command valid
+    // Check if loadmap command valid
     Map& loadedMap = loadMap("Test.txt");
     *state = "maploaded";
 
-    // TODO Check if validate command valid
+    // Check if validate command valid
     if(validateMap(loadedMap)) {
         *state = "mapvalidated";
         int playerCount = 0;
@@ -172,9 +188,9 @@ bool GameEngine::startUpPhase2(string mapFile) {
                 break;
             }
             if (playerCount >= 2 && playerCount < 6) {
-                std::cout << "You can add more players or type another command to stop adding.\n";
+                cout << "You can add more players or type another command to stop adding.\n";
             } else if (playerCount == 6) {
-                std::cout << "Maximum player limit reached.\n";
+                cout << "Maximum player limit reached.\n";
                 break;
             }
         }
