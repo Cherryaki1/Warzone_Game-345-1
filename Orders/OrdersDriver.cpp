@@ -136,6 +136,32 @@ void testOrderExecution() {
     cout << "Owner of Territory1: " << territory1->getOwner() << endl;
 
     cout << "\n" << endl;
+    cout << "AirliftOrder:" << endl;
+    cout << "1. If the source territory does not belong to the player that issued the order, the order is invalid." << endl;
+    cout << "Player1 trying to airlift 5 troops from Territory3 to Territory2..." << endl;
+    AirliftOrder* airliftOrder1 = new AirliftOrder(player1, territory3, territory2, 5);
+    airliftOrder1->execute();
+    cout << "2. If both the source and target territories belong to the player that issue the airlift order, then the selected number of army units is moved from the source to the target territory" << endl;
+    cout << "Player1 trying to airlift 5 troops from Territory1 to Territory2..." << endl;
+    cout << "Troop count on Territory2: " << territory2->getNumberOfArmies() << endl;
+    AirliftOrder* airliftOrder2 = new AirliftOrder(player1, territory1, territory2, 5);
+    airliftOrder2->execute();
+    cout << "Troop count on Territory2 after Airlift: " << territory2->getNumberOfArmies() << endl;
+
+    cout << "\n" << endl;
+    cout << "NegotiateOrder:" << endl;
+    cout << "1. If the target is the player issuing the order, then the order is invalid." << endl;
+    cout << "Player1 trying to negotiate with themselves..." << endl;
+    NegotiateOrder* negotiateOrder1 = new NegotiateOrder(player1, player1);
+    negotiateOrder1->execute();
+    cout << "2. If the order is valid, then a truce is established between the two players." << endl;
+    cout << "Player1 trying to negotiate with Player2..." << endl;
+    NegotiateOrder* negotiateOrder2 = new NegotiateOrder(player1, player2);
+    negotiateOrder2->execute();
+    cout << "Player1 trying to advance 5 troops from Territory2 to Territory3..." << endl;
+    AdvanceOrder* advanceOrder5 = new AdvanceOrder(player1, territory2, territory3, 5);
+    advanceOrder5->execute();
+
     
  
 
