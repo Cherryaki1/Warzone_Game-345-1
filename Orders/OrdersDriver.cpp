@@ -21,8 +21,6 @@ void testOrderExecution() {
     cout << "Creating Player4" << endl;
     Player* player4 = new Player("Player4");
 
-    cout << "\n" << endl;
-
     // Create territories with no armies
     cout << "Creating Territory1 (in Continent1) with no armies and belongs to Player1" << endl;
     Territory* territory1 = new Territory("Territory1", player1->getPlayerName(), "Continent1", 0);
@@ -35,8 +33,6 @@ void testOrderExecution() {
 
     cout << "Creating Territory4 (in Continent2) with no armies and belongs to Player2" << endl;
     Territory* territory4 = new Territory("Territory4", player2->getPlayerName(), "Continent2", 0);
-
-    cout << "\n" << endl;
 
     // Set adjacent territories
     cout << "Setting Territory1 adjacent to Territory2" << endl;
@@ -55,35 +51,47 @@ void testOrderExecution() {
     territory4->adjacentTerritories.push_back(territory1);
     territory1->adjacentTerritories.push_back(territory4);
 
-    cout << "\n" << endl;
     // Create a deck
     cout << "Creating a deck" << endl;
     Deck* deck = new Deck();
     deck->initialize();
 
-    cout << "\n" << endl;
     cout << "Demonstractions:" << endl;
 
-    cout << "\n" << endl;
     cout << "(1) each order is validated before being executed according to the above description." << endl;
-    
-
-    cout << "\n\n" << endl;
+    cout << "\n" << endl;
     cout << "DeployOrder:" << endl;
-    cout << "Adding 5 troops to Territory1 to test DeployOrder..." << endl;
-    territory1->setNumberOfArmies(5);
+    cout << "Adding 5 troops to Player1's reinforcement pool..." << endl;
+    player1->setReinforcementPool(5);
     cout << "1. If the target territory does not belong to the player that issued the order, the order is invalid." << endl;
-    cout << "Deploying the 5 troops of Player1 in Territory1 to Territory3..." << endl;
+    cout << "Deploying the 5 troops of Player1 to Territory3..." << endl;
     DeployOrder* deployOrder1 = new DeployOrder(player1, territory3, 5);
     deployOrder1->execute();
-    cout << "\n" << endl;
-    cout << "2. If the target territory belongs to the player that issued the deploy order, the selected number of army units is added to the number of army units on that territory." << endl; 
-    cout << "Deploying the 5 troops of Player1 from Territory1 to Territory2..." << endl;
-    DeployOrder* deployOrder2 = new DeployOrder(player1, territory2, 5);
-    deployOrder2->execute();
-    cout << "\n\n" << endl;
 
-    
+    cout << "2. If the target territory belongs to the player that issued the deploy order, the selected number of army units is added to the number of army units on that territory." << endl; 
+    cout << "Deploying the 5 troops of Player1 Territory1..." << endl;
+    DeployOrder* deployOrder2 = new DeployOrder(player1, territory1, 5);
+    deployOrder2->execute();
+    cout << "\n" << endl;
+    cout << "AdvanceOrder:" << endl;
+    cout << "1. If the source territory does not belong to the player that issued the order, the order is invalid." << endl;
+    cout << "Player1 trying to advance 5 troops from Territory3 to Territory2..." << endl;
+    AdvanceOrder* advanceOrder1 = new AdvanceOrder(player1, territory3, territory2, 5);
+    advanceOrder1->execute();
+    cout << "2. If the target territory is not adjacent to the source territory, the order is invalid" << endl;
+    cout << "Player1 trying to advance 5 troops from Territory1 to Territory3..." << endl;
+    AdvanceOrder* advanceOrder2 = new AdvanceOrder(player1, territory1, territory3, 5);
+    advanceOrder2->execute();
+    cout << "3. If the source and target territory both belong to the player that issued the order, the army units are moved from the source to the target territory." << endl;
+    cout << "Player1 trying to advance 5 troops from Territory1 to Territory2..." << endl;
+    AdvanceOrder* advanceOrder3 = new AdvanceOrder(player1, territory1, territory2, 5);
+    advanceOrder3->execute();
+    cout << "4. If the target territory belongs to another player than the player that issued the advance order, an attack is simulated when the order is executed." << endl;
+    cout << "Adding 5 troops to Territory4 (adjacent but owned by Player2)..." << endl;
+    territory4->setNumberOfArmies(5);
+    cout << "Player1 trying to advance 5 troops from Territory1 to Territory4..." << endl;
+    AdvanceOrder* advanceOrder4 = new AdvanceOrder(player1, territory1, territory4, 5);
+    advanceOrder4->execute();
  
 
     // // Clean up
