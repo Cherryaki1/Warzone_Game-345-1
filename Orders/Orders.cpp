@@ -131,9 +131,9 @@ void AdvanceOrder::execute()
                         targetTerritory->setOwner(player->getPlayerName());
                         targetTerritory->setNumberOfArmies(attackerArmies - attackerLosses);
 
-                        // Award a card to the player if they conquered at least one territory
-                        Card *drawnCard = deck->draw();
-                        player->getHand()->place(drawnCard);
+                        // // Award a card to the player if they conquered at least one territory
+                        // Card *drawnCard = deck->draw();
+                        // player->getHand()->place(drawnCard);
                         std::cout << "Player " << player->getPlayerName() << " has been rewarded a card for successfully conquering " << targetTerritory->getName() << std::endl;
                     }
                 }
