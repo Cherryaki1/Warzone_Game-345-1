@@ -15,12 +15,6 @@ void testOrderExecution() {
     cout << "Creating Player2" << endl;
     Player* player2 = new Player("Player2");
 
-    cout << "Creating Player3" << endl;
-    Player* player3 = new Player("Player3");
-
-    cout << "Creating Player4" << endl;
-    Player* player4 = new Player("Player4");
-
     // Create territories with no armies
     cout << "Creating Territory1 (in Continent1) with no armies and belongs to Player1" << endl;
     Territory* territory1 = new Territory("Territory1", player1->getPlayerName(), "Continent1", 0);
@@ -109,6 +103,8 @@ void testOrderExecution() {
     territory3->setNumberOfArmies(10);
     cout << "Player1 trying to bomb Territory3..." << endl;
     cout << "Territory3 troop count before bomb: " << territory3->getNumberOfArmies() << endl;
+    player1->addOwnedTerritory(territory1);
+    player1->addOwnedTerritory(territory2);
     BombOrder* bombOrder3 = new BombOrder(player1, territory3);
     bombOrder3->execute();
     cout << "Territory3 troop count after bomb: " << territory3->getNumberOfArmies() << endl;
@@ -168,13 +164,13 @@ void testOrderExecution() {
     
  
 
-    // // Clean up
-    // delete player1;
-    // delete player2;
-    // delete territory1;
-    // delete territory2;
-    // delete territory3;
-    // delete deck;
+    // Clean up
+    delete player1;
+    delete player2;
+    delete territory1;
+    delete territory2;
+    delete territory3;
+    delete deck;
 
 
 }
