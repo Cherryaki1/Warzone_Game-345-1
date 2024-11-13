@@ -388,6 +388,40 @@ bool GameEngine::ordersIssuingPhase() {
                  }
              }
          }
+
+         /*
+            Issue order from one card in hand
+
+         // Get the cards in the player's hand
+         auto handCards = player->getHand()->getHand();
+
+         // Check if there are cards to play
+         if (handCards->empty()) {
+             std::cout << "No cards in hand to play." << std::endl;
+         } else {
+             std::cout << "Cards in your hand:" << std::endl;
+             for (size_t i = 0; i < handCards->size(); ++i) {
+                 std::cout << i << ": " << handCards->at(i)->getType() << " card" << std::endl;
+             }
+
+             // Prompt the player to select a card to play
+             int cardIndex = -1;
+             std::cout << "Enter the number of the card you want to play, or -1 to skip: ";
+             std::cin >> cardIndex;
+
+             // Validate the choice
+             if (cardIndex >= 0 && cardIndex < static_cast<int>(handCards->size())) {
+                 Card* selectedCard = handCards->at(cardIndex);
+                 selectedCard->play();// Optionally remove the card after playing
+                 std::cout << "Card played successfully." << std::endl;
+             } else if (cardIndex == -1) {
+                 std::cout << "You chose not to play any card." << std::endl;
+             } else {
+                 std::cout << "Invalid choice. No card played." << std::endl;
+             }
+         }
+         */
+
     }
     return true;
 }
