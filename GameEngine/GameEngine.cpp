@@ -143,6 +143,11 @@ void GameEngine::startUpPhase() {
         for (auto& territory : allTerritories) {
             players[playerIndex]->addOwnedTerritory(territory);
 
+            // Set the owner of the territory to the player's name
+            territory->setOwner(players[playerIndex]->getPlayerName());
+
+            cout << "Territory: " << territory->getName() << " is now owned by: " << territory->getOwner() << endl;
+
             // Move to the next player (round-robin)
             playerIndex = (playerIndex + 1) % players.size();
         }

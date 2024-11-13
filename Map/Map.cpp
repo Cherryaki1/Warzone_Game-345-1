@@ -78,8 +78,8 @@ string Territory::getOwner() const {
     return *pOwner;
 }
 
-void Territory::setOwner(const string &player) {
-    *pOwner = player;
+void Territory::setOwner(const string &playerName) {
+    *pOwner = playerName;
 }
 
 string Territory::getContinentID() const {

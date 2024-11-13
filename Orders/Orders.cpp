@@ -63,7 +63,7 @@ void DeployOrder::execute() {
 }
 
 
-extern Deck* deck;
+extern Deck* deck = new Deck;
 // Advance Order
 void AdvanceOrder::execute() {
     if (sourceTerritory->getOwner() == player->getPlayerName()) {
