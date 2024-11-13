@@ -56,10 +56,10 @@ void testOrderExecution() {
     Deck* deck = new Deck();
     deck->initialize();
 
-    cout << "Demonstractions:" << endl;
-
-    cout << "(1) each order is validated before being executed according to the above description." << endl;
     cout << "\n" << endl;
+    cout << "Demonstractions:" << endl;
+    cout << "\n" << endl;
+    cout << "(1) each order is validated before being executed according to the above description." << endl;
     cout << "DeployOrder:" << endl;
     cout << "Adding 5 troops to Player1's reinforcement pool..." << endl;
     player1->setReinforcementPool(5);
@@ -67,6 +67,7 @@ void testOrderExecution() {
     cout << "Deploying the 5 troops of Player1 to Territory3..." << endl;
     DeployOrder* deployOrder1 = new DeployOrder(player1, territory3, 5);
     deployOrder1->execute();
+    // cout << "Troop count on Territory1: " << Territory1->getTroopCount() << endl;
 
     cout << "2. If the target territory belongs to the player that issued the deploy order, the selected number of army units is added to the number of army units on that territory." << endl; 
     cout << "Deploying the 5 troops of Player1 Territory1..." << endl;
@@ -84,6 +85,7 @@ void testOrderExecution() {
     advanceOrder2->execute();
     cout << "3. If the source and target territory both belong to the player that issued the order, the army units are moved from the source to the target territory." << endl;
     cout << "Player1 trying to advance 5 troops from Territory1 to Territory2..." << endl;
+    cout << "Troop count on Territory 2: " << endl;
     AdvanceOrder* advanceOrder3 = new AdvanceOrder(player1, territory1, territory2, 5);
     advanceOrder3->execute();
     cout << "4. If the target territory belongs to another player than the player that issued the advance order, an attack is simulated when the order is executed." << endl;
