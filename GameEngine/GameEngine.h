@@ -61,5 +61,7 @@ class GameEngine : public Subject, public ILoggable {
 void testGameStates();
 void testStartUpPhase();
 void testMainGameLoop();
+void testOrderExecution();
+
 #endif
 

@@ -209,6 +209,23 @@ vector<Territory*> Player::toAttack() {
     return attackList;
 }
 
+void Player::addTrucePlayer(const string& playerName) {
+    trucePlayers.push_back(playerName);
+}
+void Player::clearTrucePlayers() {
+    trucePlayers.clear();
+}
+
+bool Player::hasTruceWith(const string& playerName) const {
+    for (const auto& trucePlayer : trucePlayers) {
+        if (trucePlayer == playerName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 // Stream insertion operator
 ostream& operator<<(ostream& os, const Player& player) {
     os << "Player Name: " << *(player.playerName);
