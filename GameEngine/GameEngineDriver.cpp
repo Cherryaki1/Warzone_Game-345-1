@@ -111,7 +111,6 @@ void testGameStates() {
                         cout << "The win conditions have not been met yet!" << endl;
                         testGameStates();
                     }
-
                 }
             }
         }
