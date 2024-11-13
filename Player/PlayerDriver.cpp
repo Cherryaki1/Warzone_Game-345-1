@@ -18,7 +18,7 @@ void testPlayers() {
     Player player("John");
 
     cout << "\nTesting toDefend() method..." << endl;
-    vector<Territory*> defendList = player.toDefend(map);
+    vector<Territory*> defendList = player.toDefend();
     cout << "Territories to Defend:" << endl;
     for (Territory* territory : defendList) {
         cout << "- " << territory->getName() << " with " << territory->getNumberOfArmies() << " armies" << endl;
@@ -26,7 +26,7 @@ void testPlayers() {
 
     // Step 4: Test toAttack()
     cout << "\nTesting toAttack() method..." << endl;
-    vector<Territory*> attackList = player.toAttack(map);
+    vector<Territory*> attackList = player.toAttack();
     cout << "Territories to Attack:" << endl;
     for (Territory* territory : attackList) {
         cout << "- " << territory->getName() << " with " << territory->getNumberOfArmies() << " armies" << endl;

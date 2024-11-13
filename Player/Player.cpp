@@ -57,7 +57,7 @@ Player::Player(const Player& other) {
     ordersList = new OrdersList(*(other.ordersList));  // Assuming OrdersList has a copy constructor
     numOfPlayers++;
     playerName = new string(*(other.playerName));
-    armies = new int(other.getArmies());
+    armies = new int(*(other.armies));
 }
 
 
@@ -77,8 +77,7 @@ Player& Player::operator=(const Player& other) {
         playerName = new string(*(other.playerName));
         playerHand = new Hand(*(other.playerHand));        // Assuming Hand has a copy constructor
         ordersList = new OrdersList(*(other.ordersList));  // Assuming OrdersList has a copy constructor
-        armies = new int(other.getArmies());
-        // Deep copy of each territory pointer in ownedTerritories
+        armies = new int(*(other.armies));  // Copy armies value        // Deep copy of each territory pointer in ownedTerritories
         for (auto& territory : other.ownedTerritories) {
             ownedTerritories.push_back(new Territory(*territory));  // Assuming Territory has a copy constructor
         }
@@ -174,42 +173,12 @@ bool Player::hasCard(string cardType) {
 }
 
 // Method for issuing an order (placeholder implementation)
-void Player::issueOrder(const std::string& orderType) {
-    Order* newOrder = nullptr;
-
-    // Create the correct subclass of Order based on the orderType
-    if (orderType == "Bomb") {
-        newOrder = new BombOrder();
-        cout << "Bomb order issued."<< endl;
-    }
-    else if (orderType == "Blockade") {
-        newOrder = new BlockadeOrder();
-        cout << "Blockade order issued."<< endl;
-    }
-    else if (orderType == "Airlift") {
-        newOrder = new AirliftOrder();
-        cout << "Airlift order issued."<< endl;
-    }
-    else if (orderType == "Negotiate") {
-        newOrder = new NegotiateOrder();
-        cout << "Negotiate order issued."<< endl;
-    }
-    else if (orderType == "Deploy") {
-        newOrder = new DeployOrder();
-        cout << "Deploy order issued." << endl;
-    }
-    else if (orderType == "Advance") {
-        newOrder = new AdvanceOrder();
-        cout << "Advance order issued." << endl;
-    }
-    else {
-        cout << "Unknown order type: " << orderType << endl;
-        return; // No order created, so return early
-    }
-
-    // Add the newly created order to the player's OrdersList
+void Player::issueOrder(Order* newOrder) {
     if (newOrder != nullptr) {
         ordersList->addOrder(newOrder);
+        cout << newOrder->getOrderType() << " order issued." << endl;
+    } else {
+        cout << "Error: Cannot issue a null order." << endl;
     }
 }
 
@@ -239,6 +208,23 @@ vector<Territory*> Player::toAttack() {
 
     return attackList;
 }
+
+void Player::addTrucePlayer(const string& playerName) {
+    trucePlayers.push_back(playerName);
+}
+void Player::clearTrucePlayers() {
+    trucePlayers.clear();
+}
+
+bool Player::hasTruceWith(const string& playerName) const {
+    for (const auto& trucePlayer : trucePlayers) {
+        if (trucePlayer == playerName) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 // Stream insertion operator
 ostream& operator<<(ostream& os, const Player& player) {

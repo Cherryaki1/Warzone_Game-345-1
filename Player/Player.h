@@ -29,6 +29,7 @@ private:
     OrdersList* ordersList;
     string* playerName;
     int reinforcementPool = 0;
+    vector<string> trucePlayers;
 
 public:
     //Default constructor
@@ -69,7 +70,11 @@ public:
     vector<Territory*> toDefend();
     vector<Territory*> toAttack();
 
-    void issueOrder(const std::string& orderType);
+    void issueOrder(Order* newOrder);
+
+    void addTrucePlayer(const string& playerName);
+    void clearTrucePlayers();
+    bool hasTruceWith(const string& playerName) const;
 
     //Stream insertion operator
     friend std::ostream& operator<<(std::ostream& os, const Player& player);
