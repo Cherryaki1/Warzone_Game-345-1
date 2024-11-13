@@ -44,6 +44,8 @@ private:
     bool validate(Command* command, string& state);
     bool validate(Command *command);
 
+    string nextGameState(const std::string& currentState, const std::string& commandText);
+
     Command* getCommand();
     string stringToLog() override;
 
