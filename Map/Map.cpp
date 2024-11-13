@@ -99,14 +99,12 @@ void Territory::setNumberOfArmies(int number_of_armies) {
 }
 
 bool Territory::isAdjacent(Territory* other) {
-    bool found = false;
     for (const auto& territory : adjacentTerritories) {
         if (territory == other) {
-            found = true;
-            break;
+            return true;
         }
     }
-    return found;
+    return false;
 }
 
 // Continent Class Implementation
