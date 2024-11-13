@@ -1,6 +1,5 @@
 #include "CommandProcessing.h"
 
-std::string _state = "start";
 // Command methods
 Command::Command(const string& commandText)
     : commandText(new string(commandText)), effect(new string("")) {}
@@ -97,39 +96,33 @@ bool CommandProcessor::validate(Command* command) {
 //    std::cout << commandText << std::endl;
     bool isValid = false;
 
-    if (commandText.substr(0,7) == "loadmap" && (_state == "start" || _state == "maploaded")) {
+    if (commandText.substr(0,7) == "loadmap") {
 //        string fileName = commandText.substr(9);
         std::cout << "Loaded map at " << commandText << std::endl;
         isValid = true;
-        _state = nextGameState(_state, commandText);
+
         command->saveEffect("Loads a map");
-    } else if (commandText == "validatemap" && _state == "maploaded" ) {
+    } else if (commandText == "validatemap") {
         isValid = true;
-        _state = nextGameState(_state, commandText);
         std::cout << "Validated Map" << std::endl;
         command->saveEffect("Validates a map");
-    } else if (commandText.substr(0,9) == "addplayer" && (_state == "mapvalidated" || _state == "playersadded")) {
+    } else if (commandText.substr(0,9) == "addplayer") {
 //        string playerName = commandText.substr(11);
         std::cout << "Added Player" << std::endl;
-        _state = nextGameState(_state, commandText);
         isValid = true;
         command->saveEffect("Adds a player");
-    } else if (commandText == "gamestart" && _state == "playersadded") {
+    } else if (commandText == "gamestart") {
         std::cout << "Game Start" << std::endl;
-        _state = nextGameState(_state, commandText);
         isValid = true;
         command->saveEffect("Starts the game");
     } else {
         command->saveEffect("Invalid command in the current state.");
     }
-    if (isValid) {
-        std::cout << "Executed command: " << commandText << ", New State: " << _state << std::endl;
-    } else {
-        std::cout << "Invalid command: " << commandText << std::endl;
-    }
+
     return isValid;
 }
 
+/*
 std::string CommandProcessor::nextGameState(const std::string& currentState, const std::string& commandText) {
     // Define your state transition logic here
     if (commandText.substr(0,7) == "loadmap") return "maploaded";
@@ -137,7 +130,7 @@ std::string CommandProcessor::nextGameState(const std::string& currentState, con
     if (commandText.substr(0,9) == "addplayer") return "playersadded";
     if (commandText == "gamestart") return "endOfStartUp (type \"end\" to finish startUp)";
     return currentState;
-}
+}*/
 
 string CommandProcessor::stringToLog() {
     return commands.back()->stringToLog();
