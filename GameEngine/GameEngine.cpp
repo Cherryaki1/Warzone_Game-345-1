@@ -28,26 +28,36 @@ GameEngine::GameEngine() {
 }
 
 GameEngine::~GameEngine() {
-    if (invalidCommand != nullptr) {
-        delete invalidCommand;  // Free the allocated memory of new
-    }
-    if(command != nullptr) {
-        delete command; // Free memory for command if it is allocated
-    }
-    if(state != nullptr) {
+    if (state != nullptr) {
         delete state;
+        state = nullptr;
     }
-    for (Player* player : players) {
-        delete player;
-    }
-    delete processor;
-    delete deck;
 
+    for (Player* player : players) {
+        if (player != nullptr) {
+            delete player;
+            player = nullptr;
+        }
+    }
+
+    if (processor != nullptr) {
+        delete processor;
+        processor = nullptr;
+    }
+
+    if (deck != nullptr) {
+        delete deck;
+        deck = nullptr;
+    }
+
+    /*
     if (gameMap != nullptr) {
         delete gameMap;
         gameMap = nullptr;
     }
+     */
 }
+
 
     // OPERATOR << FOR STARTUP
     ostream& operator<<(ostream& out, const GameEngine& gameEngine) {

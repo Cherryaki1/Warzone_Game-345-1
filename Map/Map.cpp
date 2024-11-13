@@ -193,10 +193,22 @@ Map::Map() {
 }
 
 Map::~Map() {
-    delete pContinents;
-    delete pTerritories;
-    delete pAdjList;
+    if (pContinents != nullptr) {
+        delete pContinents;
+        pContinents = nullptr;
+    }
+
+    if (pTerritories != nullptr) {
+        delete pTerritories;
+        pTerritories = nullptr;
+    }
+
+    if (pAdjList != nullptr) {
+        delete pAdjList;
+        pAdjList = nullptr;
+    }
 }
+
 
 void Map::add_edge(Territory* u, Territory* v) {
     (*pAdjList)[u].push_back(v);
