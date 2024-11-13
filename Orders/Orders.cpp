@@ -79,8 +79,8 @@ void AdvanceOrder::execute() {
             if (targetTerritory->getOwner() == player->getPlayerName()) {
                 targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
                 sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - numUnits);
-                notify(this);
                 executed = true;
+                notify(this);
             }
             else { // Perform attack simulation
             if (player->hasTruceWith(targetTerritory->getOwner())) {

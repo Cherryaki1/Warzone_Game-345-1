@@ -31,6 +31,7 @@ class Order : public Subject, public ILoggable {
 
 
         friend std::ostream& operator<<(std::ostream& os, const Order& order);
+
     protected:
         std::string orderType;
         bool executed;
