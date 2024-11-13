@@ -46,19 +46,27 @@ string Order::stringToLog() {
 
 // Deploy Order
 void DeployOrder::execute() {
+    std::cout << "Executing DeployOrder" << std::endl;
+    std::cout << "targetTerritoryOwner: " << targetTerritory->getOwner() << std::endl;
+    std::cout << "playerName: " << player->getPlayerName() << std::endl;
+
     if (targetTerritory->getOwner() == player->getPlayerName()) {
+        std::cout << "player reinforcement pool: " << player->getReinforcementPool() << std::endl;
+        std::cout << "numUnits: " << numUnits << std::endl;
         if (player->getReinforcementPool() >= numUnits) {
             targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
             player->setReinforcementPool(player->getReinforcementPool() - numUnits);
-            notify(this);
             executed = true;
+            notify(this);
         }
         else {
             std::cout << "Invalid deploy order: " << player->getPlayerName() << " does not have enough units to deploy" << std::endl;
+            executed = false; // Explicitly set this to false
         }
     }
     else {
         std::cout << "Invalid deploy order: " << targetTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
+        executed = false; // Explicitly set this to false
     }
 }
 
@@ -284,6 +292,12 @@ Order *OrdersList::getNextOrder()
         return nullptr;
     }
 }
+
+bool Order::isExecuted() const {
+    return executed;
+}
+
+
 
 std::ostream& operator<<(std::ostream& os, const OrdersList& ordersList) {
     int index = 0;

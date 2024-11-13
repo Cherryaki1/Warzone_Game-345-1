@@ -27,11 +27,15 @@ class Order : public Subject, public ILoggable {
         bool validate();
         virtual void execute() = 0; // Pure virtual method
         std::string getOrderType() const;
-        friend std::ostream& operator<<(std::ostream& os, const Order& order);
+        bool isExecuted() const;
 
-    private:
+
+        friend std::ostream& operator<<(std::ostream& os, const Order& order);
+    protected:
         std::string orderType;
         bool executed;
+
+    private:
         string stringToLog() override;
 };
 
@@ -42,7 +46,7 @@ class DeployOrder : public Order {
 private:
     Player* player;
     Territory* targetTerritory;
-    bool executed;
+    //bool executed;
     int numUnits;
 
 public:
@@ -58,7 +62,7 @@ private:
     Territory* sourceTerritory;
     Territory* targetTerritory;
     int numUnits;
-    bool executed;
+    //bool executed;
 
 public:
     AdvanceOrder() = default;
@@ -72,7 +76,7 @@ class BombOrder : public Order {
 private:
     Player* player;
     Territory* targetTerritory;
-    bool executed;
+    //bool executed;
 
 public:
     BombOrder() = default;
@@ -86,7 +90,7 @@ private:
     Player* player;
     Territory* targetTerritory;
     bool executed;
-    //Deck* deck;
+
 
 public:
     BlockadeOrder() = default;
@@ -101,7 +105,7 @@ private:
     Territory* sourceTerritory;
     Territory* targetTerritory;
     int numUnits;
-    bool executed;
+    //bool executed;
 
 public:
     AirliftOrder() = default;
@@ -114,7 +118,7 @@ class NegotiateOrder : public Order {
 private:
     Player* player;
     Player* targetPlayer;
-    bool executed;
+    //bool executed;
 
 public:
     NegotiateOrder() = default;
