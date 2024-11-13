@@ -9,68 +9,90 @@ using namespace std;
 
 void testOrderExecution() {
     // Create players
+    cout << "Creating Player1" << endl;
     Player* player1 = new Player("Player1");
+
+    cout << "Creating Player2" << endl;
     Player* player2 = new Player("Player2");
 
-    // Create territories
-    Territory* territory1 = new Territory("Territory1", player1->getPlayerName(), "Continent1", 10);
-    Territory* territory2 = new Territory("Territory2", player2->getPlayerName(), "Continent1", 5);
-    Territory* territory3 = new Territory("Territory3", player1->getPlayerName(), "Continent1", 8);
+    cout << "Creating Player3" << endl;
+    Player* player3 = new Player("Player3");
+
+    cout << "Creating Player4" << endl;
+    Player* player4 = new Player("Player4");
+
+    cout << "\n" << endl;
+
+    // Create territories with no armies
+    cout << "Creating Territory1 (in Continent1) with no armies and belongs to Player1" << endl;
+    Territory* territory1 = new Territory("Territory1", player1->getPlayerName(), "Continent1", 0);
+    
+    cout << "Creating Territory2 (in Continent1) with no armies and belongs to Player1" << endl;
+    Territory* territory2 = new Territory("Territory2", player1->getPlayerName(), "Continent1", 0);
+
+    cout << "Creating Territory3 (in Continent2) with no armies and belongs to Player2" << endl;
+    Territory* territory3 = new Territory("Territory3", player2->getPlayerName(), "Continent2", 0);
+
+    cout << "Creating Territory4 (in Continent2) with no armies and belongs to Player2" << endl;
+    Territory* territory4 = new Territory("Territory4", player2->getPlayerName(), "Continent2", 0);
+
+    cout << "\n" << endl;
 
     // Set adjacent territories
+    cout << "Setting Territory1 adjacent to Territory2" << endl;
     territory1->adjacentTerritories.push_back(territory2);
     territory2->adjacentTerritories.push_back(territory1);
+
+    cout << "Setting Territory2 adjacent to Territory3" << endl;
     territory2->adjacentTerritories.push_back(territory3);
     territory3->adjacentTerritories.push_back(territory2);
 
-    // Add territories to players
-    player1->addOwnedTerritory(territory1);
-    player1->addOwnedTerritory(territory3);
-    player2->addOwnedTerritory(territory2);
+    cout << "Setting Territory3 adjacent to Territory4" << endl;
+    territory3->adjacentTerritories.push_back(territory4);
+    territory4->adjacentTerritories.push_back(territory3);
 
+    cout << "Setting Territory4 adjacent to Territory1" << endl;
+    territory4->adjacentTerritories.push_back(territory1);
+    territory1->adjacentTerritories.push_back(territory4);
+
+    cout << "\n" << endl;
     // Create a deck
+    cout << "Creating a deck" << endl;
     Deck* deck = new Deck();
     deck->initialize();
 
-    // Assign hands to players
-    player1->getHand()->place(deck->draw());
-    player2->getHand()->place(deck->draw());
+    cout << "\n" << endl;
+    cout << "Demonstractions:" << endl;
 
-    // Test Deploy Order
-    DeployOrder deployOrder(player1, territory1, 5);
-    deployOrder.execute();
+    cout << "\n" << endl;
+    cout << "(1) each order is validated before being executed according to the above description." << endl;
+    
 
-    // Test Advance Order
-    AdvanceOrder advanceOrder(player1, territory1, territory2, 5);
-    advanceOrder.execute();
-    cout << "Owner of " << territory2->getName() << " after attack: " << territory2->getOwner() << endl;
+    cout << "\n\n" << endl;
+    cout << "DeployOrder:" << endl;
+    cout << "Adding 5 troops to Territory1 to test DeployOrder..." << endl;
+    territory1->setNumberOfArmies(5);
+    cout << "1. If the target territory does not belong to the player that issued the order, the order is invalid." << endl;
+    cout << "Deploying the 5 troops of Player1 in Territory1 to Territory3..." << endl;
+    DeployOrder* deployOrder1 = new DeployOrder(player1, territory3, 5);
+    deployOrder1->execute();
+    cout << "\n" << endl;
+    cout << "2. If the target territory belongs to the player that issued the deploy order, the selected number of army units is added to the number of army units on that territory." << endl; 
+    cout << "Deploying the 5 troops of Player1 from Territory1 to Territory2..." << endl;
+    DeployOrder* deployOrder2 = new DeployOrder(player1, territory2, 5);
+    deployOrder2->execute();
+    cout << "\n\n" << endl;
 
-    // Test Bomb Order
-    BombOrder bombOrder(player1, territory2);
-    bombOrder.execute();
+    
+ 
 
-    // Test Blockade Order
-    BlockadeOrder blockadeOrder(player1, territory1);
-    blockadeOrder.execute();
-    cout << "Owner of " << territory1->getName() << " after blockade: " << territory1->getOwner() << endl;
+    // // Clean up
+    // delete player1;
+    // delete player2;
+    // delete territory1;
+    // delete territory2;
+    // delete territory3;
+    // delete deck;
 
-    // Test Airlift Order
-    AirliftOrder airliftOrder(player1, territory1, territory3, 3);
-    airliftOrder.execute();
 
-    // Test Negotiate Order
-    NegotiateOrder negotiateOrder(player1, player2);
-    negotiateOrder.execute();
-
-    // Attempt to attack after negotiation
-    AdvanceOrder advanceOrderAfterNegotiate(player1, territory3, territory2, 3);
-    advanceOrderAfterNegotiate.execute();
-
-    // Clean up
-    delete player1;
-    delete player2;
-    delete territory1;
-    delete territory2;
-    delete territory3;
-    delete deck;
 }
