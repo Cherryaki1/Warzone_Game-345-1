@@ -162,13 +162,13 @@ void testOrderExecution() {
     advanceOrder5->execute();
 
     // Clean up
-    delete player1;
-    delete player2;
-    delete territory1;
-    delete territory2;
-    delete territory3;
-    delete territory4;
-    delete deck;
+    // delete player1;
+    // delete player2;
+    // delete territory1;
+    // delete territory2;
+    // delete territory3;
+    // delete territory4;
+    // delete deck;
 
 
 }
