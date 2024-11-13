@@ -136,7 +136,7 @@ void BombOrder::execute() {
         std::cout << "Invalid bomb order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
         return;
     }
-    if (player->getHand()->hasCard("Bomb")) {
+    //if (player->getHand()->hasCard("Bomb")) {
         if (targetTerritory->getOwner() != player->getPlayerName()) {
             //if the target territory is not adjacent to one of the territory owned by the player -> ionvalid
             bool isAdjacent = false;
@@ -158,10 +158,10 @@ void BombOrder::execute() {
         else {
             std::cout << "Invalid bomb order: " << targetTerritory->getName() << " belongs to you" << std::endl;
         }
-    }
-    else {
-        std::cout << "Invalid bomb order: " << player->getPlayerName() << " does not have a Bomb card" << std::endl;
-    }
+    //}
+    //else {
+        //std::cout << "Invalid bomb order: " << player->getPlayerName() << " does not have a Bomb card" << std::endl;
+    //}
 }
 
 // Blockade Order
