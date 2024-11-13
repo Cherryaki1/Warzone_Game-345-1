@@ -24,24 +24,40 @@ GameEngine::GameEngine() {
     processor = new CommandProcessor();
     command = nullptr; // To avoid dereferencing issues
     deck = new Deck();
+    gameMap = nullptr;
 }
 
 GameEngine::~GameEngine() {
-    if (invalidCommand != nullptr) {
-        delete invalidCommand;  // Free the allocated memory of new
-    }
-    if(command != nullptr) {
-        delete command; // Free memory for command if it is allocated
-    }
-    if(state != nullptr) {
+    if (state != nullptr) {
         delete state;
+        state = nullptr;
     }
+
     for (Player* player : players) {
-        delete player;
+        if (player != nullptr) {
+            delete player;
+            player = nullptr;
+        }
     }
-    delete processor;
-    delete deck;
+
+    if (processor != nullptr) {
+        delete processor;
+        processor = nullptr;
+    }
+
+    if (deck != nullptr) {
+        delete deck;
+        deck = nullptr;
+    }
+
+    /*
+    if (gameMap != nullptr) {
+        delete gameMap;
+        gameMap = nullptr;
+    }
+     */
 }
+
 
     // OPERATOR << FOR STARTUP
     ostream& operator<<(ostream& out, const GameEngine& gameEngine) {
@@ -72,6 +88,7 @@ void GameEngine::startUpPhase() {
         try{
             fileName = currentCommand->getCommandText().substr(8);
             loadedMap = loadMap(fileName);
+            gameMap = new Map(loadedMap);
             transition("maploaded");
             if(loadedMap.getTerritories()->empty()) *state="start";
         } catch (...){
@@ -132,7 +149,7 @@ void GameEngine::startUpPhase() {
 
 //        a) fairly distribute all the territories to the players
         // Get all territories from the map
-        vector<Territory*> allTerritories = *globalMap->getTerritories();
+        vector<Territory*> allTerritories = *gameMap->getTerritories();
 
         // Shuffle territories to randomize the assignment
         srand(time(0));  // Seed the random number generator
@@ -193,6 +210,7 @@ void GameEngine::mainGameLoop() {
 }
 
 bool GameEngine::reinforcementPhase() {
+    std::cout << "Starting reinforcement phase..." << std::endl;
 
     for (auto player : players)
     {
@@ -249,6 +267,8 @@ bool GameEngine::reinforcementPhase() {
 
 
 bool GameEngine::ordersIssuingPhase() {
+    std::cout << "Starting orders issuing phase..." << std::endl;
+
      for (auto player : players){
          std::cout << player->getPlayerName() << "'s orders issue phase" << std::endl;
         vector<Territory *> territoriesToAttack = player->toAttack();
@@ -378,22 +398,80 @@ bool GameEngine::ordersIssuingPhase() {
                  }
              }
          }
+
+         /*
+            Issue order from one card in hand
+
+         // Get the cards in the player's hand
+         auto handCards = player->getHand()->getHand();
+
+         // Check if there are cards to play
+         if (handCards->empty()) {
+             std::cout << "No cards in hand to play." << std::endl;
+         } else {
+             std::cout << "Cards in your hand:" << std::endl;
+             for (size_t i = 0; i < handCards->size(); ++i) {
+                 std::cout << i << ": " << handCards->at(i)->getType() << " card" << std::endl;
+             }
+
+             // Prompt the player to select a card to play
+             int cardIndex = -1;
+             std::cout << "Enter the number of the card you want to play, or -1 to skip: ";
+             std::cin >> cardIndex;
+
+             // Validate the choice
+             if (cardIndex >= 0 && cardIndex < static_cast<int>(handCards->size())) {
+                 Card* selectedCard = handCards->at(cardIndex);
+                 selectedCard->play();// Optionally remove the card after playing
+                 std::cout << "Card played successfully." << std::endl;
+             } else if (cardIndex == -1) {
+                 std::cout << "You chose not to play any card." << std::endl;
+             } else {
+                 std::cout << "Invalid choice. No card played." << std::endl;
+             }
+         }
+         */
+
     }
     return true;
 }
 
 string GameEngine::ordersExecutionPhase() {
-    for (auto player : players)
-    {
-        OrdersList *orderList = player->getOrdersList();
-        Order *nextOrder = orderList->getNextOrder();
-        while (nextOrder != nullptr)
-        {
-            nextOrder->execute();
+    std::cout << "Starting orders execution phase..." << std::endl;
+
+    // Loop through each player
+    for (auto player : players) {
+        std::cout << "Executing orders for player: " << player->getPlayerName() << std::endl;
+        OrdersList* orderList = player->getOrdersList();
+        int position = 0;
+
+        // Execute orders as long as the list is not empty
+        while (!orderList->isEmpty()) {
+            Order* currentOrder = orderList->getOrders().front(); // Get the first order
+
+            std::cout << "Executing order: " << currentOrder->getOrderType() << " for player: " << player->getPlayerName() << std::endl;
+
+            // Execute the order
+            currentOrder->execute();
+
+            // Check if the order was executed successfully
+            if (currentOrder->isExecuted()) {
+                std::cout << "Order executed successfully." << std::endl;
+                orderList->remove(position);  // Remove the order from the list
+            } else {
+                std::cout << "Skipping invalid order for player " << player->getPlayerName() << std::endl;
+                position++;  // Move to the next position for the next iteration
+            }
         }
+
+        std::cout << "Finished executing orders for player: " << player->getPlayerName() << std::endl;
     }
-    return getCommand();
+
+    std::cout << "Orders execution phase completed." << std::endl;
+    return getCommand();  // Return the current command, if applicable
 }
+
+
 
 
 bool GameEngine::endPhase() {

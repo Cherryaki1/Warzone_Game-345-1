@@ -26,6 +26,7 @@ class GameEngine : public Subject, public ILoggable {
     bool* invalidCommand;
     vector<Player*> players;
     Deck* deck;
+    Map* gameMap;
     CommandProcessor *processor;
 
     public:

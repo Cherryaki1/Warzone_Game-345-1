@@ -99,14 +99,12 @@ void Territory::setNumberOfArmies(int number_of_armies) {
 }
 
 bool Territory::isAdjacent(Territory* other) {
-    bool found = false;
     for (const auto& territory : adjacentTerritories) {
         if (territory == other) {
-            found = true;
-            break;
+            return true;
         }
     }
-    return found;
+    return false;
 }
 
 // Continent Class Implementation
@@ -195,10 +193,22 @@ Map::Map() {
 }
 
 Map::~Map() {
-    delete pContinents;
-    delete pTerritories;
-    delete pAdjList;
+    if (pContinents != nullptr) {
+        delete pContinents;
+        pContinents = nullptr;
+    }
+
+    if (pTerritories != nullptr) {
+        delete pTerritories;
+        pTerritories = nullptr;
+    }
+
+    if (pAdjList != nullptr) {
+        delete pAdjList;
+        pAdjList = nullptr;
+    }
 }
+
 
 void Map::add_edge(Territory* u, Territory* v) {
     (*pAdjList)[u].push_back(v);
