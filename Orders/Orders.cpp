@@ -166,7 +166,7 @@ void BombOrder::execute() {
 
 // Blockade Order
 void BlockadeOrder::execute() {
-    if (player->getHand()->hasCard("Blockade")) {
+    // if (player->getHand()->hasCard("Blockade")) {
         if (targetTerritory->getOwner() == player->getPlayerName()) {
             targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() * 2);
             targetTerritory->setOwner("Neutral");
@@ -176,10 +176,10 @@ void BlockadeOrder::execute() {
         else {
             std::cout << "Invalid blockade order: " << targetTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
         }
-    }
-    else {
-        std::cout << "Invalid blockade order: " << player->getPlayerName() << " does not have a Blockade card" << std::endl;
-    }
+    // }
+    // else {
+        // std::cout << "Invalid blockade order: " << player->getPlayerName() << " does not have a Blockade card" << std::endl;
+    // }
 }
 
 // Airlift Order

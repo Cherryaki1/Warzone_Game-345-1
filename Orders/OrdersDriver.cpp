@@ -106,24 +106,37 @@ void testOrderExecution() {
     cout << "Player1 trying to bomb Territory1..." << endl;
     BombOrder* bombOrder1 = new BombOrder(player1, territory1);
     bombOrder1->execute();
-    cout << "2. If the target territory is not adjacent to one of the territories owned by the player that issued the order, the order is invalid." << endl;
-    cout << "Temporarly disconnecting Territory1 from Territory4..." << endl;
-    territory1->adjacentTerritories.pop_back();
-    territory4->adjacentTerritories.pop_back();
-    cout << "Player1 trying to bomb Territory3..." << endl;
-    BombOrder* bombOrder2 = new BombOrder(player1, territory3);
-    bombOrder2->execute();
-    cout << "Reconnecting Territory1 to Territory4..." << endl;
-    territory1->adjacentTerritories.push_back(territory4);
-    territory4->adjacentTerritories.push_back(territory1);
-    cout << "3. If the order is valid, half of the army units are removed from this territory." << endl;
+    cout << "2. If the order is valid, half of the army units are removed from this territory." << endl;
     cout << "Setting Territory4 troop size to 10..." << endl;
     territory4->setNumberOfArmies(10);
     cout << "Player1 trying to bomb Territory4..." << endl;
     BombOrder* bombOrder3 = new BombOrder(player1, territory4);
     bombOrder3->execute();
+    cout << "3. If the target territory is not adjacent to one of the territories owned by the player that issued the order, the order is invalid." << endl;
+    cout << "Disconnecting Territory1 from Territory4..." << endl;
+    territory1->adjacentTerritories.pop_back();
+    territory4->adjacentTerritories.pop_back();
+    cout << "Player1 trying to bomb Territory3..." << endl;
+    BombOrder* bombOrder2 = new BombOrder(player1, territory3);
+    bombOrder2->execute();
 
     cout << "\n" << endl;
+    cout << "BlockadeOrder:" << endl;
+    cout << "1. If the target territory does not belong to the player that issued the order, the order is invalid." << endl;
+    cout << "Player1 trying to blockade Territory3..." << endl;
+    BlockadeOrder* blockadeOrder1 = new BlockadeOrder(player1, territory3);
+    blockadeOrder1->execute();
+    cout << "2. If the order is valid, the number of army units on the target territory is doubled and the territory is set to neutral." << endl;
+    cout << "Setting troops of Territory1 to 5..." << endl;
+    territory1->setNumberOfArmies(5);
+    cout << "Player1 trying to blockade Territory1..." << endl;
+    BlockadeOrder* blockadeOrder2 = new BlockadeOrder(player1, territory1);
+    blockadeOrder2->execute();
+    cout << "Troop count on Territory1: " << territory1->getNumberOfArmies() << endl;
+    cout << "Owner of Territory1: " << territory1->getOwner() << endl;
+
+    cout << "\n" << endl;
+    
  
 
     // // Clean up
