@@ -42,8 +42,8 @@ int main(){
     testCommandProcessor();     // Part 1
   //  testStartUpPhase();         // Part 2
   // testMainGameLoop();      // Part 3
-  // testOrderExecution();       //Part 4
-  //testLoggingObserver();    //Part 5
+  //testOrderExecution();       //Part 4
+  //testLoggingObserver();      //Part 5
   // ************** Assignment 3 **************
 
 
