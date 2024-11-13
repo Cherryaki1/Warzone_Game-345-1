@@ -60,6 +60,7 @@ void testOrderExecution() {
     cout << "Demonstractions:" << endl;
     cout << "\n" << endl;
     cout << "(1) each order is validated before being executed according to the above description." << endl;
+    cout << "\n" << endl;
     cout << "DeployOrder:" << endl;
     cout << "Adding 5 troops to Player1's reinforcement pool..." << endl;
     player1->setReinforcementPool(5);
@@ -97,6 +98,10 @@ void testOrderExecution() {
 
     cout << "\n" << endl;
     cout << "BombOrder:" << endl;
+    cout << "Giving Player1 3 Bomb cards..." << endl;
+    player1->getHand()->place(new Card(1, deck));
+    player1->getHand()->place(new Card(1, deck));
+    player1->getHand()->place(new Card(1, deck));
     cout << "1. If the target belongs to the player that issued the order, the order is invalid." << endl;
     cout << "Player1 trying to bomb Territory1..." << endl;
     BombOrder* bombOrder1 = new BombOrder(player1, territory1);
