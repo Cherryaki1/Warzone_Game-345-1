@@ -15,6 +15,7 @@ void testCommandProcessor() {
 
     GameEngine gm;
     if (choice == "console") {
+        std::cout<< "Entering console mode" << std::endl;
         while(consoleProcessor.getCommands()->empty() || consoleProcessor.getCommands()->back()->getCommandText() != "quit") {
             consoleProcessor.processCommands();
         }
@@ -27,7 +28,6 @@ void testCommandProcessor() {
             fileProcessor.attach(&logObserver);
             std::cout << "Reading from file " << fileName << "..." << std::endl;
             fileProcessor.processCommands();
-
             fileProcessor.processCommands();
             fileProcessor.processCommands();
 
