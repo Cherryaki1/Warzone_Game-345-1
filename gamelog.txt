@@ -1,90 +1,13 @@
 Order Issued: Deploy
 Order Issued: Bomb
 Order Issued: Negotiate
-Order Executed: Deploy
-Order Executed: Bomb
 Order Executed: Negotiate
-Command: dnfdfds
-Command's Effect: Invalid command in the current state.
-Command: diofdsnf
+Command: loadmap Test.txt
+Command's Effect: Loads a map
+Command: daksk
 Command's Effect: Invalid command in the current state.
 Command: stop
 Command's Effect: Invalid command in the current state.
 Game Engine new state: start
 Game Engine new state: maploaded
 Game Engine new state: mapvalidated
-Game Engine new state: playersadded
-Game Engine new state: playersadded
-Game Engine new state: play
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap Test.txt
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap Test.txt
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: validatemap
-Command's Effect: Validates a map
-Command: fdsf
-Command's Effect: Invalid command in the current state.
-Command: fsdfss
-Command's Effect: Invalid command in the current state.
-Command: no
-Command's Effect: Invalid command in the current state.
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: validatemap
-Command's Effect: Validates a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap
-Command's Effect: Loads a map
-Command: validatemap
-Command's Effect: Validates a map
-Command: loadmap
-Command's Effect: Invalid command in the current state.
-Command: addplayer
-Command's Effect: Adds a player
-Command: addplayer
-Command's Effect: Adds a player
-Command: addplayer
-Command's Effect: Adds a player
-Command: loadmap
-Command's Effect: Invalid command in the current state.
-Command: gamestart
-Command's Effect: Starts the game
-Command: loadmap
-Command's Effect: Loads a map
-Command: loadmap Europe 4B.map
-Command's Effect: Loads a map
-Command: validatemap
-Command's Effect: Invalid command in the current state.
-Command: addplayer Joe
-Command's Effect: Invalid command in the current state.
-Command: loadmap Europe 4B.map
-Command's Effect: Loads a map
-Command: validatemap
-Command's Effect: Invalid command in the current state.
-Command: addplayer Joe
-Command's Effect: Invalid command in the current state.
-Command: loadmap Europe 4B.map
-Command's Effect: Loads a map
-Command: validatemap
-Command's Effect: Validates a map
-Command: addplayer Joe
-Command's Effect: Adds a player

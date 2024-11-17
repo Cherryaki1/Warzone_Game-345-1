@@ -128,7 +128,7 @@ std::string CommandProcessor::nextGameState(const std::string& currentState, con
     if (commandText.substr(0,7) == "loadmap") return "maploaded";
     if (commandText == "validatemap") return "mapvalidated";
     if (commandText.substr(0,9) == "addplayer") return "playersadded";
-    if (commandText == "gamestart") return "endOfStartUp (type \"end\" to finish startUp)";
+    if (commandText == "gamestart") return "playersadded";
     return currentState;
 }*/
 
