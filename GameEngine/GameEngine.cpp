@@ -90,11 +90,11 @@ void GameEngine::startUpPhase() {
             loadedMap = loadMap(fileName);
             gameMap = new Map(loadedMap);
             transition("maploaded");
-            if(loadedMap.getTerritories()->empty()) *state="start";
+            if(loadedMap.getTerritories()->empty()) transition("start");
         } catch (...){
             cout << "Error - non-existent file name"<<endl;
         }
-    } while  (currentCommand == nullptr|| !processor->validate(currentCommand) || *state!="maploaded");
+    } while  (*state!="maploaded");
 
     do {
         cout<< "Please enter validatemap to proceed" << endl;
@@ -108,7 +108,7 @@ void GameEngine::startUpPhase() {
             transition("mapvalidated");
         }
 
-    } while (!processor->validate(currentCommand));
+    } while (*state!="mapvalidated");
 
     int playerCount= 0;
     do{
@@ -137,7 +137,7 @@ void GameEngine::startUpPhase() {
         } catch (...){
             cout << "Error - non-existent player name"<<endl;
         }
-    }while (playerCount <= 6);
+    }while (playerCount <= 6 || *state!="playersadded");
 
     do {
         cout<< "Please enter gamestart to proceed" << endl;
@@ -198,7 +198,7 @@ void GameEngine::startUpPhase() {
 //        e) switch the game to the play phase
         transition("play");
 
-    } while (!processor->validate(currentCommand));
+    } while (*state != "play");
 
 }
 
@@ -460,7 +460,8 @@ string GameEngine::ordersExecutionPhase() {
                 orderList->remove(position);  // Remove the order from the list
             } else {
                 std::cout << "Skipping invalid order for player " << player->getPlayerName() << std::endl;
-                position++;  // Move to the next position for the next iteration
+//                position++;  // Move to the next position for the next iteration
+                orderList->remove(position);  // Remove the order from the list
             }
         }
 

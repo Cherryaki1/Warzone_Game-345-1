@@ -98,21 +98,21 @@ bool CommandProcessor::validate(Command* command) {
 
     if (commandText.substr(0,7) == "loadmap") {
 //        string fileName = commandText.substr(9);
-        std::cout << "Loaded map at " << commandText << std::endl;
+//        std::cout << "Loaded map at " << commandText << std::endl;
         isValid = true;
 
         command->saveEffect("Loads a map");
     } else if (commandText == "validatemap") {
         isValid = true;
-        std::cout << "Validated Map" << std::endl;
+//        std::cout << "Validated Map" << std::endl;
         command->saveEffect("Validates a map");
     } else if (commandText.substr(0,9) == "addplayer") {
 //        string playerName = commandText.substr(11);
-        std::cout << "Added Player" << std::endl;
+//        std::cout << "Added Player" << std::endl;
         isValid = true;
         command->saveEffect("Adds a player");
     } else if (commandText == "gamestart") {
-        std::cout << "Game Start" << std::endl;
+//        std::cout << "Game Start" << std::endl;
         isValid = true;
         command->saveEffect("Starts the game");
     } else {
