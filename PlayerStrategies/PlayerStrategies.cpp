@@ -68,12 +68,12 @@ void Human::issueOrder() {
     string choice;
     choice = processor->getCommand()->getCommandText();
     if(choice == "1"){ //Deploy
-        cout << "Deployment chosen\n\tWhere would you like to deploy your armies?"<<endl;
-        for(int i = 0; i<player->toDefend().size(); i++){
-            cout<<"\t" << (i+1) << "\t" << player->toDefend().at(i)->getName() << endl;
-        }
-        choice = processor->getCommand()->getCommandText();
         try{
+            cout << "Deployment chosen\n\tWhere would you like to deploy your armies?"<<endl;
+            for(int i = 0; i<player->toDefend().size(); i++){
+                cout<<"\t" << (i+1) << "\t" << player->toDefend().at(i)->getName() << endl;
+            }
+            choice = processor->getCommand()->getCommandText();
             int choiceNum = stoi(choice);
             Territory *chosenTerr = player->toDefend().at((choiceNum - 1));
             string chosenTerrStr = chosenTerr->getName();
@@ -94,7 +94,28 @@ void Human::issueOrder() {
         this->issueOrder();
     }
     else if (choice == "2"){ //Advance
-        cout << "Advancement chosen"<<endl;
+        try{
+            cout << "Advancement chosen\n\tWhat is the source territory?"<<endl;
+            for(int i = 0; i<player->getOwnedTerritories().size(); i++){
+                cout<<"\t" << (i+1) << "\t" << player->getOwnedTerritories().at(i)->getName() << endl;
+            }
+            choice = processor->getCommand()->getCommandText();
+            int choiceNum = stoi(choice);
+            Territory *sourceTerr = player->getOwnedTerritories().at((choiceNum - 1));
+            string sourceTerrStr = sourceTerr->getName();
+
+            cout << "Advancement chosen\n\tWhat is the target territory?"<<endl;
+            for(int i = 0; i<sourceTerr->adjacentTerritories.size(); i++){
+                    cout<<"\t" << (i+1) << "\t" << sourceTerr->adjacentTerritories.at(i)->getName() << endl;
+            }
+            choice = processor->getCommand()->getCommandText();
+            choiceNum = stoi(choice);
+            Territory *targetTerr = sourceTerr->adjacentTerritories.at(choiceNum-1);
+            string targetTerrStr = targetTerr->getName();
+
+        } catch(...){
+            cout << "\nInvalid entry - enter a valid option" <<endl;
+        }
         this->issueOrder();
     }
     else if (choice == "3"){ //Play Card
