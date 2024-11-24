@@ -25,6 +25,7 @@ Player::Player() {
     numOfPlayers++;
     playerName = new string("Player " + to_string(numOfPlayers));
     armies = new int(50);
+    strategy = new Human(this);
 }
 
 // Parameterized constructors
@@ -35,6 +36,7 @@ Player::Player(string name) {
     numOfPlayers++;
     playerName = new string(string(name));
     armies = new int(50);
+    strategy = new Human(this);
 }
 
 Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, string name)
@@ -45,6 +47,7 @@ Player::Player(Hand *initialHand, vector<Territory *> &initialTerritories, strin
     numOfPlayers++;
     playerName = new string(string(name));
     armies = new int(50);
+    strategy = new Human(this);
 }
 
 // Copy constructor
@@ -230,4 +233,17 @@ bool Player::hasTruceWith(const string& playerName) const {
 ostream& operator<<(ostream& os, const Player& player) {
     os << "Player Name: " << *(player.playerName);
     return os;
+}
+
+void Player::setStrategy(string strat) {
+    if(strat=="human") this->strategy=new Human(this);
+    else if(strat=="neutral") this->strategy=new Neutral(this);
+    else if(strat=="cheater") this->strategy=new Cheater(this);
+    else if(strat=="aggressive") this->strategy=new Aggressive(this);
+    else if(strat=="benevolent") this->strategy=new Benevolent(this);
+    else throw  runtime_error("Invalid strategy entered!");
+}
+
+void Player::addToOrderList(Order *newOrder) {
+    ordersList->addOrder(newOrder);
 }

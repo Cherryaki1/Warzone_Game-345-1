@@ -11,7 +11,7 @@
 
 #include "Map/Map.h"
 #include "Orders/Orders.h"
-
+#include "PlayerStrategies/PlayerStrategies.h"
 #include <string>
 #include <vector>
 class Hand;
@@ -19,6 +19,7 @@ class OrdersList;
 using std::string;
 using std::vector;
 
+class PlayerStrategy;
 
 class Player {
 private:
@@ -30,7 +31,7 @@ private:
     string* playerName;
     int reinforcementPool = 0;
     vector<string> trucePlayers;
-
+    PlayerStrategy* strategy;
 public:
     //Default constructor
     Player();
@@ -76,6 +77,8 @@ public:
     void clearTrucePlayers();
     bool hasTruceWith(const string& playerName) const;
 
+    void setStrategy(string strat);
+    void addToOrderList(Order* o);
     //Stream insertion operator
     friend std::ostream& operator<<(std::ostream& os, const Player& player);
 
