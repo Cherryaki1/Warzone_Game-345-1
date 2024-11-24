@@ -36,4 +36,6 @@ add_executable(Warzone_Game_a1_COMP345
         LogObserver/LoggingObserverDriver.cpp
         Commands/CommandProcessingDriver.cpp
         Commands/CommandProcessing.cpp
+        PlayerStrategies/PlayerStrategies.cpp
+        PlayerStrategies/PlayerStrategies.h
 )
