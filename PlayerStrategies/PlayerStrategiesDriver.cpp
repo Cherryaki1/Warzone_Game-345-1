@@ -10,5 +10,6 @@ void testPlayerStrategies(){
     engine.startUpPhase();
     engine.reinforcementPhase();
     engine.ordersIssuingPhase2();
+    engine.ordersExecutionPhase();
 }
 

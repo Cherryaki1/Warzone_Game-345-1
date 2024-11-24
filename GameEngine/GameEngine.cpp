@@ -50,12 +50,12 @@ GameEngine::~GameEngine() {
         deck = nullptr;
     }
 
-    /*
+
     if (gameMap != nullptr) {
         delete gameMap;
         gameMap = nullptr;
     }
-     */
+
 }
 
 
@@ -74,7 +74,6 @@ void GameEngine::startUpPhase() {
     // Current State
     transition("start");
     Command *currentCommand;
-    Map loadedMap;
 
     do {
         cout << "Please enter loadmap and the filename of the map (separated by space) " <<endl;
@@ -87,10 +86,9 @@ void GameEngine::startUpPhase() {
         string fileName;
         try{
             fileName = currentCommand->getCommandText().substr(8);
-            loadedMap = loadMap(fileName);
-            gameMap = new Map(loadedMap);
+            gameMap = &loadMap(fileName);
             transition("maploaded");
-            if(loadedMap.getTerritories()->empty()) transition("start");
+            if(gameMap->getTerritories()->empty()) transition("start");
         } catch (...){
             cout << "Error - non-existent file name"<<endl;
         }
@@ -103,7 +101,7 @@ void GameEngine::startUpPhase() {
             cout << "Invalid command at this point! Try again" <<endl;
             continue;
         }
-        if(validateMap(loadedMap)){
+        if(validateMap(*gameMap)){
             cout << "Map has been validated!" <<endl;
             transition("mapvalidated");
         }
@@ -445,7 +443,7 @@ bool GameEngine::ordersIssuingPhase() {
 }
 
 string GameEngine::ordersExecutionPhase() {
-    std::cout << "Starting orders execution phase..." << std::endl;
+    std::cout << "\nStarting orders execution phase..." << std::endl;
 
     // Loop through each player
     for (auto player : players) {
@@ -471,9 +469,10 @@ string GameEngine::ordersExecutionPhase() {
 //                position++;  // Move to the next position for the next iteration
                 orderList->remove(position);  // Remove the order from the list
             }
+            cout << "\n" << endl;
         }
 
-        std::cout << "Finished executing orders for player: " << player->getPlayerName() << std::endl;
+        std::cout << "Finished executing orders for player: " << player->getPlayerName() << "\n" << std::endl;
     }
 
     std::cout << "Orders execution phase completed." << std::endl;
@@ -486,7 +485,7 @@ string GameEngine::ordersExecutionPhase() {
 bool GameEngine::endPhase() {
     cout << "... End Phase ..." << endl;
     // Validate win
-    *state = "win";
+    transition("win");
     return true;
 }
 

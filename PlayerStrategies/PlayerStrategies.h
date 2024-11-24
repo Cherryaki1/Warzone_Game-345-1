@@ -2,6 +2,7 @@
 #define PLAYERSTRATEGIES_H
 
 #include "Player.h"
+#include "Commands/CommandProcessing.h"
 
 #include <string>
 #include <vector>
@@ -16,6 +17,7 @@ public:
 protected:
     Player* player;
     string* type;
+    CommandProcessor* processor = new CommandProcessor();
 };
 
 class Neutral:public PlayerStrategy{

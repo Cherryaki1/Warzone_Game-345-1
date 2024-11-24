@@ -37,7 +37,7 @@ CommandProcessor::~CommandProcessor() {
 
 void CommandProcessor::readCommand() {
     string commandText;
-    std::cout << "Enter command:";
+    std::cout << "Enter command: ";
     std::getline(std::cin, commandText);
     saveCommand(commandText);
 }

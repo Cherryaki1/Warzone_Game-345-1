@@ -66,15 +66,40 @@ void Human::issueOrder() {
     cout << "---You have " << player->getReinforcementPool() << " armies available for deployment\nOPTIONS (enter the number):" << endl;
     cout << "1 - Deploy Armies\n2 - Advance Armies\n3 - Play a card\n4 - End your turn\n--Enter your choice: " << endl;
     string choice;
-    cin >> choice;
+    choice = processor->getCommand()->getCommandText();
     if(choice == "1"){ //Deploy
-        cout << "Deployment chosen"<<endl;
+        cout << "Deployment chosen\n\tWhere would you like to deploy your armies?"<<endl;
+        for(int i = 0; i<player->toDefend().size(); i++){
+            cout<<"\t" << (i+1) << "\t" << player->toDefend().at(i)->getName() << endl;
+        }
+        choice = processor->getCommand()->getCommandText();
+        try{
+            int choiceNum = stoi(choice);
+            Territory *chosenTerr = player->toDefend().at((choiceNum - 1));
+            string chosenTerrStr = chosenTerr->getName();
+            cout << "How many units would you like to deploy to " << chosenTerrStr << "?" << "  Total maximum of " <<
+                    player->getReinforcementPool() << ", otherwise order will be invalid upon execution" << endl;
+            choice = processor->getCommand()->getCommandText();
+            choiceNum = stoi(choice);
+            if (choiceNum>0){
+                Order* deployOrder = new DeployOrder(player, chosenTerr, choiceNum);
+                player->addToOrderList(deployOrder);
+                cout << "Order deploying " <<choiceNum<< " armies to " << chosenTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
+            } else {
+                cout << "\nNumber of units must be an integer greater than 0." << endl;
+            }
+        } catch(...){
+            cout << "\nInvalid entry - enter a valid option" <<endl;
+        }
+        this->issueOrder();
     }
     else if (choice == "2"){ //Advance
         cout << "Advancement chosen"<<endl;
+        this->issueOrder();
     }
     else if (choice == "3"){ //Play Card
-        cout << "Playing a carding"<<endl;
+        cout << "Playing a card"<<endl;
+        this->issueOrder();
     }
     else if (choice == "4"){ //End turn
         cout << "End of this turn."<<endl;
