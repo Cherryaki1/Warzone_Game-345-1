@@ -185,6 +185,9 @@ void Player::issueOrder(Order* newOrder) {
     }
 }
 
+void Player::issueOrder() {
+    strategy->issueOrder();
+}
 
 
 // Method to identify territories to defend (placeholder implementation)

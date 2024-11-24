@@ -72,6 +72,7 @@ public:
     vector<Territory*> toAttack();
 
     void issueOrder(Order* newOrder);
+    void issueOrder();
 
     void addTrucePlayer(const string& playerName);
     void clearTrucePlayers();

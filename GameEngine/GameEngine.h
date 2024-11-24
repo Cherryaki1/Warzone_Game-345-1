@@ -40,6 +40,7 @@ class GameEngine : public Subject, public ILoggable {
     bool startUpPhase2(string mapFile);
     bool reinforcementPhase();
     bool ordersIssuingPhase();
+    void ordersIssuingPhase2();
     string ordersExecutionPhase();
     bool endPhase();
 

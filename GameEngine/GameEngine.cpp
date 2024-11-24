@@ -265,6 +265,14 @@ bool GameEngine::reinforcementPhase() {
     return true;
 }
 
+void GameEngine::ordersIssuingPhase2() { //Trying something new
+    std::cout << "Starting orders execution phase..." << std::endl;
+
+    for(auto player : players){
+        player->issueOrder();
+    }
+
+}
 
 bool GameEngine::ordersIssuingPhase() {
     std::cout << "Starting orders issuing phase..." << std::endl;

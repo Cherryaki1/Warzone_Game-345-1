@@ -26,6 +26,7 @@
 using namespace std;
 extern void testLoggingObserver();
 extern void testOrderExecution();
+extern void testPlayerStrategies();
 
 // Main Class
 int main(){
@@ -41,14 +42,15 @@ int main(){
   // ************** Assignment Part 2 **************
   // testCommandProcessor();     // Part 1
   // testStartUpPhase();         // Part 2
-  testMainGameLoop();      // Part 3
+//  testMainGameLoop();      // Part 3
   //testOrderExecution();       //Part 4
   //testLoggingObserver();      //Part 5
-  // ************** Assignment 3 **************
 
+  // ************** Assignment 3 **************
+    testPlayerStrategies();
 
   // WELCOME MESSAGE
-  cout << "**** Welcome to our CLI Warzone! ****" << endl;
+  cout << "**** Thank you for playing our CLI Warzone! ****" << endl;
 
 
 
