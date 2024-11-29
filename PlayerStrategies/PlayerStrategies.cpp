@@ -10,6 +10,8 @@ class Player;
 class Territory;
 class Order;
 
+string PlayerStrategy::getType() {return *type;}
+
 // ****************************** Neutral Player ******************************
 /*
  * Neutral Player Constructor

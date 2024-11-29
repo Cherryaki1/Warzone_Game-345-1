@@ -55,6 +55,8 @@ class GameEngine : public Subject, public ILoggable {
     string stringToLog() override;
 
 
+    void definePlayerStrategy(Player *player);
+
     // Stream insertion operator
     friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);
 
@@ -64,7 +66,7 @@ void testGameStates();
 void testStartUpPhase();
 void testMainGameLoop();
 void testOrderExecution();
-void definePlayerStrategy(Player *player);
+
 
 #endif
 

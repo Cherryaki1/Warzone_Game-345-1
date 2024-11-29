@@ -48,6 +48,7 @@ int main(){
 
   // ************** Assignment 3 **************
     testPlayerStrategies();
+  //testTournament();
 
 
 

@@ -533,14 +533,22 @@ string GameEngine::stringToLog() {
     return "Game Engine new state: " + *state;
 }
 
-void definePlayerStrategy(Player *player) {
+void GameEngine::definePlayerStrategy(Player *player) {
     cout << "What type of player will this be? Type:" << endl;
-    int strategy = 0;
+    string strategy = "";
+    int strat = 0;
     cout << "1  human" << "\n" << "2  cheater" << "\n" << "3  aggressive" << "\n" << "4  neutral" << "\n" << "5  benevolent" << endl;
-    cin >> strategy;
+    strategy = processor->getCommand()->getCommandText();
+    try {
+        strat = stoi(strategy);
+    }catch(exception &err){
+        cout << "Invalid strategy, human strategy has been set by default" << endl;
+        strat = 1;
+    }
+
     bool done = false;
     while (!done) {
-        switch (strategy) {
+        switch (strat) {
             case 1:
                 cout << "Human Chosen" << endl;
                 done = true;
