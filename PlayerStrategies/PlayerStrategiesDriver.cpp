@@ -4,6 +4,8 @@
 using namespace std;
 
 void testPlayerStrategies(){
+    // WELCOME MESSAGE
+    cout << "**** Thank you for playing our CLI Warzone! ****" << endl;
     cout<<"****** Testing Player Strategies *****"<<endl;
 
     GameEngine engine;

@@ -64,6 +64,7 @@ void testGameStates();
 void testStartUpPhase();
 void testMainGameLoop();
 void testOrderExecution();
+void definePlayerStrategy(Player *player);
 
 #endif
 

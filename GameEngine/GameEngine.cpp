@@ -111,7 +111,6 @@ void GameEngine::startUpPhase() {
     int playerCount= 0;
     do{
         cout << "Please enter addplayer and the player name (separated by space) - (2-6 players)" <<endl;
-        cout << "To exit the adding players phase: type exit" << endl;
         cout << "You have " << playerCount << " player(s) so far" << endl;
         currentCommand = processor->getCommand();
         if(!processor->validate(currentCommand, *state)){
@@ -122,6 +121,7 @@ void GameEngine::startUpPhase() {
         try{
             string playerName = currentCommand->getCommandText().substr(10);
             auto *player = new Player(playerName);
+            definePlayerStrategy(player);
             addPlayer(player);
             playerCount++;
             transition("playersadded");
@@ -531,5 +531,43 @@ void GameEngine::addPlayer(Player *player) {
 
 string GameEngine::stringToLog() {
     return "Game Engine new state: " + *state;
+}
+
+void definePlayerStrategy(Player *player) {
+    cout << "What type of player will this be? Type:" << endl;
+    int strategy = 0;
+    cout << "1  human" << "\n" << "2  cheater" << "\n" << "3  aggressive" << "\n" << "4  neutral" << "\n" << "5  benevolent" << endl;
+    cin >> strategy;
+    bool done = false;
+    while (!done) {
+        switch (strategy) {
+            case 1:
+                cout << "Human Chosen" << endl;
+                done = true;
+                break;
+                case 2:
+                    cout << "Cheater Chosen" << endl;
+                    player->setStrategy("cheater");
+                    done = true;
+                    break;
+                case 3:
+                    cout << "Aggressive Chosen" << endl;
+                    player->setStrategy("aggressive");
+                    done = true;
+                break;
+                case 4:
+                    cout << "Neutral Chosen" << endl;
+                    player->setStrategy("neutral");
+                    done = true;
+                break;
+                case 5:
+                    cout << "Benevolent Chosen" << endl;
+                    player->setStrategy("benevolent");
+                    done = true;
+                break;
+                default:
+                    cout << "Unknown Type was chosen, try again" << endl;
+        }
+    }
 }
 

@@ -10,25 +10,46 @@ class Player;
 class Territory;
 class Order;
 
+// ****************************** Neutral Player ******************************
+/*
+ * Neutral Player Constructor
+ */
+Neutral::Neutral(Player *player) {
+    this->player = player;
+    type= new string("neutral");
+}
+/*
+ * Neutral Player issues a specific order
+ */
 void Neutral::issueOrder(Order *o) {
 
 }
-
+/*
+ * Neutral Player issues an order
+ */
 void Neutral::issueOrder() {
     cout << player->getPlayerName() << " is a neutral player. No actions taken during this turn." << endl;
 }
-
+/*
+ * Neutral Player: Does not attack
+*/
 vector<Territory *> Neutral::toAttack() {
     return {}; //Neutral player does not attack unprovoked
 }
-
+/*
+ * Neutral Player: Does not defend
+ */
 vector<Territory *> Neutral::toDefend() {
     return {}; //Neutral player does not defend unprovoked
 }
 
-Neutral::Neutral(Player *player) {
+// ****************************** Cheater Player ******************************
+/*
+ * Cheater Player Constructor
+ */
+Cheater::Cheater(Player *player) {
     this->player = player;
-    type= new string("neutral");
+    type= new string("cheater");
 }
 
 void Cheater::issueOrder(Order *o) {
@@ -47,9 +68,14 @@ vector<Territory *> Cheater::toDefend() {
     return vector<Territory *>();
 }
 
-Cheater::Cheater(Player *player) {
+
+// ****************************** Human Player ******************************
+/*
+ * Human Player Constructor
+ */
+Human::Human(Player *player) {
     this->player = player;
-    type= new string("cheater");
+    type=new string("human");
 }
 
 void Human::issueOrder(Order *newOrder) {
@@ -60,7 +86,9 @@ void Human::issueOrder(Order *newOrder) {
         std::cout << "Error: Cannot issue a null order." << std::endl;
     }
 }
-
+/*
+ * Neutral Player issues an order
+ */
 void Human::issueOrder() {
     cout << "\n*****\n" <<player->getPlayerName() << ": What are your orders?" << endl;
     cout << "---You have " << player->getReinforcementPool() << " armies available for deployment\nOPTIONS (enter the number):" << endl;
@@ -140,15 +168,22 @@ vector<Territory *> Human::toDefend() {
     return vector<Territory *>();
 }
 
-Human::Human(Player *player) {
+
+// ****************************** Aggressive Player ******************************
+/*
+ * Aggressive Player Constructor
+ */
+Aggressive::Aggressive(Player *player) {
     this->player = player;
-    type=new string("human");
+    type=new string("aggressive");
 }
 
 void Aggressive::issueOrder(Order *o) {
 
 }
-
+/*
+ * Neutral Player issues an order
+ */
 void Aggressive::issueOrder() {
 
 }
@@ -161,29 +196,35 @@ vector<Territory *> Aggressive::toDefend() {
     return vector<Territory *>();
 }
 
-Aggressive::Aggressive(Player *player) {
+
+// ****************************** BenevolentPlayer ******************************
+/*
+ * Benevolent Player Constructor
+ */
+Benevolent::Benevolent(Player *player) {
     this->player = player;
-    type=new string("aggressive");
+    type=new string("benevolent");
 }
 
 void Benevolent::issueOrder(Order *o) {
 
 }
-
+/*
+ * Neutral Player issues an order
+ */
 void Benevolent::issueOrder() {
+    // Deploy armies on the weakest countries
+
+    // Will use cards but non harming ones (Blockade, Diplomacy, Reinforcement)
 
 }
 
 vector<Territory *> Benevolent::toAttack() {
-    return vector<Territory *>();
+    return {}; // Never advances on enemy territory
 }
 
 vector<Territory *> Benevolent::toDefend() {
-    return vector<Territory *>();
+    return vector<Territory *>(); // Only defends its territories
 }
 
-Benevolent::Benevolent(Player *player) {
-    this->player = player;
-    type=new string("benevolent");
-}
 
