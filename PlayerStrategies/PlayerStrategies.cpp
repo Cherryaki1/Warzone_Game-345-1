@@ -113,6 +113,17 @@ void Human::issueOrder() {
             Territory *targetTerr = sourceTerr->adjacentTerritories.at(choiceNum-1);
             string targetTerrStr = targetTerr->getName();
 
+            cout << "How many units would you like to deploy to " << targetTerrStr << "?" << endl;
+            choice = processor->getCommand()->getCommandText();
+            choiceNum = stoi(choice);
+            if (choiceNum>0){
+                Order* advanceOrder = new AdvanceOrder(player, sourceTerr, targetTerr, choiceNum);
+                player->addToOrderList(advanceOrder);
+                cout << "Order deploying " <<choiceNum<< " armies to " << targetTerrStr << " from " << sourceTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
+            } else {
+                cout << "\nNumber of units must be an integer greater than 0." << endl;
+            }
+
         } catch(...){
             cout << "\nInvalid entry - enter a valid option" <<endl;
         }
