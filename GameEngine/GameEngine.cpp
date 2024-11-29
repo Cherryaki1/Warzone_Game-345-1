@@ -526,7 +526,7 @@ void GameEngine::setInvalidCommand(bool value){
 
 void GameEngine::addPlayer(Player *player) {
     players.push_back(player);
-    cout << player->getPlayerName() << " has been added to the game!" << endl;
+    cout << player->getPlayerName() << " (" << player->getStrategyType() << ")"<<" has been added to the game!" << endl;
 }
 
 string GameEngine::stringToLog() {

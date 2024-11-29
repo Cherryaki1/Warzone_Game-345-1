@@ -10,6 +10,8 @@ class Player;
 class Territory;
 class Order;
 
+string PlayerStrategy::getType() {return *type;}
+
 void Neutral::issueOrder(Order *o) {
 
 }
