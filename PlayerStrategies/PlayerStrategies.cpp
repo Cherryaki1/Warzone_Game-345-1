@@ -182,7 +182,7 @@ void Human::issueOrder() {
             }
             else if (type == "Blockade"){
                 cout << toPlay << endl;
-                cout << "Choose a territory to blockade:" <<endl;
+                cout << "Choose a territory to blockade:" << endl;
                 for (int i = 0; i<player->getOwnedTerritories().size(); i++){
                     cout << "\t" << (i+1) << "\t" << player->getOwnedTerritories().at(i)->getName() << endl;
                 }
@@ -301,8 +301,35 @@ void Benevolent::issueOrder(Order *o) {
  */
 void Benevolent::issueOrder() {
     // Deploy armies on the weakest countries
+    int lowestArmyCountry = 999;
+    string lowestArmyCountryStr = "";
+    Territory *chosenTerr;
+    for(int i = 0; i<player->toDefend().size(); i++) {
+        if( (player->toDefend().at(i)->getNumberOfArmies()) < lowestArmyCountry) {
+            lowestArmyCountry = player->toDefend().at(i)->getNumberOfArmies();
+            chosenTerr = player->toDefend().at(i);
+            lowestArmyCountryStr = chosenTerr->getName();
+
+        }
+    }
+    Order* deployOrder = new DeployOrder(player, chosenTerr, player->getArmies() + player->getReinforcementPool());
+    player->addToOrderList(deployOrder);
+    cout << "Order deploying " << player->getArmies() << " armies to " << lowestArmyCountryStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
 
     // Will use cards but non harming ones (Blockade, Diplomacy, Reinforcement)
+    auto playerHand = player->getHand();
+    auto toPlay = playerHand->getHand();
+    for(int i = 0; i< toPlay->size(); i++) {
+        if(toPlay->at(i)->getType() == "Blockade") {
+
+        }
+        if(toPlay->at(i)->getType() == "Diplomacy") {
+
+        }
+        if(toPlay->at(i)->getType() == "Reinforcement") {
+            // Nothing for now
+        }
+    }
 
 }
 
