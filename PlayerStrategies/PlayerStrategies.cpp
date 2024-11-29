@@ -160,6 +160,7 @@ void Human::issueOrder() {
 
             auto toPlay = playerHand->getHand()->at(choiceNum-1);
             string type = toPlay->getType();
+            toPlay->play();
             //"Bomb", "Reinforcement", "Blockade", "Airlift", "Diplomacy"
             if (type == "Bomb"){
                 cout << toPlay << endl;
@@ -178,9 +179,11 @@ void Human::issueOrder() {
                 cout << "Order bombing " <<targetTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
 
             }
+
             else if (type == "Reinforcement"){ //what do we do with this
-                cout << toPlay << endl;
+                cout << "The reinforcement card is deprecated, please use the deploy function." << endl;
             }
+
             else if (type == "Blockade"){
                 cout << toPlay << endl;
                 cout << "Choose a territory to blockade:" << endl;
@@ -197,6 +200,7 @@ void Human::issueOrder() {
 
                 cout << "Order blockading " <<targetTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
             }
+
             else if (type == "Airlift"){
                 cout << toPlay << endl;
                 cout << "Choose the territory to airlift from:" <<endl;
@@ -228,6 +232,7 @@ void Human::issueOrder() {
                 cout << "Order airlifting " <<choiceNum << " armies from " << sourceTerrStr << " to "
                 << targetTerrStr << " has been added to" << player->getPlayerName() << "'s orderlist!" <<endl;
             }
+
             else if (type == "Diplomacy"){ //need to get the playerlist visible here somehow
                 cout << toPlay << endl;
 
@@ -240,8 +245,9 @@ void Human::issueOrder() {
 
                 auto chosenPlayer = player->getCurrentGameEngine()->getPlayerList()->at(choiceNum-1);
                 auto negotiateOrder = new NegotiateOrder(player, chosenPlayer);
+                player->addToOrderList(negotiateOrder);
 
-                cout << "Order to negotiate with " << chosenPlayer->getPlayerName() << " has been added to" << player->getPlayerName() << "'s orderlist!" <<endl;
+                cout << "Order to negotiate with " << chosenPlayer->getPlayerName() << " has been added to " << player->getPlayerName() << "'s orderlist!" <<endl;
             }
             else {throw runtime_error("Incorrect Card!");}
 

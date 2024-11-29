@@ -120,7 +120,7 @@ void GameEngine::startUpPhase() {
 
         try{
             string playerName = currentCommand->getCommandText().substr(10);
-            auto *player = new Player(playerName);
+            auto *player = new Player(playerName, this);
             definePlayerStrategy(player);
             addPlayer(player);
             playerCount++;
