@@ -208,10 +208,11 @@ void GameEngine::mainGameLoop() {
 }
 
 bool GameEngine::reinforcementPhase() {
+
     std::cout << "Starting reinforcement phase..." << std::endl;
 
-    for (auto player : players)
-    {
+    for (auto player : players){
+        player->setArmies(0);
         // Check which continents player occupies
         /*
         vector<Continent> continentsOccupied;
