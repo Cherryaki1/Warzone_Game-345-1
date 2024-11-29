@@ -579,3 +579,7 @@ void GameEngine::definePlayerStrategy(Player *player) {
     }
 }
 
+vector<Player *> *GameEngine::getPlayerList() {
+    return &players;
+}
+

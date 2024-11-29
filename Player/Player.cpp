@@ -29,6 +29,17 @@ Player::Player() {
 }
 
 // Parameterized constructors
+Player::Player(string name, GameEngine* engine) {
+    ownedTerritories = {};
+    playerHand = new Hand(this);        // Assuming Hand has a default constructor
+    ordersList = new OrdersList();  // Assuming OrdersList has a default constructor
+    numOfPlayers++;
+    playerName = new string(string(name));
+    armies = new int(50);
+    strategy = new Human(this);
+    pEngine = engine;
+}
+
 Player::Player(string name) {
     ownedTerritories = {};
     playerHand = new Hand(this);        // Assuming Hand has a default constructor
@@ -251,4 +262,8 @@ string Player::getStrategyType() {return strategy->getType();}
 
 void Player::addToOrderList(Order *newOrder) {
     ordersList->addOrder(newOrder);
+}
+
+GameEngine *Player::getCurrentGameEngine() {
+    return pEngine;
 }

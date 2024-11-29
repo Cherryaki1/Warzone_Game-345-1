@@ -51,6 +51,7 @@ class GameEngine : public Subject, public ILoggable {
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
     void addPlayer(Player *player);
+    vector<Player*>* getPlayerList();
     void transition(string newState);
     string stringToLog() override;
 

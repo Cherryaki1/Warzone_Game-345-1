@@ -1,6 +1,7 @@
 
 #include "PlayerStrategies.h"
 #include "Cards.h"
+#include "GameEngine.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -224,10 +225,23 @@ void Human::issueOrder() {
                 auto airliftOrder = new AirliftOrder(player, sourceTerr, targetTerr, choiceNum);
                 player->addToOrderList(airliftOrder);
 
-                cout << "Order airlifting " <<choiceNum << " armies from " << sourceTerrStr << " to " << targetTerrStr << " has been added to" << player->getPlayerName() << "'s orderlist!" <<endl;
+                cout << "Order airlifting " <<choiceNum << " armies from " << sourceTerrStr << " to "
+                << targetTerrStr << " has been added to" << player->getPlayerName() << "'s orderlist!" <<endl;
             }
             else if (type == "Diplomacy"){ //need to get the playerlist visible here somehow
                 cout << toPlay << endl;
+
+                cout << "Choose a player to negotiate with:" <<endl;
+                for (int i = 0; i<player->getCurrentGameEngine()->getPlayerList()->size(); i++){
+                    cout << "\t" << (i+1) << "\t" << player->getCurrentGameEngine()->getPlayerList()->at(i)->getPlayerName() << endl;
+                }
+                choice = processor->getCommand()->getCommandText();
+                choiceNum = stoi(choice);
+
+                auto chosenPlayer = player->getCurrentGameEngine()->getPlayerList()->at(choiceNum-1);
+                auto negotiateOrder = new NegotiateOrder(player, chosenPlayer);
+
+                cout << "Order to negotiate with " << chosenPlayer->getPlayerName() << " has been added to" << player->getPlayerName() << "'s orderlist!" <<endl;
             }
             else {throw runtime_error("Incorrect Card!");}
 

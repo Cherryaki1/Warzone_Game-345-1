@@ -16,6 +16,7 @@
 #include <vector>
 class Hand;
 class OrdersList;
+class GameEngine;
 using std::string;
 using std::vector;
 
@@ -32,14 +33,15 @@ private:
     int reinforcementPool = 0;
     vector<string> trucePlayers;
     PlayerStrategy* strategy;
+    GameEngine* pEngine;
 public:
     //Default constructor
     Player();
 
     //Parameterized constructors
-    Player(string name);
+    Player(string name, GameEngine* engine);
     Player(Hand* initialHand, vector<Territory *> &initialTerritories, string name);
-
+    Player(string name); //DEPRACATED DO NOT USE ANYMORE
     // Copy constructor
     Player(const Player& other);
 
@@ -77,6 +79,8 @@ public:
     void addTrucePlayer(const string& playerName);
     void clearTrucePlayers();
     bool hasTruceWith(const string& playerName) const;
+
+    GameEngine* getCurrentGameEngine();
 
     void setStrategy(string strat);
     string getStrategyType();
