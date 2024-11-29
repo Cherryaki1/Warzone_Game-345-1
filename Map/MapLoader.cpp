@@ -38,8 +38,8 @@ void MapLoader::loadFromFile(const string& filename) {
     }
 
     string line, section;
-    vector<Continent*>* continents = map.getContinents();
-    vector<Territory*>* territories = map.getTerritories();
+    vector<Continent *> *continents = map.getContinents();
+    vector<Territory *> *territories = map.getTerritories();
     while (getline(file, line)) {
         if (line.empty() || line[0] == ';') continue;  // Skip comments or empty lines
 
@@ -59,7 +59,7 @@ void MapLoader::loadFromFile(const string& filename) {
             ss >> bonus;
 
             // Create and store the continent
-            Continent* continent = new Continent(continentName, bonus);
+            Continent *continent = new Continent(continentName, bonus);
             continents->push_back(continent);
 
         } else if (section == "[Territories]") {
@@ -79,10 +79,10 @@ void MapLoader::loadFromFile(const string& filename) {
             }
 
             // Create Territory
-            Territory* territory = nullptr;
+            Territory *territory = nullptr;
 
             // Search for the existing territory
-            for (Territory* existingTerritory : *territories) {
+            for (Territory *existingTerritory: *territories) {
                 if (existingTerritory->getName() == name) {
                     territory = existingTerritory; // Use existing territory
                     territory->setContinentID(continent);
@@ -97,7 +97,7 @@ void MapLoader::loadFromFile(const string& filename) {
             }
 
             // Add Territories to Continent
-            for (auto& cont : *continents) {
+            for (auto &cont: *continents) {
                 if (cont->getContinentID() == continent) {
                     cont->addTerritory(territory);  // Add territory to continent
                     break;
@@ -106,16 +106,16 @@ void MapLoader::loadFromFile(const string& filename) {
 
             // Initialize adjacency list entry if it doesn't exist
             if (map.getAdjList()->find(territory) == map.getAdjList()->end()) {
-                (*map.getAdjList())[territory] = list<Territory*>();
+                (*map.getAdjList())[territory] = list<Territory *>();
             }
 
             // Add neighbors as edges
-            for (const auto& neighborName : neighbors) {
+            for (const auto &neighborName: neighbors) {
                 // Check if the neighbor already exists in the territories
-                Territory* neighborTerritory = nullptr;
+                Territory *neighborTerritory = nullptr;
 
                 // Search for the existing neighbor territory
-                for (Territory* existingTerritory : *territories) {
+                for (Territory *existingTerritory: *territories) {
                     if (existingTerritory->getName() == neighborName) {
                         neighborTerritory = existingTerritory; // Use the existing one
                         break;
@@ -134,6 +134,13 @@ void MapLoader::loadFromFile(const string& filename) {
         }
 
     }
-  file.close();
+    file.close();
+
+    for (auto territory: *map.getTerritories()){ // For each territory, add its adjacent territories in the list
+        for (auto adjTerr: (*map.getAdjList())[territory]) {
+            territory->adjacentTerritories.push_back(adjTerr);
+        }
+    }
+
 }
 

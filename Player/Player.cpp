@@ -247,6 +247,8 @@ void Player::setStrategy(string strat) {
     else throw  runtime_error("Invalid strategy entered!");
 }
 
+string Player::getStrategyType() {return strategy->getType();}
+
 void Player::addToOrderList(Order *newOrder) {
     ordersList->addOrder(newOrder);
 }

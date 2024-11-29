@@ -348,15 +348,9 @@ std::ostream& operator<<(std::ostream& os, Map& map) {
     os << "\n... MAP DETAILS ...\n";
 
     // Output continents
-    os << "--All Continents--\n";
+    os << "--All Continents and their Territories--\n";
     for (const auto& continent : *map.getContinents()) {
         os << *continent << std::endl;  // Use the Continent's stream operator
-    }
-
-    // Output territories
-    os << "\n--All Territories--\n";
-    for (const auto& territory : *map.getTerritories()) {
-        os << *territory << std::endl;  // Use the Territory's stream operator
     }
 
     // Output adjacency list

@@ -79,6 +79,7 @@ public:
     bool hasTruceWith(const string& playerName) const;
 
     void setStrategy(string strat);
+    string getStrategyType();
     void addToOrderList(Order* o);
     //Stream insertion operator
     friend std::ostream& operator<<(std::ostream& os, const Player& player);

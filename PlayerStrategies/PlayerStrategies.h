@@ -14,6 +14,7 @@ public:
     virtual void issueOrder() = 0;
     virtual vector<Territory*> toAttack() = 0;
     virtual vector<Territory*> toDefend() = 0;
+    string getType();
 protected:
     Player* player;
     string* type;
