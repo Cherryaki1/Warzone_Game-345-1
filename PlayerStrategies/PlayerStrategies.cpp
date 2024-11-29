@@ -177,16 +177,56 @@ void Human::issueOrder() {
                 cout << "Order bombing " <<targetTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
 
             }
-            else if (type == "Reinforcement"){
+            else if (type == "Reinforcement"){ //what do we do with this
                 cout << toPlay << endl;
             }
             else if (type == "Blockade"){
                 cout << toPlay << endl;
+                cout << "Choose a territory to blockade:" <<endl;
+                for (int i = 0; i<player->getOwnedTerritories().size(); i++){
+                    cout << "\t" << (i+1) << "\t" << player->getOwnedTerritories().at(i)->getName() << endl;
+                }
+                choice = processor->getCommand()->getCommandText();
+                choiceNum = stoi(choice);
+                Territory *targetTerr = player->getOwnedTerritories().at(choiceNum-1);
+                string targetTerrStr = targetTerr->getName();
+
+                auto blockadeOrder = new BlockadeOrder(player, targetTerr);
+                player->addToOrderList(blockadeOrder);
+
+                cout << "Order blockading " <<targetTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
             }
             else if (type == "Airlift"){
                 cout << toPlay << endl;
+                cout << "Choose the territory to airlift from:" <<endl;
+                for (int i = 0; i<player->getOwnedTerritories().size(); i++){
+                    cout << "\t" << (i+1) << "\t" << player->getOwnedTerritories().at(i)->getName() << endl;
+                }
+                choice = processor->getCommand()->getCommandText();
+                choiceNum = stoi(choice);
+                Territory *sourceTerr = player->getOwnedTerritories().at(choiceNum - 1);
+                string sourceTerrStr = sourceTerr->getName();
+
+                cout << "Choose the territory to airlift to:" <<endl;
+                for (int i = 0; i<player->getOwnedTerritories().size(); i++){
+                    cout << "\t" << (i+1) << "\t" << player->getOwnedTerritories().at(i)->getName() << endl;
+                }
+                choice = processor->getCommand()->getCommandText();
+                choiceNum = stoi(choice);
+                Territory *targetTerr = player->getOwnedTerritories().at(choiceNum - 1);
+                string targetTerrStr = targetTerr->getName();
+
+                cout << "Your source territory has " <<sourceTerr->getNumberOfArmies() << " armies."
+                << " How many would you like to airlift to your target?"<<endl;
+                choice = processor->getCommand()->getCommandText();
+                choiceNum = stoi(choice);
+
+                auto airliftOrder = new AirliftOrder(player, sourceTerr, targetTerr, choiceNum);
+                player->addToOrderList(airliftOrder);
+
+                cout << "Order airlifting " <<choiceNum << " armies from " << sourceTerrStr << " to " << targetTerrStr << " has been added to" << player->getPlayerName() << "'s orderlist!" <<endl;
             }
-            else if (type == "Diplomacy"){
+            else if (type == "Diplomacy"){ //need to get the playerlist visible here somehow
                 cout << toPlay << endl;
             }
             else {throw runtime_error("Incorrect Card!");}
