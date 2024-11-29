@@ -66,51 +66,6 @@ void Card::setHand(Hand *hand) { //Assigns a owning hand ptr to a card
 void Card::play() {
     cout << "\t" << this->getType() << " card played\n";
 
-    if (!hand) {
-        cout << "Error: Card has no associated hand.\n";
-        return;
-    }
-
-    // Get the player who owns this hand and create the order based on card type
-    Player* player = this->hand->getOwner();
-
-    if (player) {
-        Order* newOrder = nullptr;
-
-        if (getType() == "Bomb") {
-            Territory* targetTerritory = player->toAttack()[0];  // Example: first territory to attack
-            newOrder = new BombOrder(player, targetTerritory);
-        }
-        else if (getType() == "Blockade") {
-            Territory* targetTerritory = player->toDefend()[0];  // Example: first territory to defend
-            newOrder = new BlockadeOrder(player, targetTerritory);
-        }
-        else if (getType() == "Airlift") {
-            Territory* sourceTerritory = player->toDefend()[0];  // Example: first territory to defend
-            Territory* targetTerritory = player->toDefend()[1];  // Example: second territory to defend
-            int units = 5;  // Example unit count
-            newOrder = new AirliftOrder(player, sourceTerritory, targetTerritory, units);
-        }
-        else if (getType() == "Diplomacy") {
-            Player* targetPlayer = player;  // Example target player (can be any other player in the game)
-            newOrder = new NegotiateOrder(player, targetPlayer);
-        }
-        else if (getType() == "Reinforcement") {
-            cout << "Reinforcement card does not issue an order directly.\n";
-            // Skip creating an order for Reinforcement
-            return;
-        }
-        else {
-            cout << "Unknown card type!\n";
-            return;
-        }
-
-        // If an order was created, issue it
-        if (newOrder != nullptr) {
-            player->issueOrder(newOrder);  // Add the order to the player's order list
-        }
-    }
-
     // Return the card to the deck and remove it from the player's hand
     this->origin->returnToDeck(this);  // Returns card to deck
     this->hand->remove(this);  // Removes card from the player's hand

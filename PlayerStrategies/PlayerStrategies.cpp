@@ -1,5 +1,6 @@
 
 #include "PlayerStrategies.h"
+#include "Cards.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -149,7 +150,41 @@ void Human::issueOrder() {
         this->issueOrder();
     }
     else if (choice == "3"){ //Play Card
-        cout << "Playing a card"<<endl;
+        auto playerHand = player->getHand();
+        cout << "Which card would you like to play?"<<endl;
+        cout << playerHand <<endl;
+        try{
+            choice = processor->getCommand()->getCommandText();
+            int choiceNum = stoi(choice);
+
+            auto toPlay = playerHand->getHand()->at(choiceNum-1);
+            string type = toPlay->getType();
+            //"Bomb", "Reinforcement", "Blockade", "Airlift", "Diplomacy"
+            if (type == "Bomb"){
+                cout << toPlay << endl;
+                cout << "Choose a territory to bomb (your own are excluded)";
+                for (int i = 0; i<player->toAttack().size(); i++){
+                    cout << "\t" << (i+1) << player->toAttack().at(i)->getName() << endl;
+                }
+            }
+            else if (type == "Reinforcement"){
+                cout << toPlay << endl;
+            }
+            else if (type == "Blockade"){
+                cout << toPlay << endl;
+            }
+            else if (type == "Airlift"){
+                cout << toPlay << endl;
+            }
+            else if (type == "Diplomacy"){
+                cout << toPlay << endl;
+            }
+            else {throw runtime_error("Incorrect Card!");}
+
+        } catch(...){
+            cout << "\nInvalid entry - enter a valid option" <<endl;
+            }
+
         this->issueOrder();
     }
     else if (choice == "4"){ //End turn
