@@ -162,10 +162,20 @@ void Human::issueOrder() {
             //"Bomb", "Reinforcement", "Blockade", "Airlift", "Diplomacy"
             if (type == "Bomb"){
                 cout << toPlay << endl;
-                cout << "Choose a territory to bomb (your own are excluded)";
+                cout << "Choose a territory to bomb:" <<endl;
                 for (int i = 0; i<player->toAttack().size(); i++){
-                    cout << "\t" << (i+1) << player->toAttack().at(i)->getName() << endl;
+                    cout << "\t" << (i+1) << "\t" << player->toAttack().at(i)->getName() << endl;
                 }
+                choice = processor->getCommand()->getCommandText();
+                choiceNum = stoi(choice);
+                Territory *targetTerr = player->toAttack().at(choiceNum-1);
+                string targetTerrStr = targetTerr->getName();
+
+                auto bombOrder = new BombOrder(player, targetTerr);
+                player->addToOrderList(bombOrder);
+
+                cout << "Order bombing " <<targetTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
+
             }
             else if (type == "Reinforcement"){
                 cout << toPlay << endl;
