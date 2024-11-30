@@ -5,6 +5,7 @@
 #include <map>
 #include <set>
 #include <vector>
+//#include "Player.h"
 
 using std::string;
 using std::vector;
@@ -12,18 +13,19 @@ using std::list;
 using std::set;
 using std::map;
 
+class Player;
 
 class Territory {
 
 private:
     string *pName;
-    string *pOwner;  // Pointer to the owner (future Player class)
+    Player *pOwner;  // Pointer to the owner (future Player class)
     string *pContinentID;
     int *pNumber_of_armies;
 
 public:
     Territory();
-    Territory(string name, string owner, string continentID, int number_of_armies);
+    Territory(string name, Player *owner, string continentID, int number_of_armies);
     Territory(const Territory &other);  // Copy constructor
     Territory& operator=(const Territory &other);  // Assignment operator
     ~Territory();
@@ -34,8 +36,8 @@ public:
 
     string getName() const;
     void setName(const string &name);
-    string getOwner() const;
-    void setOwner(const string &player);
+    Player* getOwner() const;
+    void setOwner(Player* owner);
     string getContinentID() const;
     void setContinentID(const string &continentID);
     int getNumberOfArmies() const;

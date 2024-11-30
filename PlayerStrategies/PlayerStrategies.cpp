@@ -90,9 +90,7 @@ void Human::issueOrder(Order *newOrder) {
         std::cout << "Error: Cannot issue a null order." << std::endl;
     }
 }
-/*
- * Neutral Player issues an order
- */
+
 void Human::issueOrder() {
     cout << "\n*****\n" <<player->getPlayerName() << ": What are your orders?" << endl;
     cout << "---You have " << player->getReinforcementPool() << " armies available for deployment\nOPTIONS (enter the number):" << endl;
@@ -288,9 +286,7 @@ Aggressive::Aggressive(Player *player) {
 void Aggressive::issueOrder(Order *o) {
 
 }
-/*
- * Neutral Player issues an order
- */
+
 void Aggressive::issueOrder() {
 
 }
@@ -316,9 +312,7 @@ Benevolent::Benevolent(Player *player) {
 void Benevolent::issueOrder(Order *o) {
 
 }
-/*
- * Neutral Player issues an order
- */
+
 void Benevolent::issueOrder() {
     // Deploy armies on the weakest countries
     int lowestArmyCountry = 999;

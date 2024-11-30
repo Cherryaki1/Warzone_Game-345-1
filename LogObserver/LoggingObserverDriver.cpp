@@ -25,8 +25,8 @@ void testLoggingObserver(){
     OrdersList ordersList;
     ordersList.attach(&observer);
 
-    auto testTerritory1 = new Territory("territory1", player1->getPlayerName(), "0", 0);
-    auto testTerritory2 = new Territory("territory2", player2->getPlayerName(), "0", 0);
+    auto testTerritory1 = new Territory("territory1", player1, "0", 0);
+    auto testTerritory2 = new Territory("territory2", player2, "0", 0);
 
     auto one = new DeployOrder(player1, testTerritory1, 1);
     auto two = new BombOrder(player1, testTerritory2);

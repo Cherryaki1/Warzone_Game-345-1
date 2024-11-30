@@ -17,16 +17,16 @@ void testOrderExecution() {
 
     // Create territories with no armies
     cout << "Creating Territory1 (in Continent1) with no armies and belongs to Player1" << endl;
-    Territory* territory1 = new Territory("Territory1", player1->getPlayerName(), "Continent1", 0);
+    Territory* territory1 = new Territory("Territory1", player1, "Continent1", 0);
     
     cout << "Creating Territory2 (in Continent1) with no armies and belongs to Player1" << endl;
-    Territory* territory2 = new Territory("Territory2", player1->getPlayerName(), "Continent1", 0);
+    Territory* territory2 = new Territory("Territory2", player1, "Continent1", 0);
 
     cout << "Creating Territory3 (in Continent2) with no armies and belongs to Player2" << endl;
-    Territory* territory3 = new Territory("Territory3", player2->getPlayerName(), "Continent2", 0);
+    Territory* territory3 = new Territory("Territory3", player2, "Continent2", 0);
 
     cout << "Creating Territory4 (in Continent2) with no armies and belongs to Player2" << endl;
-    Territory* territory4 = new Territory("Territory4", player2->getPlayerName(), "Continent2", 0);
+    Territory* territory4 = new Territory("Territory4", player2, "Continent2", 0);
 
     // Set adjacent territories
     cout << "Setting Territory1 adjacent to Territory2" << endl;
@@ -134,7 +134,7 @@ void testOrderExecution() {
 
     cout << "\n" << endl;
     cout << "AirliftOrder:" << endl;
-    territory1->setOwner("player1");
+//    territory1->setOwner("player1");
     cout << "1. If the source territory does not belong to the player that issued the order, the order is invalid." << endl;
     cout << "Player1 trying to airlift 5 troops from Territory3 to Territory2..." << endl;
     AirliftOrder* airliftOrder1 = new AirliftOrder(player1, territory3, territory2, 5);

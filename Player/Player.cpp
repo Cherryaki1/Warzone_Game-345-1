@@ -216,7 +216,7 @@ vector<Territory*> Player::toAttack() {
     {
         for (auto neighbor : territory->adjacentTerritories)
         {
-            if (neighbor->getOwner().compare(*playerName) != 0)
+            if (neighbor->getOwner()->getPlayerName().compare(*playerName) != 0)
             {
                 attackList.push_back(neighbor);
             }

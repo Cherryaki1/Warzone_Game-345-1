@@ -41,7 +41,7 @@ public:
     //Parameterized constructors
     Player(string name, GameEngine* engine);
     Player(Hand* initialHand, vector<Territory *> &initialTerritories, string name);
-    Player(string name); //DEPRACATED DO NOT USE ANYMORE
+    explicit Player(string name); //DEPRACATED DO NOT USE ANYMORE
     // Copy constructor
     Player(const Player& other);
 

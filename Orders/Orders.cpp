@@ -53,7 +53,7 @@ void DeployOrder::execute()
     std::cout << "targetTerritoryOwner: " << targetTerritory->getOwner() << std::endl;
     std::cout << "playerName: " << player->getPlayerName() << std::endl;
 
-    if (targetTerritory->getOwner() == player->getPlayerName())
+    if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
     {
         std::cout << "player reinforcement pool: " << player->getReinforcementPool() << std::endl;
         std::cout << "numUnits: " << numUnits << std::endl;
@@ -81,11 +81,11 @@ extern Deck *deck = new Deck;
 // Advance Order
 void AdvanceOrder::execute()
 {
-    if (sourceTerritory->getOwner() == player->getPlayerName())
+    if (sourceTerritory->getOwner()->getPlayerName() == player->getPlayerName())
     {
         if (sourceTerritory->isAdjacent(targetTerritory))
         {
-            if (targetTerritory->getOwner() == player->getPlayerName())
+            if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
             {
                 targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
                 sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - numUnits);
@@ -94,7 +94,7 @@ void AdvanceOrder::execute()
             }
             else
             { // Perform attack simulation
-                if (player->hasTruceWith(targetTerritory->getOwner()))
+                if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
                 {
                     std::cout << "Invalid advance order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
                 }
@@ -128,7 +128,7 @@ void AdvanceOrder::execute()
                     // Check if defender has been defeated
                     if (targetTerritory->getNumberOfArmies() == 0)
                     {
-                        targetTerritory->setOwner(player->getPlayerName());
+                        targetTerritory->setOwner(player);
                         targetTerritory->setNumberOfArmies(attackerArmies - attackerLosses);
 
                         // // Award a card to the player if they conquered at least one territory
@@ -136,6 +136,13 @@ void AdvanceOrder::execute()
                         // player->getHand()->place(drawnCard);
                         std::cout << "Player " << player->getPlayerName() << " has been rewarded a card for successfully conquering " << targetTerritory->getName() << std::endl;
                     }
+
+                    if(targetTerritory->getOwner()->getStrategyType()=="neutral"){
+                        std::cout << targetTerritory->getOwner()->getPlayerName() <<
+                        " is no longer a neutral player because they were attacked. They are now aggressive" << std::endl;
+                        player->setStrategy("aggressive");
+                    }
+
                 }
             }
         }
@@ -153,14 +160,14 @@ void AdvanceOrder::execute()
 // Bomb Order
 void BombOrder::execute()
 {
-    if (player->hasTruceWith(targetTerritory->getOwner()))
+    if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
     {
         std::cout << "Invalid bomb order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
     }
     else
     {
         // if (player->getHand()->hasCard("Bomb")) {
-        if (targetTerritory->getOwner() != player->getPlayerName())
+        if (targetTerritory->getOwner()->getPlayerName() != player->getPlayerName())
         {
             // if the target territory is not adjacent to one of the territory owned by the player -> ionvalid
             bool isAdjacent = false;
@@ -177,6 +184,11 @@ void BombOrder::execute()
                 targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() / 2);
                 notify(this);
                 executed = true;
+                if(targetTerritory->getOwner()->getStrategyType()=="neutral"){
+                    std::cout << targetTerritory->getOwner()->getPlayerName() <<
+                              " is no longer a neutral player because they were attacked. They are now aggressive" << std::endl;
+                    player->setStrategy("aggressive");
+                }
             }
             else
             {
@@ -198,10 +210,10 @@ void BombOrder::execute()
 void BlockadeOrder::execute()
 {
     // if (player->getHand()->hasCard("Blockade")) {
-    if (targetTerritory->getOwner() == player->getPlayerName())
+    if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
     {
         targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() * 2);
-        targetTerritory->setOwner("Neutral");
+//        targetTerritory->setOwner("Neutral");
         notify(this);
         executed = true;
     }
@@ -218,15 +230,15 @@ void BlockadeOrder::execute()
 // Airlift Order
 void AirliftOrder::execute()
 {
-    if (player->hasTruceWith(targetTerritory->getOwner()))
+    if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
     {
         std::cout << "Invalid airlift order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
         return;
     }
     // if (player->getHand()->hasCard("Airlift")) {
-    if (sourceTerritory->getOwner() == player->getPlayerName())
+    if (sourceTerritory->getOwner()->getPlayerName() == player->getPlayerName())
     {
-        if (targetTerritory->getOwner() == player->getPlayerName())
+        if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
         {
             targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
             sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - numUnits);

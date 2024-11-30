@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Player.h"
 #include <iostream>
 #include <string>
 #include <utility>
@@ -12,21 +13,21 @@ using namespace std;
 // Territory Class Implementation
 Territory::Territory() {
     pName = new string("");
-    pOwner = new string("N/A");
+    pOwner = nullptr;
     pContinentID = new string("");
     pNumber_of_armies = new int(0);
 }
 
-Territory::Territory(string name, string owner, string continentID, int number_of_armies) {
+Territory::Territory(string name, Player* owner, string continentID, int number_of_armies) {
     pName = new string(std::move(name));
-    pOwner = new string(std::move(owner));
+    pOwner = owner;
     pContinentID = new string(std::move(continentID));
     pNumber_of_armies = new int(number_of_armies);
 }
 
 Territory::Territory(const Territory &other) {
     pName = new string(*other.pName);
-    pOwner = new string(*other.pOwner);
+    pOwner = new Player(*other.pOwner);
     pContinentID = new string(*other.pContinentID);
     pNumber_of_armies = new int(*other.pNumber_of_armies);
 }
@@ -74,12 +75,12 @@ void Territory::setName(const string &name) {
     *pName = name;
 }
 
-string Territory::getOwner() const {
-    return *pOwner;
+Player* Territory::getOwner() const {
+    return pOwner;
 }
 
-void Territory::setOwner(const string &playerName) {
-    *pOwner = playerName;
+void Territory::setOwner(Player* owner) {
+    pOwner = owner;
 }
 
 string Territory::getContinentID() const {
