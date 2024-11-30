@@ -61,7 +61,9 @@ void Cheater::issueOrder(Order *o) {
 }
 
 void Cheater::issueOrder() {
-
+    // Conquers all adjacent territories
+    // Done implictly when executing orders
+    // Plays no cards
 }
 
 vector<Territory *> Cheater::toAttack() {

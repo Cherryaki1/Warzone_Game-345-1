@@ -78,83 +78,100 @@ void DeployOrder::execute()
 }
 
 extern Deck *deck = new Deck;
+
 // Advance Order
 void AdvanceOrder::execute()
 {
-    if (sourceTerritory->getOwner()->getPlayerName() == player->getPlayerName())
-    {
-        if (sourceTerritory->isAdjacent(targetTerritory))
-        {
-            if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
+    /*
+     * Upper part handles the part where a player is a cheater, it conquers all adjacent once
+     * per turn and said territories will now have 3 armies on them for other players to attack
+     *
+     * Second part handles the normal execution and normal caluclations for conquering a territory
+     */
+    if(sourceTerritory->getOwner()->getStrategyType() == "cheater") {
+        // Conquer all adjacent territories
+        for(int i = 0; i < player->toAttack().size(); i++) {
+            player->toAttack().at(i)->setOwner(player);
+            player->toAttack().at(i)->setNumberOfArmies(3);
+        }
+
+    }else {
+        // Normal Execute
+        if (sourceTerritory->getOwner()->getPlayerName() == player->getPlayerName()){
+            if (sourceTerritory->isAdjacent(targetTerritory))
             {
-                targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
-                sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - numUnits);
-                executed = true;
-                notify(this);
-            }
-            else
-            { // Perform attack simulation
-                if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
+                if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
                 {
-                    std::cout << "Invalid advance order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
+                    targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
+                    sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - numUnits);
+                    executed = true;
+                    notify(this);
                 }
                 else
-                {
-                    int attackerArmies = numUnits;
-                    int defenderArmies = targetTerritory->getNumberOfArmies();
-                    int attackerLosses = 0;
-                    int defenderLosses = 0;
-
-                    // Roll dice for attacker and defender
-                    for (int i = 0; i < numUnits; i++)
+                { // Perform attack simulation
+                    if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
                     {
-                        int attackerRoll = rand() % 100 + 1; // Generate a number between 1 and 100
-                        int defenderRoll = rand() % 100 + 1; // Generate a number between 1 and 100
-
-                        if (attackerRoll <= 60 && defenderLosses < defenderArmies)
-                        { // 60% chance for attacker to kill a defender
-                            defenderLosses++;
-                        }
-                        if (defenderRoll <= 70 && attackerLosses < attackerArmies)
-                        { // 70% chance for defender to kill an attacker
-                            attackerLosses++;
-                        }
+                        std::cout << "Invalid advance order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
                     }
-
-                    // Update armies
-                    sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - attackerLosses);
-                    targetTerritory->setNumberOfArmies(defenderArmies - defenderLosses);
-
-                    // Check if defender has been defeated
-                    if (targetTerritory->getNumberOfArmies() == 0)
+                    else
                     {
-                        targetTerritory->setOwner(player);
-                        targetTerritory->setNumberOfArmies(attackerArmies - attackerLosses);
+                        int attackerArmies = numUnits;
+                        int defenderArmies = targetTerritory->getNumberOfArmies();
+                        int attackerLosses = 0;
+                        int defenderLosses = 0;
 
-                        // // Award a card to the player if they conquered at least one territory
-                        // Card *drawnCard = deck->draw();
-                        // player->getHand()->place(drawnCard);
-                        std::cout << "Player " << player->getPlayerName() << " has been rewarded a card for successfully conquering " << targetTerritory->getName() << std::endl;
+                        // Roll dice for attacker and defender
+                        for (int i = 0; i < numUnits; i++)
+                        {
+                            int attackerRoll = rand() % 100 + 1; // Generate a number between 1 and 100
+                            int defenderRoll = rand() % 100 + 1; // Generate a number between 1 and 100
+
+                            if (attackerRoll <= 60 && defenderLosses < defenderArmies)
+                            { // 60% chance for attacker to kill a defender
+                                defenderLosses++;
+                            }
+                            if (defenderRoll <= 70 && attackerLosses < attackerArmies)
+                            { // 70% chance for defender to kill an attacker
+                                attackerLosses++;
+                            }
+                        }
+
+                        // Update armies
+                        sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - attackerLosses);
+                        targetTerritory->setNumberOfArmies(defenderArmies - defenderLosses);
+
+                        // Check if defender has been defeated
+                        if (targetTerritory->getNumberOfArmies() == 0)
+                        {
+                            targetTerritory->setOwner(player);
+                            targetTerritory->setNumberOfArmies(attackerArmies - attackerLosses);
+
+                            // Award a card to the player if they conquered at least one territory
+                            // Card *drawnCard = deck->draw();
+                            // player->getHand()->place(drawnCard);
+                            std::cout << "Player " << player->getPlayerName() << " has been rewarded a card for successfully conquering " << targetTerritory->getName() << std::endl;
+                        }
+
+                        if(targetTerritory->getOwner()->getStrategyType()=="neutral"){
+                            std::cout << targetTerritory->getOwner()->getPlayerName() <<
+                            " is no longer a neutral player because they were attacked. They are now aggressive" << std::endl;
+                            player->setStrategy("aggressive");
+                        }
+
                     }
-
-                    if(targetTerritory->getOwner()->getStrategyType()=="neutral"){
-                        std::cout << targetTerritory->getOwner()->getPlayerName() <<
-                        " is no longer a neutral player because they were attacked. They are now aggressive" << std::endl;
-                        player->setStrategy("aggressive");
-                    }
-
                 }
+            }
+            else
+            {
+                std::cout << "Invalid advance order: " << sourceTerritory->getName() << " is not adjacent to " << targetTerritory->getName() << std::endl;
             }
         }
         else
         {
-            std::cout << "Invalid advance order: " << sourceTerritory->getName() << " is not adjacent to " << targetTerritory->getName() << std::endl;
+            std::cout << "Invalid advance order: " << sourceTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
         }
     }
-    else
-    {
-        std::cout << "Invalid advance order: " << sourceTerritory->getName() << " does not belong to " << player->getPlayerName() << std::endl;
-    }
+
 }
 
 // Bomb Order
