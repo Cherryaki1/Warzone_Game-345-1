@@ -111,7 +111,7 @@ Player::~Player() {
     ordersList = nullptr;  // Set to nullptr after deletion
 
     for (auto& territory : ownedTerritories) {
-        delete territory;
+        //delete territory;
         territory = nullptr;  // Set each pointer in the vector to nullptr after deletion
     }
     if(armies != nullptr) {
