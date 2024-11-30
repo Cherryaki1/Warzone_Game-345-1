@@ -93,6 +93,8 @@ void AdvanceOrder::execute()
         for(int i = 0; i < player->toAttack().size(); i++) {
             player->toAttack().at(i)->setOwner(player);
             player->toAttack().at(i)->setNumberOfArmies(3);
+            executed = true;
+            notify(this);
         }
 
     }else {
