@@ -552,16 +552,13 @@ void GameEngine::definePlayerStrategy(Player *player) {
     while (!done) {
         switch (strat) {
             case 1:
-                cout << "Human Chosen" << endl;
                 done = true;
                 break;
                 case 2:
-                    cout << "Cheater Chosen" << endl;
                     player->setStrategy("cheater");
                     done = true;
                     break;
                 case 3:
-                    cout << "Aggressive Chosen" << endl;
                     player->setStrategy("aggressive");
                     done = true;
                 break;
@@ -571,7 +568,6 @@ void GameEngine::definePlayerStrategy(Player *player) {
                     done = true;
                 break;
                 case 5:
-                    cout << "Benevolent Chosen" << endl;
                     player->setStrategy("benevolent");
                     done = true;
                 break;

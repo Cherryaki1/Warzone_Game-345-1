@@ -335,14 +335,25 @@ void Benevolent::issueOrder() {
     auto toPlay = playerHand->getHand();
     for(int i = 0; i< toPlay->size(); i++) {
         if(toPlay->at(i)->getType() == "Blockade") {
+            Territory *targetTerr = player->getOwnedTerritories().at(i);
+            string targetTerrStr = targetTerr->getName();
 
-        }
-        if(toPlay->at(i)->getType() == "Diplomacy") {
+            auto blockadeOrder = new BlockadeOrder(player, targetTerr);
+            player->addToOrderList(blockadeOrder);
 
+            cout << "Order blockading " <<targetTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
         }
-        if(toPlay->at(i)->getType() == "Reinforcement") {
-            // Nothing for now
+        else if(toPlay->at(i)->getType() == "Diplomacy") {
+            auto chosenPlayer = player->getCurrentGameEngine()->getPlayerList()->at(i);
+            auto negotiateOrder = new NegotiateOrder(player, chosenPlayer);
+            player->addToOrderList(negotiateOrder);
+
+            cout << "Order to negotiate with " << chosenPlayer->getPlayerName() << " has been added to " << player->getPlayerName() << "'s orderlist!" <<endl;
         }
+        else if(toPlay->at(i)->getType() == "Reinforcement") {
+            cout << "The reinforcement card is deprecated, please use the deploy function." << endl;
+        }
+        else {throw runtime_error("Incorrect Card!");}
     }
 
 }

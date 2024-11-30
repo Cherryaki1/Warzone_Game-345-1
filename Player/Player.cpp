@@ -141,7 +141,11 @@ void Player::setArmies(int* arm) {
     armies = arm;
 }
 int Player::getArmies() const {
-    return *armies;
+    if(armies != nullptr) {
+        return *armies;
+    }else {
+        return 0;
+    }
 }
 
 int Player::getReinforcementPool()
