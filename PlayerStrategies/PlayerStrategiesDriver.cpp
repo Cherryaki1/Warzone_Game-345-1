@@ -10,17 +10,36 @@ void testPlayerStrategies(){
 
     GameEngine engine;
 
-    cout << "How many maps would you like to play with?" << endl;
+    cout << "Select 1 to test tournament mode and 2 to test player strategies (play the game)" << endl;
     string choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
-    int maps = stoi(choice);
+    int mode = stoi(choice);
+    int maps, gamesPerMap, rounds;
+    switch(mode){
+        case 1:
+            cout << "Enter the tournament string" << endl;
+            choice = engine.getCommandProcessor()->getCommand()->getCommandText();
+            engine.getCommandProcessor()->parseTournamentCommand(choice);
 
-    cout << "How many times would you like to play with each map?" << endl;
-    choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
-    int gamesPerMap = stoi(choice);
+            maps = stoi(engine.getCommandProcessor()->getCommand()->getCommandText());
+            gamesPerMap = stoi(engine.getCommandProcessor()->getCommand()->getCommandText());
+            rounds = stoi(engine.getCommandProcessor()->getCommand()->getCommandText());
+            break;
+        case 2:
+            cout << "How many maps would you like to play with?" << endl;
+            choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
+             maps = stoi(choice);
 
-    cout << "How many rounds should each game last?" << endl;
-    choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
-    int rounds = stoi(choice);
+            cout << "How many times would you like to play with each map?" << endl;
+            choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
+             gamesPerMap = stoi(choice);
+
+            cout << "How many rounds should each game last?" << endl;
+            choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
+             rounds = stoi(choice);
+
+
+            break;
+    }
 
     for (int j = 0; j < maps*gamesPerMap; j++){
         cout << "***********GAME " << (j+1) <<"***********"<< endl;
@@ -36,6 +55,7 @@ void testPlayerStrategies(){
             }
         }
     }
+
 
 
 

@@ -34,6 +34,7 @@ public:
 class CommandProcessor : public Subject, public ILoggable {
 private:
     vector<Command*> commands;
+    bool tournamentMode;
     virtual void readCommand();
 
     public:
@@ -43,6 +44,7 @@ private:
     void saveCommand(const string& commandText);
     bool validate(Command* command, string& state);
     bool validate(Command *command);
+    void parseTournamentCommand(const string s);
 
     string nextGameState(const std::string& currentState, const std::string& commandText);
 

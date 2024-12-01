@@ -27,7 +27,7 @@ void testMainGameLoop() {
 
 //void testGameStates() { DEPRACATED
 //    GameEngine gameEngine;
-////    if(gameEngine.startUpPhase("../DownloadedMaps/Europe 4B.map")) {
+////    if(gameEngine.startUpPhase("../DownloadedMaps/Europe-4B.map")) {
 //        cout << "Game Engine StartUpPhase Completed, proceeding to Reinforcement Phase" << std::endl;
 //        if(gameEngine.reinforcementPhase()) {
 //            cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;
