@@ -1,6 +1,17 @@
-//
-// Created by gregl on 9/11/2024.
-//
+/**
+ * @file MapLoader.cpp
+ * @brief This file contains the class and function implementations for the MapLoader.
+ * 
+ * This file is part of the Warzone Game Team Project for COMP 345 - D (Advanced Program Design, C++).
+ * It includes the implementation of the MapLoader class, which is responsible for loading maps from files.
+ * 
+ * Team Members (Team 36):
+ * - Amir Vala Khalilzadeh (40253211)
+ * - Abdulah Ghulam Ali (40281857)
+ * - Arturo Sanchez Escobar (40283236)
+ * - Gregory Lajoie (40276231)
+ * - Botao Yang (40213554)
+ */
 
 #include "MapLoader.h"
 #include "Map.h"
@@ -17,18 +28,40 @@ using std::stringstream;
 using std::cout;
 using std::endl;
 
+//**************************MAP LOADER**************************
+
+/**
+ * @class MapLoader
+ * @brief Responsible for loading maps from files.
+ */
+
+/**
+ * @brief Constructs a MapLoader object and loads a map from the given file.
+ * @param filename The name of the file to load the map from.
+ */
 MapLoader::MapLoader(const string& filename) {
     loadFromFile(filename);
 }
 
+/**
+ * @brief Destructor for the MapLoader class.
+ */
 MapLoader::~MapLoader() {
     // Destructor
 }
 
+/**
+ * @brief Gets the loaded map.
+ * @return A reference to the loaded map.
+ */
 Map &MapLoader::getMap() {
     return map;
 }
 
+/**
+ * @brief Loads a map from the given file.
+ * @param filename The name of the file to load the map from.
+ */
 void MapLoader::loadFromFile(const string& filename) {
 
     ifstream file(filename);

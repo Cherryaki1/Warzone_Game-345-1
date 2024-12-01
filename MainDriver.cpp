@@ -1,8 +1,8 @@
 // Arturo Sanchez Escobar (40283236), Team 36
 // Abdulah Ghulam Ali (40281857), Team 36
 // Amir Vala Khalilzadeh (40253211), Team 36
-// Gregory Lajoie (ID), Team 36
-// Botao Yang (ID), Team 36
+// Gregory Lajoie (40276231), Team 36
+// Botao Yang (40213554), Team 36
 // COMP 345 - D (Advanced Program Design, C++)
 // Warzone Game Team Project - Assignment 1
 // October 4, 2024

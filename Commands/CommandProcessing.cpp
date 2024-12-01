@@ -1,40 +1,93 @@
+/**
+ * @file CommandProcessing.cpp
+ * @brief This file contains the class and function implementations for Command, CommandProcessor, and FileCommandProcessorAdapter.
+ * 
+ * This file is part of the Warzone Game Team Project for COMP 345 - D (Advanced Program Design, C++).
+ * It includes the implementation of the Command class, which represents commands in the game,
+ * as well as the CommandProcessor and FileCommandProcessorAdapter classes for processing commands.
+ * 
+ * Team Members (Team 36):
+ * - Amir Vala Khalilzadeh (40253211)
+ * - Abdulah Ghulam Ali (40281857)
+ * - Arturo Sanchez Escobar (40283236)
+ * - Gregory Lajoie (40276231)
+ * - Botao Yang (40213554)
+ */
+
 #include "CommandProcessing.h"
 
-// Command methods
+
+//**************************COMMAND**************************
+
+/**
+ * @brief Constructs a Command object with the given command text.
+ * @param commandText The text of the command.
+ */
 Command::Command(const string& commandText)
     : commandText(new string(commandText)), effect(new string("")) {}
 
+/**
+ * @brief Destructor for the Command class.
+ */
 Command::~Command() {
     delete commandText;  // Clean up allocated memory for commandText
     delete effect;       // Clean up allocated memory for effect
 }
 
+/**
+ * @brief Saves the effect of the command.
+ * @param effectText The effect text to save.
+ */
 void Command::saveEffect(const string& effectText) {
     *effect = effectText;  // Set the effect value
     notify(this);          // Notify observers after saving the effect
 }
 
+/**
+ * @brief Gets the text of the command.
+ * @return The text of the command.
+ */
 string Command::getCommandText() const {
     return *commandText;  // Dereference to access the actual string value
 }
 
+/**
+ * @brief Converts the command to a loggable string.
+ * @return The loggable string representation of the command.
+ */
 string Command::stringToLog() {
     return "Command: " + *commandText + "\nCommand's Effect: " + *effect;
 }
 
+/**
+ * @brief Stream insertion operator for displaying a command.
+ * @param os The output stream.
+ * @param cmd The command to display.
+ * @return The output stream.
+ */
 std::ostream& operator<<(std::ostream& os, const Command& cmd) {
     os << "Command: " << *cmd.commandText;
     if (cmd.effect) os << ", Effect: " << *cmd.effect;
     return os;
 }
 
-// CommandProcessor methods
+//**************************COMMAND PROCESSOR**************************
+
+/**
+ * @brief Constructs a CommandProcessor object.
+ */
 CommandProcessor::CommandProcessor() {}
 
+/**
+ * @brief Destructor for the CommandProcessor class.
+ */
 CommandProcessor::~CommandProcessor() {
     for (Command* cmd : commands) delete cmd;
 }
 
+/**
+ * @brief Reads a command from the input.
+ */
 void CommandProcessor::readCommand() {
     string commandText;
     std::cout << "Enter command: ";
@@ -42,6 +95,10 @@ void CommandProcessor::readCommand() {
     saveCommand(commandText);
 }
 
+/**
+ * @brief Saves a command with the given text.
+ * @param commandText The text of the command to save.
+ */
 void CommandProcessor::saveCommand(const string& commandText) {
     Command* command = new Command(commandText);
     commands.push_back(command);
@@ -49,15 +106,29 @@ void CommandProcessor::saveCommand(const string& commandText) {
     notify(this);
 }
 
+/**
+ * @brief Gets the list of commands.
+ * @return A pointer to the vector of commands.
+ */
 vector<Command*>* CommandProcessor::getCommands() {
     return &commands;
 }
 
+/**
+ * @brief Gets the most recent command.
+ * @return A pointer to the most recent command.
+ */
 Command* CommandProcessor::getCommand() {
     readCommand();
     return commands.back();
 }
 
+/**
+ * @brief Validates a command based on the current state.
+ * @param command The command to validate.
+ * @param state The current state of the game.
+ * @return True if the command is valid, false otherwise.
+ */
 bool CommandProcessor::validate(Command* command, string& state) {
     string commandText = command->getCommandText();
     //    std::cout << commandText << std::endl;
@@ -132,10 +203,20 @@ std::string CommandProcessor::nextGameState(const std::string& currentState, con
     return currentState;
 }*/
 
+/**
+ * @brief Converts the CommandProcessor to a loggable string.
+ * @return The loggable string representation of the CommandProcessor.
+ */
 string CommandProcessor::stringToLog() {
     return commands.back()->stringToLog();
 }
 
+/**
+ * @brief Stream insertion operator for displaying a CommandProcessor.
+ * @param os The output stream.
+ * @param cp The CommandProcessor to display.
+ * @return The output stream.
+ */
 std::ostream& operator<<(std::ostream& os, const CommandProcessor& cp) {
     os << "CommandProcessor with " << cp.commands.size() << " commands:\n";
     for (const Command* cmd : cp.commands) {
@@ -144,7 +225,12 @@ std::ostream& operator<<(std::ostream& os, const CommandProcessor& cp) {
     return os;
 }
 
-// FileCommandProcessorAdapter methods
+//**************************FILE COMMAND PROCESSOR ADAPTER**************************
+
+/**
+ * @brief Constructs a FileCommandProcessorAdapter object with the given filename.
+ * @param filename The name of the file to read commands from.
+ */
 FileCommandProcessorAdapter::FileCommandProcessorAdapter(const string& filename) {
     fileStream.open(filename);
     if (!fileStream.is_open()) {
@@ -152,12 +238,18 @@ FileCommandProcessorAdapter::FileCommandProcessorAdapter(const string& filename)
     }
 }
 
+/**
+ * @brief Destructor for the FileCommandProcessorAdapter class.
+ */
 FileCommandProcessorAdapter::~FileCommandProcessorAdapter() {
     if (fileStream.is_open()) {
         fileStream.close();
     }
 }
 
+/**
+ * @brief Reads a command from the file.
+ */
 void FileCommandProcessorAdapter::readCommand() {
     if (fileStream.is_open()) {
         string commandText;
@@ -169,6 +261,12 @@ void FileCommandProcessorAdapter::readCommand() {
     }
 }
 
+/**
+ * @brief Stream insertion operator for displaying a FileCommandProcessorAdapter.
+ * @param os The output stream.
+ * @param fcp The FileCommandProcessorAdapter to display.
+ * @return The output stream.
+ */
 std::ostream& operator<<(std::ostream& os, const FileCommandProcessorAdapter& fcp) {
     os << "FileCommandProcessorAdapter reading from file:\n";
     os << static_cast<const CommandProcessor&>(fcp);  // Reuse base class operator<<

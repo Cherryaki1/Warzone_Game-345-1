@@ -1,10 +1,17 @@
-// Arturo Sanchez Escobar (40283236), Team 36
-// COMP 345 - D (Advanced Program Design, C++)
-// Warzone Game Team Project - Assignment 1
-// October 4, 2024
-// *******************************************
-// This is a cpp file for Part 5 of the assignment.
-// It contains the class and function implementations for the Game Engine composed of two objects, StartUp and Play
+/**
+ * @file GameEngine.cpp
+ * @brief This file contains the class and function implementations for the GameEngine.
+ * 
+ * This file is part of the Warzone Game Team Project for COMP 345 - D (Advanced Program Design, C++).
+ * It includes the implementation of the GameEngine class, which controls the flow of the game.
+ * 
+ * Team Members (Team 36):
+ * - Amir Vala Khalilzadeh (40253211)
+ * - Abdulah Ghulam Ali (40281857)
+ * - Arturo Sanchez Escobar (40283236)
+ * - Gregory Lajoie (40276231)
+ * - Botao Yang (40213554)
+ */
 
 #include <iostream>
 #include <algorithm>
@@ -17,7 +24,16 @@
 Map* globalMap = nullptr;
 using namespace std;
 
-// GAMEENGINE CONSTRUCTOR
+//**************************GAME ENGINE**************************
+
+/**
+ * @class GameEngine
+ * @brief Controls the flow of the game.
+ */
+
+/**
+ * @brief Constructs a GameEngine object.
+ */
 GameEngine::GameEngine() {
     state = new string("StartUp");
     invalidCommand = new bool(false); // Dynamically Allocate Memory
@@ -27,6 +43,9 @@ GameEngine::GameEngine() {
     gameMap = nullptr;
 }
 
+/**
+ * @brief Destructor for the GameEngine class.
+ */
 GameEngine::~GameEngine() {
     if (state != nullptr) {
         delete state;
@@ -58,8 +77,12 @@ GameEngine::~GameEngine() {
 
 }
 
-
-    // OPERATOR << FOR STARTUP
+/**
+ * @brief Stream insertion operator for displaying a GameEngine.
+ * @param out The output stream.
+ * @param gameEngine The GameEngine to display.
+ * @return The output stream.
+ */
     ostream& operator<<(ostream& out, const GameEngine& gameEngine) {
         out << "StartUp State: \n";
         out << "Command: " << (gameEngine.command ? *gameEngine.command : "None") << "\n";
@@ -69,6 +92,9 @@ GameEngine::~GameEngine() {
 
 // AT THE END OF EACH METHOD, CHECK IF THE COMMAND ENTERED TO TRANSITION IS VALID, ELSE ERROR MSG
 
+/**
+ * @brief Handles the startup phase of the game.
+ */
 void GameEngine::startUpPhase() {
     cout << "... Starting up Phase ..." << endl;
     // Current State
@@ -201,13 +227,19 @@ void GameEngine::startUpPhase() {
 
 }
 
-
+/**
+ * @brief Starts the game loop.
+ */
 void GameEngine::mainGameLoop() {
     reinforcementPhase();
     ordersIssuingPhase();
     ordersExecutionPhase();
 }
 
+/**
+ * @brief Handles the reinforcement phase of the game.
+ * @return True if the phase is completed successfully, false otherwise.
+ */
 bool GameEngine::reinforcementPhase() {
 
     std::cout << "Starting reinforcement phase..." << std::endl;
@@ -274,6 +306,10 @@ void GameEngine::ordersIssuingPhase2() { //Trying something new
 
 }
 
+/**
+ * @brief Handles the orders issuing phase of the game.
+ * @return True if the phase is completed successfully, false otherwise.
+ */
 bool GameEngine::ordersIssuingPhase() {
     std::cout << "Starting orders issuing phase..." << std::endl;
 
@@ -444,6 +480,10 @@ bool GameEngine::ordersIssuingPhase() {
     return true;
 }
 
+/**
+ * @brief Handles the orders execution phase of the game.
+ * @return The result of the phase.
+ */
 string GameEngine::ordersExecutionPhase() {
     std::cout << "\nStarting orders execution phase..." << std::endl;
 
@@ -481,9 +521,10 @@ string GameEngine::ordersExecutionPhase() {
     return getCommand();  // Return the current command, if applicable
 }
 
-
-
-
+/**
+ * @brief Handles the end phase of the game.
+ * @return True if the phase is completed successfully, false otherwise.
+ */
 bool GameEngine::endPhase() {
     cout << "... End Phase ..." << endl;
     // Validate win
@@ -491,13 +532,22 @@ bool GameEngine::endPhase() {
     return true;
 }
 
-// SETTERS AND GETTERS FOR PLAY
+
+/**
+ * @brief Gets the current state of the game.
+ * @return The current state of the game.
+ */
 string GameEngine::getState() const {
     if(state == nullptr) {
         return "start";
     }
     return *state;
 }
+
+/**
+ * @brief Transitions the game to a new state.
+ * @param newState The new state to transition to.
+ */
 void GameEngine::transition(std::string newState) {
     if(state == nullptr) {
         state = new string("start");
@@ -512,6 +562,11 @@ string GameEngine::getCommand() const {
     }
     return *command; // Dereference and return the actual value
 }
+
+/**
+ * @brief Sets the current command of the game.
+ * @param cmd The command to set.
+ */
 void GameEngine::setCommand(const string& cmd) {
     if(command == nullptr) {
         command = new string(cmd); // Allocate memory and set command if it is initialized
@@ -519,13 +574,27 @@ void GameEngine::setCommand(const string& cmd) {
         *command = cmd; // Assign new value if already allocated
     }
 }
+
+/**
+ * @brief Gets the invalid command flag.
+ * @return The invalid command flag.
+ */
 bool GameEngine::getInvalidCommand() const {
     return *invalidCommand;     // Dereference and get value
 }
+
+/**
+ * @brief Sets the invalid command flag.
+ * @param value The value to set.
+ */
 void GameEngine::setInvalidCommand(bool value){
     *invalidCommand = value;        // Dereference and assign new value
 }
 
+/**
+ * @brief Adds a player to the game.
+ * @param player The player to add.
+ */
 void GameEngine::addPlayer(Player *player) {
     players.push_back(player);
     cout << player->getPlayerName() << " (" << player->getStrategyType() << ")"<<" has been added to the game!" << endl;
@@ -535,6 +604,10 @@ string GameEngine::stringToLog() {
     return "Game Engine new state: " + *state;
 }
 
+/**
+ * @brief Defines the strategy for a player.
+ * @param player The player to define the strategy for.
+ */
 void GameEngine::definePlayerStrategy(Player *player) {
     cout << "What type of player will this be? Type:" << endl;
     string strategy = "";
@@ -577,6 +650,10 @@ void GameEngine::definePlayerStrategy(Player *player) {
     }
 }
 
+/**
+ * @brief Gets the list of players in the game.
+ * @return A pointer to the vector of players.
+ */
 vector<Player *> *GameEngine::getPlayerList() {
     return &players;
 }
