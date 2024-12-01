@@ -202,6 +202,12 @@ void AdvanceOrder::execute()
                             }
                         }
 
+                        if(targetTerritory->getOwner()->getStrategyType()=="neutral"){
+                            std::cout << targetTerritory->getOwner()->getPlayerName() <<
+                                      " is no longer a neutral player because they were attacked. They are now aggressive" << std::endl;
+                            player->setStrategy("aggressive");
+                        }
+
                         // Update armies
                         sourceTerritory->setNumberOfArmies(sourceTerritory->getNumberOfArmies() - attackerLosses);
                         targetTerritory->setNumberOfArmies(defenderArmies - defenderLosses);
@@ -218,11 +224,7 @@ void AdvanceOrder::execute()
                             std::cout << "Player " << player->getPlayerName() << " has been rewarded a card for successfully conquering " << targetTerritory->getName() << std::endl;
                         }
 
-                        if(targetTerritory->getOwner()->getStrategyType()=="neutral"){
-                            std::cout << targetTerritory->getOwner()->getPlayerName() <<
-                            " is no longer a neutral player because they were attacked. They are now aggressive" << std::endl;
-                            player->setStrategy("aggressive");
-                        }
+
 
                     }
                 }
