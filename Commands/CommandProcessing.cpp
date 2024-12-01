@@ -262,6 +262,10 @@ void CommandProcessor::parseTournamentCommand(const std::string& input) {
                     map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
                     maps.push_back(map);
                 }
+                if (maps.size() < 1 || maps.size() > 5) {
+                    std::cerr << "Error: Invalid number of maps (must be between 1 and 5).\n";
+                    return;
+                }
                 buffer.clear();
             }
             currentFlag = token;
@@ -270,7 +274,12 @@ void CommandProcessor::parseTournamentCommand(const std::string& input) {
             buffer += token;
         } else if (currentFlag == "-P") {
             players.push_back(token);
-        } else if (currentFlag == "-G") {
+            if (players.size() > 4) {
+                std::cerr << "Error: Invalid number of players (must be between 2 and 4).\n";
+                return;
+            }
+        }
+        else if (currentFlag == "-G") {
             try {
                 numGames = std::stoi(token);
                 if (numGames < 1 || numGames > 5) throw std::out_of_range("Invalid number of games");

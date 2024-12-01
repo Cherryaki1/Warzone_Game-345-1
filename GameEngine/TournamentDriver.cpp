@@ -15,7 +15,7 @@ void testTournament() {
     cout << "**** Thank you for playing our CLI Warzone! ****" << endl;
     cout<<"****** Testing Tournament Mode *****"<<endl;
 
-    string tournamentCommand = "tournament -M test.txt,europe 4b.map -P aggressive neutral -G 2 -D 30";
+    string tournamentCommand = "tournament -M test.txt,europe 4b.map -P aggressive neutral benevolant -G 2 -D 30";
 
     GameEngine engine;
 
