@@ -66,7 +66,7 @@ class GameEngine : public Subject, public ILoggable {
 
     void definePlayerStrategy(Player *player);
 
-    void setTournamentParameters(const string& commandText);
+    void setTournamentParameters(CommandProcessor* processor);
     void runTournament();
 
     // Stream insertion operator

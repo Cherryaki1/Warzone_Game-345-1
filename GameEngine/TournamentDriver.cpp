@@ -15,14 +15,15 @@ void testTournament() {
     cout << "**** Thank you for playing our CLI Warzone! ****" << endl;
     cout<<"****** Testing Tournament Mode *****"<<endl;
 
+    string tournamentCommand = "tournament -M test.txt,europe 4b.map -P aggressive neutral -G 2 -D 30";
+
     GameEngine engine;
 
-    // Simulated command string for tournament mode
-    string tournamentCommand = "tournament -M Map1,Map2,Map3 -P Aggressive,Benevolent,Neutral,Cheater -G 3 -D 20";
+    engine.getCommandProcessor()->parseTournamentCommand(tournamentCommand);
 
     // Pass the command string to setTournamentParameters
     cout << "Setting tournament parameters..." << endl;
-    engine.setTournamentParameters(tournamentCommand);
+    engine.setTournamentParameters(engine.getCommandProcessor());
 
     // Run the tournament
     cout << "Running the tournament..." << endl;

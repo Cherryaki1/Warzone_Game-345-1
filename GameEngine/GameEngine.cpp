@@ -24,18 +24,6 @@
 Map* globalMap = nullptr;
 using namespace std;
 
-vector<string> split(string s, string delimiter) {
-    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-    string token;
-    vector<string> res;
-    while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
-        token = s.substr(pos_start, pos_end - pos_start);
-        pos_start = pos_end + delim_len;
-        res.push_back(token);
-    }
-    res.push_back(s.substr(pos_start));
-    return res;
-}
 
 //**************************GAME ENGINE**************************
 
@@ -94,13 +82,15 @@ GameEngine::~GameEngine() {
     delete tournamentNbOfGames;
     delete tournamentMaxTurns;
 
-    for (auto map : tournamentMapFiles) {
-        delete map;                   // Free each dynamically allocated string
+    for (std::string* map : tournamentMapFiles) {
+        delete map;
     }
+    tournamentMapFiles.clear();
 
-    for (auto strategy : tournamentPlayerStrategies) {
-        delete strategy;              // Free each dynamically allocated string
+    for (std::string* strategy : tournamentPlayerStrategies) {
+        delete strategy;
     }
+    tournamentPlayerStrategies.clear();
 }
 
 /**
@@ -701,67 +691,51 @@ void GameEngine::definePlayerStrategy(Player *player) {
     }
 }
 
-void GameEngine::setTournamentParameters(const string& commandText) {
-    vector<string> tournamentString = split(commandText, " ");
-    int index = 1;
+void GameEngine::setTournamentParameters(CommandProcessor* processor) {
+    std::vector<Command*> commands = *processor->getCommands();
 
-    while (index < tournamentString.size()) {
-        if (tournamentString[index] == "-M") {
-            index++;
-            while (index < tournamentString.size() && tournamentString[index][0] != '-') {
-                // Dynamically allocate memory for each map string
-                tournamentMapFiles.push_back(new string(tournamentString[index++]));
-            }
-        } else if (tournamentString[index] == "-P") {
-            index++;
-            while (index < tournamentString.size() && tournamentString[index][0] != '-') {
-                // Dynamically allocate memory for each player strategy string
-                tournamentPlayerStrategies.push_back(new string(tournamentString[index++]));
-            }
-        } else if (tournamentString[index] == "-G") {
-            index++;
-            *tournamentNbOfGames = stoi(tournamentString[index++]); // Update dynamically allocated value
-        } else if (tournamentString[index] == "-D") {
-            index++;
-            *tournamentMaxTurns = stoi(tournamentString[index++]); // Update dynamically allocated value
+    for (Command* command : commands) {
+        std::string commandText = command->getCommandText();
+
+        if (commandText.substr(0, 7) == "loadmap") {
+            std::string mapName = commandText.substr(8);
+            tournamentMapFiles.push_back(new std::string(mapName));
+        } else if (commandText.substr(0, 9) == "addplayer") {
+            std::string strategy = commandText.substr(10);
+            tournamentPlayerStrategies.push_back(new std::string(strategy));
+        } else if (commandText == "validatemap") {
+            // Validate map logic can be added here
+        } else if (commandText == "gamestart") {
+            // Setup players or other configurations here
         }
     }
 
-    // Print the tournament parameters
-    cout << "Tournament parameters set:" << endl;
-
-    cout << "Maps: ";
-    for (const auto& map : tournamentMapFiles) {
-        cout << *map << " "; // Dereference pointer to get map name
-    }
-    cout << endl;
-
-    cout << "Player Strategies: ";
-    for (const auto& strategy : tournamentPlayerStrategies) {
-        cout << *strategy << " "; // Dereference pointer to get strategy name
-    }
-    cout << endl;
-
-    cout << "Number of Games: " << *tournamentNbOfGames << endl;
-    cout << "Max Turns: " << *tournamentMaxTurns << endl;
+    std::cout << "Tournament parameters set:\nMaps: ";
+    for (const auto& map : tournamentMapFiles) std::cout << *map << " ";
+    std::cout << "\nPlayer Strategies: ";
+    for (const auto& strategy : tournamentPlayerStrategies) std::cout << *strategy << " ";
+    std::cout << "\n";
 }
 
+
+
+// Runs the tournament
 void GameEngine::runTournament() {
     cout << "Tournament mode starting..." << endl;
 
-    for (const auto& map : tournamentMapFiles) {
+    // Iterate over all maps and games
+    for (const string* map : tournamentMapFiles) {
         for (int game = 1; game <= *tournamentNbOfGames; ++game) {
-            cout << "Playing game " << game << " on map " << *map << "..." << endl;
+            cout << "\nPlaying game " << game << " on map " << map << "..." << endl;
 
-            // Simulate a game
-            int winnerIndex = rand() % tournamentPlayerStrategies.size();
-            cout << "Winner: " << *tournamentPlayerStrategies[winnerIndex] << endl;
+            // Simulate gameplay logic
+            int winnerIndex = rand() % tournamentPlayerStrategies.size(); // Randomly pick a winner
+            cout << "Winner: " << tournamentPlayerStrategies[winnerIndex] << endl;
         }
     }
 
-    cout << "Tournament completed." << endl;
+    cout << "\nTournament completed!" << endl;
 }
-
 
 
 

@@ -13,6 +13,8 @@ using std::string;
 using std::vector;
 using std::list;
 
+vector<string> split(string s, string delimiter);
+
 class Command : public Subject, public ILoggable {
 private:
     string* commandText;
@@ -38,7 +40,7 @@ private:
 
     public:
 
-    bool validateTournamentCommand(std::string);
+    void parseTournamentCommand(const std::string& input);
 
 
     CommandProcessor();
