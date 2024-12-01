@@ -1,3 +1,17 @@
+/**
+ * @file PlayerStrategies.cpp
+ * @brief This file contains the class and function implementations for various player strategies.
+ * 
+ * This file is part of the Warzone Game Team Project for COMP 345 - D (Advanced Program Design, C++).
+ * It includes the implementation of different player strategies such as Neutral, Cheater, Human, Aggressive, and Benevolent.
+ * 
+ * Team Members (Team 36):
+ * - Amir Vala Khalilzadeh (40253211)
+ * - Abdulah Ghulam Ali (40281857)
+ * - Arturo Sanchez Escobar (40283236)
+ * - Gregory Lajoie (40276231)
+ * - Botao Yang (40213554)
+ */
 
 #include "PlayerStrategies.h"
 #include "Cards.h"
@@ -12,78 +26,129 @@ class Player;
 class Territory;
 class Order;
 
+/**
+ * @brief Gets the type of the player strategy.
+ * @return The type of the player strategy.
+ */
 string PlayerStrategy::getType() {return *type;}
 
 // ****************************** Neutral Player ******************************
-/*
- * Neutral Player Constructor
+
+/**
+ * @class Neutral
+ * @brief Represents a neutral player strategy.
+ */
+
+/**
+ * @brief Constructs a Neutral player strategy.
+ * @param player The player associated with this strategy.
  */
 Neutral::Neutral(Player *player) {
     this->player = player;
     type= new string("neutral");
 }
-/*
- * Neutral Player issues a specific order
+
+/**
+ * @brief Neutral Player issues a specific order
+ * @param o The order to issue.
  */
 void Neutral::issueOrder(Order *o) {
 
 }
-/*
- * Neutral Player issues an order
+
+/**
+ * @brief Neutral Player issues an order.
  */
 void Neutral::issueOrder() {
     cout << player->getPlayerName() << " is a neutral player. No actions taken during this turn." << endl;
 }
-/*
- * Neutral Player: Does not attack
-*/
+
+/**
+ * @brief Neutral Player: Does not attack.
+ * @return An empty vector as Neutral player does not attack.
+ */
 vector<Territory *> Neutral::toAttack() {
     return {}; //Neutral player does not attack unprovoked
 }
-/*
- * Neutral Player: Does not defend
+
+/**
+ * @brief Neutral Player: Does not defend.
+ * @return An empty vector as Neutral player does not defend.
  */
 vector<Territory *> Neutral::toDefend() {
     return {}; //Neutral player does not defend unprovoked
 }
 
 // ****************************** Cheater Player ******************************
-/*
- * Cheater Player Constructor
+
+/**
+ * @class Cheater
+ * @brief Represents a cheater player strategy.
+ */
+
+/**
+ * @brief Constructs a Cheater player strategy.
+ * @param player The player associated with this strategy.
  */
 Cheater::Cheater(Player *player) {
     this->player = player;
     type= new string("cheater");
 }
 
+/**
+ * @brief Issues a specific order for the Cheater player.
+ * @param o The order to issue.
+ */
 void Cheater::issueOrder(Order *o) {
 
 }
 
+/**
+ * @brief Issues an order for the Cheater player.
+ */
 void Cheater::issueOrder() {
     // Conquers all adjacent territories
     // Done implictly when executing orders
     // Plays no cards
 }
 
+/**
+ * @brief Identifies the territories to attack for the Cheater player.
+ * @return A vector of territories to attack.
+ */
 vector<Territory *> Cheater::toAttack() {
     return vector<Territory *>();
 }
 
+/**
+ * @brief Identifies the territories to defend for the Cheater player.
+ * @return A vector of territories to defend.
+ */
 vector<Territory *> Cheater::toDefend() {
     return vector<Territory *>();
 }
 
 
 // ****************************** Human Player ******************************
-/*
- * Human Player Constructor
+
+/**
+ * @class Human
+ * @brief Represents a human player strategy.
+ */
+
+/**
+ * @brief Constructs a Human player strategy.
+ * @param player The player associated with this strategy.
  */
 Human::Human(Player *player) {
     this->player = player;
     type=new string("human");
 }
 
+/**
+ * @brief Issues a specific order for the Human player.
+ * @param newOrder The order to issue.
+ */
 void Human::issueOrder(Order *newOrder) {
     if (newOrder != nullptr) {
         player->addToOrderList(newOrder);
@@ -93,6 +158,9 @@ void Human::issueOrder(Order *newOrder) {
     }
 }
 
+/**
+ * @brief Issues an order for the Human player.
+ */
 void Human::issueOrder() {
     cout << "\n*****\n" <<player->getPlayerName() << ": What are your orders?" << endl;
     cout << "---You have " << player->getReinforcementPool() << " armies available for deployment\nOPTIONS (enter the number):" << endl;
@@ -267,54 +335,98 @@ void Human::issueOrder() {
 
 }
 
+/**
+ * @brief Identifies the territories to attack for the Human player.
+ * @return A vector of territories to attack.
+ */
 vector<Territory *> Human::toAttack() {
     return vector<Territory *>();
 }
 
+/**
+ * @brief Identifies the territories to defend for the Human player.
+ * @return A vector of territories to defend.
+ */
 vector<Territory *> Human::toDefend() {
     return vector<Territory *>();
 }
 
 
 // ****************************** Aggressive Player ******************************
-/*
- * Aggressive Player Constructor
+
+/**
+ * @class Aggressive
+ * @brief Represents an aggressive player strategy.
+ */
+
+/**
+ * @brief Constructs an Aggressive player strategy.
+ * @param player The player associated with this strategy.
  */
 Aggressive::Aggressive(Player *player) {
     this->player = player;
     type=new string("aggressive");
 }
 
+/**
+ * @brief Issues a specific order for the Aggressive player.
+ * @param o The order to issue.
+ */
 void Aggressive::issueOrder(Order *o) {
 
 }
 
+/**
+ * @brief Issues an order for the Aggressive player.
+ */
 void Aggressive::issueOrder() {
 
 }
 
+/**
+ * @brief Identifies the territories to attack for the Aggressive player.
+ * @return A vector of territories to attack.
+ */
 vector<Territory *> Aggressive::toAttack() {
     return vector<Territory *>();
 }
 
+/**
+ * @brief Identifies the territories to defend for the Aggressive player.
+ * @return A vector of territories to defend.
+ */
 vector<Territory *> Aggressive::toDefend() {
     return vector<Territory *>();
 }
 
 
 // ****************************** BenevolentPlayer ******************************
-/*
- * Benevolent Player Constructor
+
+/**
+ * @class Benevolent
+ * @brief Represents a benevolent player strategy.
+ */
+
+/**
+ * @brief Constructs a Benevolent player strategy.
+ * @param player The player associated with this strategy.
  */
 Benevolent::Benevolent(Player *player) {
     this->player = player;
     type=new string("benevolent");
 }
 
+/**
+ * @brief Issues a specific order for the Benevolent player.
+ * @param o The order to issue.
+ */
 void Benevolent::issueOrder(Order *o) {
 
 }
 
+/**
+ * @brief Issues an order for the Benevolent player.
+ */
 void Benevolent::issueOrder() {
     // Deploy armies on the weakest countries
     int lowestArmyCountry = 999;
@@ -360,10 +472,18 @@ void Benevolent::issueOrder() {
 
 }
 
+/**
+ * @brief Identifies the territories to attack for the Benevolent player.
+ * @return An empty vector as Benevolent player does not attack.
+ */
 vector<Territory *> Benevolent::toAttack() {
     return {}; // Never advances on enemy territory
 }
 
+/**
+ * @brief Identifies the territories to defend for the Benevolent player.
+ * @return A vector of territories to defend.
+ */
 vector<Territory *> Benevolent::toDefend() {
     return vector<Territory *>(); // Only defends its territories
 }

@@ -1,3 +1,19 @@
+/**
+ * @file Orders.cpp
+ * @brief This file contains the class and function implementations for Order and its derived classes.
+ * 
+ * This file is part of the Warzone Game Team Project for COMP 345 - D (Advanced Program Design, C++).
+ * It includes the implementation of the Order class, which represents different types of orders in the game,
+ * as well as the OrdersList class for managing collections of orders.
+ * 
+ * Team Members (Team 36):
+ * - Amir Vala Khalilzadeh (40253211)
+ * - Abdulah Ghulam Ali (40281857)
+ * - Arturo Sanchez Escobar (40283236)
+ * - Gregory Lajoie (40276231)
+ * - Botao Yang (40213554)
+ */
+
 #include "Orders.h"
 #include "Cards/Cards.h" // Include the header file for the Hand class
 #include "Map/Map.h"
@@ -5,28 +21,58 @@
 #include <iterator>
 #include <algorithm>
 
-// ----------------------------------------------------------
-//              Base Order class implementations
-// ----------------------------------------------------------
+//**************************ORDER**************************
+
+/**
+ * @class Order
+ * @brief Represents an order in the game.
+ */
+
+/**
+ * @brief Default constructor for the Order class.
+ */
 Order::Order() : executed(false) {}
+
+/**
+ * @brief Parameterized constructor for the Order class.
+ * @param orderType The type of the order.
+ */
 Order::Order(const std::string &orderType) : orderType(orderType), executed(false) {}
 
+/**
+ * @brief Validates the order.
+ * @return True if the order is valid, false otherwise.
+ */
 bool Order::validate()
 {
     std::cout << "Validating order: " << orderType << std::endl;
     return true;
 }
 
+/**
+ * @brief Gets the type of the order.
+ * @return The type of the order.
+ */
 std::string Order::getOrderType() const
 {
     return orderType;
 }
 
+/**
+ * @brief Gets the list of orders.
+ * @return A reference to the list of orders.
+ */
 std::list<Order *> &OrdersList::getOrders()
 {
     return orders;
 }
 
+/**
+ * @brief Stream insertion operator for displaying an order.
+ * @param os The output stream.
+ * @param order The order to display.
+ * @return The output stream.
+ */
 std::ostream &operator<<(std::ostream &os, const Order &order)
 {
     os << "Order Type: " << order.orderType;
@@ -37,16 +83,25 @@ std::ostream &operator<<(std::ostream &os, const Order &order)
     return os;
 }
 
+/**
+ * @brief Converts the order to a loggable string.
+ * @return The loggable string representation of the order.
+ */
 string Order::stringToLog()
 {
     return "Order Executed: " + orderType;
 }
 
-// ----------------------------------------------------------
-//              execute() of Derived Order classes
-// ----------------------------------------------------------
+//**************************DEPLOY ORDER**************************
 
-// Deploy Order
+/**
+ * @class DeployOrder
+ * @brief Represents a deploy order in the game.
+ */
+
+/**
+ * @brief Executes the deploy order.
+ */
 void DeployOrder::execute()
 {
     std::cout << "Executing DeployOrder" << std::endl;
@@ -79,7 +134,16 @@ void DeployOrder::execute()
 
 extern Deck *deck = new Deck;
 
-// Advance Order
+//**************************ADVANCE ORDER**************************
+
+/**
+ * @class AdvanceOrder
+ * @brief Represents an advance order in the game.
+ */
+
+/**
+ * @brief Executes the advance order.
+ */
 void AdvanceOrder::execute()
 {
     /*
@@ -176,7 +240,16 @@ void AdvanceOrder::execute()
 
 }
 
-// Bomb Order
+//**************************BOMB ORDER**************************
+
+/**
+ * @class BombOrder
+ * @brief Represents a bomb order in the game.
+ */
+
+/**
+ * @brief Executes the bomb order.
+ */
 void BombOrder::execute()
 {
     if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
@@ -225,7 +298,16 @@ void BombOrder::execute()
     //}
 }
 
-// Blockade Order
+//**************************BLOCKADE ORDER**************************
+
+/**
+ * @class BlockadeOrder
+ * @brief Represents a blockade order in the game.
+ */
+
+/**
+ * @brief Executes the blockade order.
+ */
 void BlockadeOrder::execute()
 {
     // if (player->getHand()->hasCard("Blockade")) {
@@ -246,7 +328,16 @@ void BlockadeOrder::execute()
     // }
 }
 
-// Airlift Order
+//**************************AIRLIFT ORDER**************************
+
+/**
+ * @class AirliftOrder
+ * @brief Represents an airlift order in the game.
+ */
+
+/**
+ * @brief Executes the airlift order.
+ */
 void AirliftOrder::execute()
 {
     if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
@@ -279,7 +370,16 @@ void AirliftOrder::execute()
     // }
 }
 
-// Negotiate Order
+//**************************NEGOTIATE ORDER**************************
+
+/**
+ * @class NegotiateOrder
+ * @brief Represents a negotiate order in the game.
+ */
+
+/**
+ * @brief Executes the negotiate order.
+ */
 void NegotiateOrder::execute()
 {
     // if(player->getHand()->hasCard("Diplomacy")){
@@ -299,9 +399,21 @@ void NegotiateOrder::execute()
     // std::cout << "Invalid negotiate order: " << player->getPlayerName() << " does not have a Diplomacy card" << std::endl;
     // }
 }
+//**************************ORDERS LIST**************************
 
-// OrdersList implementations
+/**
+ * @class OrdersList
+ * @brief Represents a list of orders in the game.
+ */
+
+/**
+ * @brief Default constructor for the OrdersList class.
+ */
 OrdersList::OrdersList() {}
+
+/**
+ * @brief Destructor for the OrdersList class.
+ */
 OrdersList::~OrdersList()
 {
     for (auto &order : orders)
@@ -310,12 +422,21 @@ OrdersList::~OrdersList()
     }
 }
 
+/**
+ * @brief Adds an order to the list.
+ * @param order The order to add.
+ */
 void OrdersList::addOrder(Order *order)
 {
     orders.push_back(order);
     notify(this);
 }
 
+/**
+ * @brief Moves an order from one position to another.
+ * @param fromPosition The initial position of the order.
+ * @param toPosition The new position of the order.
+ */
 void OrdersList::move(int fromPosition, int toPosition)
 {
     if (fromPosition < 0 || fromPosition >= orders.size() || toPosition < 0 || toPosition >= orders.size())
@@ -333,6 +454,10 @@ void OrdersList::move(int fromPosition, int toPosition)
     std::cout << "Moved order from position " << fromPosition << " to " << toPosition << std::endl;
 }
 
+/**
+ * @brief Removes an order from the list.
+ * @param position The position of the order to remove.
+ */
 void OrdersList::remove(int position)
 {
     if (position < 0 || position >= orders.size())
@@ -348,12 +473,20 @@ void OrdersList::remove(int position)
     std::cout << "Removed order at position " << position << std::endl;
 }
 
+/**
+ * @brief Checks if the list is empty.
+ * @return True if the list is empty, false otherwise.
+ */
 bool OrdersList::isEmpty()
 {
     return orders.empty();
 }
 
-// get next order on the list
+
+/**
+ * @brief Gets the next order in the list.
+ * @return A pointer to the next order.
+ */
 Order *OrdersList::getNextOrder()
 {
     std::cout << "getNextOrder() was called\n"
@@ -378,6 +511,12 @@ bool Order::isExecuted() const
     return executed;
 }
 
+/**
+ * @brief Stream insertion operator for displaying an orders list.
+ * @param os The output stream.
+ * @param ordersList The orders list to display.
+ * @return The output stream.
+ */
 std::ostream &operator<<(std::ostream &os, const OrdersList &ordersList)
 {
     int index = 0;
@@ -388,6 +527,10 @@ std::ostream &operator<<(std::ostream &os, const OrdersList &ordersList)
     return os;
 }
 
+/**
+ * @brief Converts the orders list to a loggable string.
+ * @return The loggable string representation of the orders list.
+ */
 string OrdersList::stringToLog()
 {
     return "Order Issued: " + orders.back()->getOrderType();
