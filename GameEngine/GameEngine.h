@@ -30,6 +30,11 @@ class GameEngine : public Subject, public ILoggable {
     CommandProcessor *processor;
     Player* winner;
 
+    vector<string*> tournamentMapFiles;
+    vector<string*> tournamentPlayerStrategies;
+    int* tournamentNbOfGames = 0;
+    int* tournamentMaxTurns = 0;
+
     public:
     GameEngine();
     ~GameEngine(); // Destructor
@@ -60,6 +65,9 @@ class GameEngine : public Subject, public ILoggable {
 
 
     void definePlayerStrategy(Player *player);
+
+    void setTournamentParameters(const string& commandText);
+    void runTournament();
 
     // Stream insertion operator
     friend ostream& operator<<(ostream& out, const GameEngine& gameEngine);

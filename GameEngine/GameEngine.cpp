@@ -24,6 +24,19 @@
 Map* globalMap = nullptr;
 using namespace std;
 
+vector<string> split(string s, string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    string token;
+    vector<string> res;
+    while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
+        token = s.substr(pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back(token);
+    }
+    res.push_back(s.substr(pos_start));
+    return res;
+}
+
 //**************************GAME ENGINE**************************
 
 /**
@@ -42,6 +55,8 @@ GameEngine::GameEngine() {
     deck = new Deck();
     gameMap = nullptr;
     winner = nullptr;
+    tournamentNbOfGames = new int(0);
+    tournamentMaxTurns = new int(0);
 }
 
 /**
@@ -76,6 +91,16 @@ GameEngine::~GameEngine() {
         gameMap = nullptr;
     }
 
+    delete tournamentNbOfGames;
+    delete tournamentMaxTurns;
+
+    for (auto map : tournamentMapFiles) {
+        delete map;                   // Free each dynamically allocated string
+    }
+
+    for (auto strategy : tournamentPlayerStrategies) {
+        delete strategy;              // Free each dynamically allocated string
+    }
 }
 
 /**
@@ -675,6 +700,70 @@ void GameEngine::definePlayerStrategy(Player *player) {
         }
     }
 }
+
+void GameEngine::setTournamentParameters(const string& commandText) {
+    vector<string> tournamentString = split(commandText, " ");
+    int index = 1;
+
+    while (index < tournamentString.size()) {
+        if (tournamentString[index] == "-M") {
+            index++;
+            while (index < tournamentString.size() && tournamentString[index][0] != '-') {
+                // Dynamically allocate memory for each map string
+                tournamentMapFiles.push_back(new string(tournamentString[index++]));
+            }
+        } else if (tournamentString[index] == "-P") {
+            index++;
+            while (index < tournamentString.size() && tournamentString[index][0] != '-') {
+                // Dynamically allocate memory for each player strategy string
+                tournamentPlayerStrategies.push_back(new string(tournamentString[index++]));
+            }
+        } else if (tournamentString[index] == "-G") {
+            index++;
+            *tournamentNbOfGames = stoi(tournamentString[index++]); // Update dynamically allocated value
+        } else if (tournamentString[index] == "-D") {
+            index++;
+            *tournamentMaxTurns = stoi(tournamentString[index++]); // Update dynamically allocated value
+        }
+    }
+
+    // Print the tournament parameters
+    cout << "Tournament parameters set:" << endl;
+
+    cout << "Maps: ";
+    for (const auto& map : tournamentMapFiles) {
+        cout << *map << " "; // Dereference pointer to get map name
+    }
+    cout << endl;
+
+    cout << "Player Strategies: ";
+    for (const auto& strategy : tournamentPlayerStrategies) {
+        cout << *strategy << " "; // Dereference pointer to get strategy name
+    }
+    cout << endl;
+
+    cout << "Number of Games: " << *tournamentNbOfGames << endl;
+    cout << "Max Turns: " << *tournamentMaxTurns << endl;
+}
+
+void GameEngine::runTournament() {
+    cout << "Tournament mode starting..." << endl;
+
+    for (const auto& map : tournamentMapFiles) {
+        for (int game = 1; game <= *tournamentNbOfGames; ++game) {
+            cout << "Playing game " << game << " on map " << *map << "..." << endl;
+
+            // Simulate a game
+            int winnerIndex = rand() % tournamentPlayerStrategies.size();
+            cout << "Winner: " << *tournamentPlayerStrategies[winnerIndex] << endl;
+        }
+    }
+
+    cout << "Tournament completed." << endl;
+}
+
+
+
 
 /**
  * @brief Gets the list of players in the game.

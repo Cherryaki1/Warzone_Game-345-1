@@ -27,6 +27,7 @@ using namespace std;
 extern void testLoggingObserver();
 extern void testOrderExecution();
 extern void testPlayerStrategies();
+extern void testTournament();
 
 // Main Class
 int main(){
@@ -47,8 +48,8 @@ int main(){
   //testLoggingObserver();      //Part 5
 
   // ************** Assignment 3 **************
-    testPlayerStrategies();
-  //testTournament();
+    //testPlayerStrategies();
+    testTournament();
 
 
 

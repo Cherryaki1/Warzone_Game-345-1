@@ -37,6 +37,10 @@ private:
     virtual void readCommand();
 
     public:
+
+    bool validateTournamentCommand(std::string);
+
+
     CommandProcessor();
     ~CommandProcessor() override;
     vector<Command*>* getCommands();

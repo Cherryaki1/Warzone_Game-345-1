@@ -16,6 +16,19 @@
 
 #include "CommandProcessing.h"
 
+vector<string> split(string s, string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    string token;
+    vector<string> res;
+    while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
+        token = s.substr(pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back(token);
+    }
+    res.push_back(s.substr(pos_start));
+    return res;
+}
+
 
 //**************************COMMAND**************************
 
@@ -155,7 +168,10 @@ bool CommandProcessor::validate(Command* command, string& state) {
     } else if (commandText == "replay" && state == "win") {
         isValid = true;
         command->saveEffect("Replays");
-    } else {
+    } else if (commandText.substr(0,commandText.find(' ')) == "tournament" && state == "start") {
+        isValid = true;
+        command->saveEffect("Sets tournament mode");
+    }else {
         command->saveEffect("Invalid command in the current state.");
     }
 
@@ -210,6 +226,47 @@ std::string CommandProcessor::nextGameState(const std::string& currentState, con
 string CommandProcessor::stringToLog() {
     return commands.back()->stringToLog();
 }
+
+bool CommandProcessor::validateTournamentCommand(const string commandText) {
+    if (commandText.substr(0,commandText.find(' ')) == "tournament") {
+        std::cout << "Invalid command: must start with 'tournament'." << std::endl;
+        return false;
+    }
+
+    vector<string> tournamentString = split(commandText, " ");
+
+    int index = 1; // So we skip the first word which is "tournament"
+    try {
+        while (index < tournamentString.size()) {
+            if (tournamentString[index] == "-M") {
+                index++;
+                if (index >= tournamentString.size() || tournamentString[index][0] == '-') throw std::invalid_argument("Missing map files.");
+                while (index < tournamentString.size() && tournamentString[index][0] != '-') index++;
+            } else if (tournamentString[index] == "-P") {
+                index++;
+                if (index >= tournamentString.size() || tournamentString[index][0] == '-') throw std::invalid_argument("Missing player strategies.");
+                while (index < tournamentString.size() && tournamentString[index][0] != '-') index++;
+            } else if (tournamentString[index] == "-G") {
+                index++;
+                if (index >= tournamentString.size() || stoi(tournamentString[index]) < 1 || stoi(tournamentString[index]) > 5)
+                    throw std::invalid_argument("Invalid number of games (must be 1-5).");
+                index++;
+            } else if (tournamentString[index] == "-D") {
+                index++;
+                if (index >= tournamentString.size() || stoi(tournamentString[index]) < 10 || stoi(tournamentString[index]) > 50)
+                    throw std::invalid_argument("Invalid max turns (must be 10-50).");
+                index++;
+            } else {
+                throw std::invalid_argument("Unexpected parameter.");
+            }
+        }
+        return true;
+    } catch (...) {
+        std::cout << "Invalid tournament command format." << std::endl;
+        return false;
+    }
+}
+
 
 /**
  * @brief Stream insertion operator for displaying a CommandProcessor.
