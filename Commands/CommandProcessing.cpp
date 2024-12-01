@@ -206,20 +206,24 @@ bool CommandProcessor::validate(Command* command) {
     return isValid;
 }
 
-
+/**
+ * @brief Parses the tournament command and sets up the tournament mode.
+ * @param input The tournament command input string.
+ */
 void CommandProcessor::parseTournamentCommand(const string input) {
     tournamentMode = true;
     vector<Command*> blank;
-    commands = blank;
+    commands = blank; // Clear existing commands
     vector<string> maps;
     vector<string> players;
     int numGames = 0, numRounds = 0;
 
-    std::istringstream iss(input);
+    std::istringstream iss(input); // Create a string stream from the input
     string token;
     string currentFlag;
     string buffer;
 
+    // Map of strategy names to their corresponding IDs
     std::map<string, int> strategyMap = {
             {"human", 1},
             {"cheater", 2},
@@ -230,7 +234,7 @@ void CommandProcessor::parseTournamentCommand(const string input) {
 
     // Check and skip the "tournament" token if it exists
     iss >> token;
-    if (token == "tournament") {
+    if (token == "tournament") { 
         std::cout << "Skipping 'tournament' token." << std::endl;
     } else {
         iss.clear();
@@ -238,17 +242,18 @@ void CommandProcessor::parseTournamentCommand(const string input) {
         iss.seekg(0);
     }
 
+    // Parse the rest of the command
     while (iss >> token) {
-        if (token == "-M" || token == "-P" || token == "-G" || token == "-D") {
-            if (currentFlag == "-M" && !buffer.empty()) {
+        if (token == "-M" || token == "-P" || token == "-G" || token == "-D") { // Check for flags
+            if (currentFlag == "-M" && !buffer.empty()) { // Save the map(s) if we were parsing maps
                 std::istringstream mapStream(buffer);
                 string map;
-                while (std::getline(mapStream, map, ',')) {
+                while (std::getline(mapStream, map, ',')) { // Split the maps by comma
                     map.erase(map.begin(), std::find_if(map.begin(), map.end(), [](unsigned char ch) { return !std::isspace(ch); }));
                     map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
                     maps.push_back(map);
                 }
-                if (maps.size() < 1 || maps.size() > 5) {
+                if (maps.size() < 1 || maps.size() > 5) { // Check the number of maps
                     std::cerr << "Error: Invalid number of maps (must be between 1 and 5).\n";
                     return;
                 }
@@ -265,12 +270,12 @@ void CommandProcessor::parseTournamentCommand(const string input) {
                 return;
             }
         }
-        else if (currentFlag == "-G") {
-            try {
+        else if (currentFlag == "-G") { // Parse the number of games
+            try { 
                 numGames = std::stoi(token);
                 if (numGames < 1 || numGames > 5) throw std::out_of_range("Invalid number of games");
 //                saveCommand("setgames " + std::to_string(numGames));  // Save the number of games
-            } catch (...) {
+            } catch (...) { 
                 std::cerr << "Error: Invalid number of games (must be 1-5).\n";
                 return;
             }
@@ -289,21 +294,21 @@ void CommandProcessor::parseTournamentCommand(const string input) {
         }
     }
 
-    if (currentFlag == "-M" && !buffer.empty()) {
+    if (currentFlag == "-M" && !buffer.empty()) { // Save the last map(s) if we were parsing maps
         std::istringstream mapStream(buffer);
         string map;
-        while (std::getline(mapStream, map, ',')) {
+        while (std::getline(mapStream, map, ',')) { // Split the maps by comma
             map.erase(map.begin(), std::find_if(map.begin(), map.end(), [](unsigned char ch) { return !std::isspace(ch); }));
             map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
             maps.push_back(map);
         }
     }
 
-    if (maps.empty()) {
+    if (maps.empty()) { // Check if maps were provided
         std::cerr << "Error: No maps provided.\n";
         return;
     }
-    if (players.size() < 2 || players.size() > 4) {
+    if (players.size() < 2 || players.size() > 4) { // Check the number of players
         std::cerr << "Error: Invalid number of player strategies (must be 2-4).\n";
         return;
     }
@@ -313,7 +318,7 @@ void CommandProcessor::parseTournamentCommand(const string input) {
     saveCommand(std::to_string(numRounds));
 
     for(int j = 0; j<numGames; j++){
-        for (const auto& map : maps) {
+        for (const auto& map : maps) { 
             saveCommand("loadmap " + map);
             saveCommand("validatemap");
 
