@@ -14,12 +14,16 @@ void testPlayerStrategies(){
     string choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
     int maps = stoi(choice);
 
+    cout << "How many times would you like to play with each map?" << endl;
+    choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
+    int gamesPerMap = stoi(choice);
+
     cout << "How many rounds should each game last?" << endl;
     choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
     int rounds = stoi(choice);
 
-    for (int j = 0; j < maps; j++){
-        cout << "***********MAP " << (j+1) <<"***********"<< endl;
+    for (int j = 0; j < maps*gamesPerMap; j++){
+        cout << "***********GAME " << (j+1) <<"***********"<< endl;
         engine.clear();
         engine.startUpPhase();
         for(int i = 0; i < rounds; i++){
