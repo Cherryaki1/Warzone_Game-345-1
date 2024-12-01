@@ -125,12 +125,9 @@ vector<Command*>* CommandProcessor::getCommands() {
  */
 Command* CommandProcessor::getCommand() {
     if(tournamentMode){
-        std::cout << commands.front()->getCommandText() << std::endl;
+        std::cout << "\033[31m" <<commands.front()->getCommandText() << "\033[0m" << std::endl;
         Command* toReturn = commands.front();
-        commands.pop_back();
-        if(commands.size()!=0) {
-            commands.erase(commands.begin());
-        }
+        commands.erase(commands.begin());
         return toReturn;
     } else {
         readCommand();
@@ -209,8 +206,8 @@ bool CommandProcessor::validate(Command* command) {
     return isValid;
 }
 
+
 void CommandProcessor::parseTournamentCommand(const string input) {
-    // Initialize parsing variables
     tournamentMode = true;
     vector<Command*> blank;
     commands = blank;
@@ -218,7 +215,11 @@ void CommandProcessor::parseTournamentCommand(const string input) {
     vector<string> players;
     int numGames = 0, numRounds = 0;
 
-    // Maps player strategies to numeric codes
+    std::istringstream iss(input);
+    string token;
+    string currentFlag;
+    string buffer;
+
     std::map<string, int> strategyMap = {
             {"human", 1},
             {"cheater", 2},
@@ -227,74 +228,106 @@ void CommandProcessor::parseTournamentCommand(const string input) {
             {"benevolent", 5}
     };
 
-    std::istringstream iss(input);
-    std::string token;
+    // Check and skip the "tournament" token if it exists
+    iss >> token;
+    if (token == "tournament") {
+        std::cout << "Skipping 'tournament' token." << std::endl;
+    } else {
+        iss.clear();
+        iss.str(input);
+        iss.seekg(0);
+    }
 
     while (iss >> token) {
-        if (token == "-M") {
-            // Parse maps
-            iss >> token;
-            token = token.substr(1, token.size() - 2); // Remove angle brackets
-            std::istringstream mapStream(token);
-            std::string map;
-            while (std::getline(mapStream, map, ',')) {
-                maps.push_back(map);
+        if (token == "-M" || token == "-P" || token == "-G" || token == "-D") {
+            if (currentFlag == "-M" && !buffer.empty()) {
+                std::istringstream mapStream(buffer);
+                string map;
+                while (std::getline(mapStream, map, ',')) {
+                    map.erase(map.begin(), std::find_if(map.begin(), map.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+                    map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
+                    maps.push_back(map);
+                }
+                if (maps.size() < 1 || maps.size() > 5) {
+                    std::cerr << "Error: Invalid number of maps (must be between 1 and 5).\n";
+                    return;
+                }
+                buffer.clear();
             }
-        } else if (token == "-P") {
-            // Parse players
-            iss >> token;
-            token = token.substr(1, token.size() - 2); // Remove angle brackets
-            std::istringstream playerStream(token);
-            std::string player;
-            while (std::getline(playerStream, player, ',')) {
-                players.push_back(player);
+            currentFlag = token;
+        } else if (currentFlag == "-M") {
+            if (!buffer.empty()) buffer += " ";
+            buffer += token;
+        } else if (currentFlag == "-P") {
+            players.push_back(token);
+            if (players.size() > 4) {
+                std::cerr << "Error: Invalid number of players (must be between 2 and 4).\n";
+                return;
             }
-        } else if (token == "-G") {
-            // Parse number of games
-            iss >> token;
-            token = token.substr(1, token.size() - 2); // Remove angle brackets
-            numGames = std::stoi(token); // Convert to integer
-        } else if (token == "-D") {
-            // Parse number of rounds
-            iss >> token;
-            token = token.substr(1, token.size() - 2); // Remove angle brackets
-            numRounds = std::stoi(token); // Convert to integer
+        }
+        else if (currentFlag == "-G") {
+            try {
+                numGames = std::stoi(token);
+                if (numGames < 1 || numGames > 5) throw std::out_of_range("Invalid number of games");
+//                saveCommand("setgames " + std::to_string(numGames));  // Save the number of games
+            } catch (...) {
+                std::cerr << "Error: Invalid number of games (must be 1-5).\n";
+                return;
+            }
+        } else if (currentFlag == "-D") {
+            try {
+                numRounds = std::stoi(token);
+                if (numRounds < 10 || numRounds > 50) throw std::out_of_range("Invalid number of rounds");
+//                saveCommand("setrounds " + std::to_string(numRounds));  // Save the number of rounds
+            } catch (...) {
+                std::cerr << "Error: Invalid number of rounds (must be 10-50).\n";
+                return;
+            }
+        } else {
+            std::cerr << "Error: Unexpected token '" << token << "'\n";
+            return;
         }
     }
 
-    // Debugging Output
-    std::cout << "Parsed Values:" << std::endl;
-    std::cout << "Maps: ";
-    for (const auto& map : maps) std::cout << map << " ";
-    std::cout << "\nPlayers: ";
-    for (const auto& player : players) std::cout << player << " ";
-    std::cout << "\nNumber of Games: " << numGames;
-    std::cout << "\nNumber of Rounds: " << numRounds << std::endl;
-    std::cout << "\nMapSize: " <<maps.size()<<std::endl;
+    if (currentFlag == "-M" && !buffer.empty()) {
+        std::istringstream mapStream(buffer);
+        string map;
+        while (std::getline(mapStream, map, ',')) {
+            map.erase(map.begin(), std::find_if(map.begin(), map.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+            map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
+            maps.push_back(map);
+        }
+    }
+
+    if (maps.empty()) {
+        std::cerr << "Error: No maps provided.\n";
+        return;
+    }
+    if (players.size() < 2 || players.size() > 4) {
+        std::cerr << "Error: Invalid number of player strategies (must be 2-4).\n";
+        return;
+    }
+
     saveCommand(std::to_string(maps.size()));
     saveCommand(std::to_string(numGames));
     saveCommand(std::to_string(numRounds));
 
-    // Generate the commands
-    for (int game = 1; game <= numGames; ++game) {
-        for (const string& map : maps) {
-            // Load and validate map
+    for(int j = 0; j<numGames; j++){
+        for (const auto& map : maps) {
             saveCommand("loadmap " + map);
             saveCommand("validatemap");
 
-            // Add players
-            for (size_t i = 0; i < players.size(); ++i) {
-                saveCommand("addplayer P" + std::to_string(i + 1));
+            for (int i = 0; i<players.size(); i++){
+                string strategy = players.at(i);
+                saveCommand("addplayer P"+ std::to_string(i + 1));
                 saveCommand(std::to_string(strategyMap[players[i]]));
             }
-
-            // End player addition
             saveCommand("Y");
-
-            // Start the game
             saveCommand("gamestart");
         }
     }
+
+    std::cout << "Tournament commands parsed and saved.\n";
 }
 
 

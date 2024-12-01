@@ -409,7 +409,7 @@ void Aggressive::issueOrder() {
     // Advance armies to enemy territories
     for (Territory* sourceTerritory : player->getOwnedTerritories()) {
         for (Territory* targetTerritory : sourceTerritory->adjacentTerritories) {
-            if (targetTerritory->getOwner() != player) {
+            if (targetTerritory->getOwner() != player && sourceTerritory->getNumberOfArmies()>0) {
                 Order* advanceOrder = new AdvanceOrder(player, sourceTerritory, targetTerritory, sourceTerritory->getNumberOfArmies());
                 player->addToOrderList(advanceOrder);
                 cout << "Order advancing " << sourceTerritory->getNumberOfArmies() << " armies from " << sourceTerritory->getName() << " to " << targetTerritory->getName() << " added to " << player->getPlayerName() << "'s order list!" << endl;

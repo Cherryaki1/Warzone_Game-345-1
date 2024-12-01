@@ -16,7 +16,7 @@ void testPlayerStrategies(){
     int maps, gamesPerMap, rounds;
     switch(mode){
         case 1:
-            cout << "Enter the tournament string" << endl;
+            cout << "Enter the tournament string. Example: -M test.txt,europe 4b.map -P aggressive neutral -G 2 -D 30" << endl;
             choice = engine.getCommandProcessor()->getCommand()->getCommandText();
             engine.getCommandProcessor()->parseTournamentCommand(choice);
 
@@ -37,7 +37,6 @@ void testPlayerStrategies(){
             choice =  engine.getCommandProcessor()->getCommand()->getCommandText();
              rounds = stoi(choice);
 
-
             break;
     }
 
@@ -46,7 +45,7 @@ void testPlayerStrategies(){
         engine.clear();
         engine.startUpPhase();
         for(int i = 0; i < rounds; i++){
-            cout << "****ROUND " << (i+1) <<"****" <<endl;
+            cout << "\n****ROUND " << (i+1) <<"****" <<endl;
             engine.reinforcementPhase();
             engine.ordersIssuingPhase2();
             if (engine.ordersExecutionPhase() || i == rounds-1){
