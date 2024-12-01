@@ -25,29 +25,29 @@ void testMainGameLoop() {
 }
 
 
-void testGameStates() {
-    GameEngine gameEngine;
-//    if(gameEngine.startUpPhase("../DownloadedMaps/Europe 4B.map")) {
-        cout << "Game Engine StartUpPhase Completed, proceeding to Reinforcement Phase" << std::endl;
-        if(gameEngine.reinforcementPhase()) {
-            cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;
-            if(gameEngine.ordersIssuingPhase()) {
-                cout << "Orders Issuing Phase Completed, proceeding to Orders Execution" << endl;
-                if(gameEngine.ordersExecutionPhase() == "endexecorders") {
-                    cout << "Orders Execution Phase Completed, checking End Phase" << endl;
-                    testGameStates();
-                }else {
-                    if(gameEngine.endPhase()) {
-                        cout << "Congratulations, a player has won!" << endl;
-                        cout << "Thank you for playing!" << endl;
-                    }else {
-                        cout << "The win conditions have not been met yet!" << endl;
-                        testGameStates();
-                    }
-                }
-            }
-        }
-    }
+//void testGameStates() { DEPRACATED
+//    GameEngine gameEngine;
+////    if(gameEngine.startUpPhase("../DownloadedMaps/Europe 4B.map")) {
+//        cout << "Game Engine StartUpPhase Completed, proceeding to Reinforcement Phase" << std::endl;
+//        if(gameEngine.reinforcementPhase()) {
+//            cout << "Reinforcement Phase Completed, proceeding to Orders Execution" << endl;
+//            if(gameEngine.ordersIssuingPhase()) {
+//                cout << "Orders Issuing Phase Completed, proceeding to Orders Execution" << endl;
+//                if(gameEngine.ordersExecutionPhase() == "endexecorders") {
+//                    cout << "Orders Execution Phase Completed, checking End Phase" << endl;
+//                    testGameStates();
+//                }else {
+//                    if(gameEngine.endPhase()) {
+//                        cout << "Congratulations, a player has won!" << endl;
+//                        cout << "Thank you for playing!" << endl;
+//                    }else {
+//                        cout << "The win conditions have not been met yet!" << endl;
+//                        testGameStates();
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
 

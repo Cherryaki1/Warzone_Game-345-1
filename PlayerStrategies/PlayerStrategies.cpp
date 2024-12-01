@@ -204,7 +204,7 @@ void Human::issueOrder() {
             Territory *sourceTerr = player->getOwnedTerritories().at((choiceNum - 1));
             string sourceTerrStr = sourceTerr->getName();
 
-            cout << "Advancement chosen\n\tWhat is the target territory?"<<endl;
+            cout << "\tWhat is the target territory?"<<endl;
             for(int i = 0; i<sourceTerr->adjacentTerritories.size(); i++){
                     cout<<"\t" << (i+1) << "\t" << sourceTerr->adjacentTerritories.at(i)->getName() << endl;
             }
@@ -212,6 +212,16 @@ void Human::issueOrder() {
             choiceNum = stoi(choice);
             Territory *targetTerr = sourceTerr->adjacentTerritories.at(choiceNum-1);
             string targetTerrStr = targetTerr->getName();
+            cout << "How many units would you like to deploy to " << targetTerrStr << "?" <<  endl;
+            choice = processor->getCommand()->getCommandText();
+            choiceNum = stoi(choice);
+            if (choiceNum>0){
+                Order* advanceOrder = new AdvanceOrder(player, sourceTerr, targetTerr, choiceNum);
+                player->addToOrderList(advanceOrder);
+                cout << "Order advancing " <<choiceNum<< " armies to " << targetTerrStr << " added to " << player->getPlayerName() << "'s orderlist!" <<endl;
+            } else {
+                cout << "\nNumber of units must be an integer greater than 0." << endl;
+            }
 
         } catch(...){
             cout << "\nInvalid entry - enter a valid option" <<endl;
@@ -380,7 +390,41 @@ void Aggressive::issueOrder(Order *o) {
  * @brief Issues an order for the Aggressive player.
  */
 void Aggressive::issueOrder() {
+    // Deploy armies on the strongest country
+    Territory* strongestTerritory = nullptr;
+    int maxArmies = -1;
+    for (Territory* territory : player->getOwnedTerritories()) {
+        if (territory->getNumberOfArmies() > maxArmies) {
+            maxArmies = territory->getNumberOfArmies();
+            strongestTerritory = territory;
+        }
+    }
 
+    if (strongestTerritory != nullptr) {
+        Order* deployOrder = new DeployOrder(player, strongestTerritory, player->getReinforcementPool());
+        player->addToOrderList(deployOrder);
+        cout << "Order deploying " << player->getReinforcementPool() << " armies to " << strongestTerritory->getName() << " added to " << player->getPlayerName() << "'s order list!" << endl;
+    }
+
+    // Advance armies to enemy territories
+    for (Territory* sourceTerritory : player->getOwnedTerritories()) {
+        for (Territory* targetTerritory : sourceTerritory->adjacentTerritories) {
+            if (targetTerritory->getOwner() != player) {
+                Order* advanceOrder = new AdvanceOrder(player, sourceTerritory, targetTerritory, sourceTerritory->getNumberOfArmies());
+                player->addToOrderList(advanceOrder);
+                cout << "Order advancing " << sourceTerritory->getNumberOfArmies() << " armies from " << sourceTerritory->getName() << " to " << targetTerritory->getName() << " added to " << player->getPlayerName() << "'s order list!" << endl;
+            }
+        }
+    }
+
+    // Use any card with an aggressive purpose
+    auto playerHand = player->getHand();
+    auto toPlay = playerHand->getHand();
+    for (int i = 0; i < toPlay->size(); i++) {
+        if (toPlay->at(i)->getType() == "Bomb" || toPlay->at(i)->getType() == "Airlift") {
+            toPlay->at(i)->play();
+        }
+    }
 }
 
 /**
@@ -388,7 +432,15 @@ void Aggressive::issueOrder() {
  * @return A vector of territories to attack.
  */
 vector<Territory *> Aggressive::toAttack() {
-    return vector<Territory *>();
+    vector<Territory *> attackList;
+    for (Territory* territory : player->getOwnedTerritories()) {
+        for (Territory* neighbor : territory->adjacentTerritories) {
+            if (neighbor->getOwner() != player) {
+                attackList.push_back(neighbor);
+            }
+        }
+    }
+    return attackList;
 }
 
 /**
@@ -396,7 +448,19 @@ vector<Territory *> Aggressive::toAttack() {
  * @return A vector of territories to defend.
  */
 vector<Territory *> Aggressive::toDefend() {
-    return vector<Territory *>();
+    vector<Territory *> defendList;
+    Territory* strongestTerritory = nullptr;
+    int maxArmies = -1;
+    for (Territory* territory : player->getOwnedTerritories()) {
+        if (territory->getNumberOfArmies() > maxArmies) {
+            maxArmies = territory->getNumberOfArmies();
+            strongestTerritory = territory;
+        }
+    }
+    if (strongestTerritory != nullptr) {
+        defendList.push_back(strongestTerritory);
+    }
+    return defendList;
 }
 
 

@@ -28,6 +28,7 @@ class GameEngine : public Subject, public ILoggable {
     Deck* deck;
     Map* gameMap;
     CommandProcessor *processor;
+    Player* winner;
 
     public:
     GameEngine();
@@ -41,12 +42,13 @@ class GameEngine : public Subject, public ILoggable {
     bool reinforcementPhase();
     bool ordersIssuingPhase();
     void ordersIssuingPhase2();
-    string ordersExecutionPhase();
+    bool ordersExecutionPhase();
     bool endPhase();
 
     // SETTERS AND GETTERS FOR PLAY
     string getState() const;
     string getCommand() const;
+    CommandProcessor* getCommandProcessor();
     void setCommand(const string& cmd);
     bool getInvalidCommand()const;
     void setInvalidCommand(bool value);
@@ -54,6 +56,7 @@ class GameEngine : public Subject, public ILoggable {
     vector<Player*>* getPlayerList();
     void transition(string newState);
     string stringToLog() override;
+    void clear();
 
 
     void definePlayerStrategy(Player *player);
