@@ -41,6 +41,7 @@ GameEngine::GameEngine() {
     command = nullptr; // To avoid dereferencing issues
     deck = new Deck();
     gameMap = nullptr;
+    winner = nullptr;
 }
 
 /**
@@ -484,7 +485,7 @@ bool GameEngine::ordersIssuingPhase() {
  * @brief Handles the orders execution phase of the game.
  * @return The result of the phase.
  */
-string GameEngine::ordersExecutionPhase() {
+bool GameEngine::ordersExecutionPhase() {
     std::cout << "\nStarting orders execution phase..." << std::endl;
 
     // Loop through each player
@@ -516,9 +517,28 @@ string GameEngine::ordersExecutionPhase() {
 
         std::cout << "Finished executing orders for player: " << player->getPlayerName() << "\n" << std::endl;
     }
+    for (auto player : players) {
+        bool ownsAllTerritories = true; // Assume the player owns all territories initially.
 
+        for (auto terr : *gameMap->getTerritories()) {
+            if (terr->getOwner()->getPlayerName() != player->getPlayerName()) {
+                ownsAllTerritories = false; // Found a territory not owned by the player.
+                break;
+            }
+        }
+
+        if (ownsAllTerritories) {
+            winner = player; // Set the winner if the player owns all territories..
+            std::cout << "Orders execution phase completed." << std::endl;
+            return true; // Return true if a winner is found.
+        }
+    }
     std::cout << "Orders execution phase completed." << std::endl;
-    return getCommand();  // Return the current command, if applicable
+    return false; // No winner found, return false.
+
+
+
+//    return getCommand();  // Return the current command, if applicable
 }
 
 /**
@@ -527,7 +547,12 @@ string GameEngine::ordersExecutionPhase() {
  */
 bool GameEngine::endPhase() {
     cout << "... End Phase ..." << endl;
-    // Validate win
+    if (winner != nullptr){
+        cout << winner->getPlayerName() << " has won the game by conquering all the territories" << endl;
+    } else {
+        cout << "The game has concluded with a draw." << endl;
+    }
+
     transition("win");
     return true;
 }
@@ -656,5 +681,9 @@ void GameEngine::definePlayerStrategy(Player *player) {
  */
 vector<Player *> *GameEngine::getPlayerList() {
     return &players;
+}
+
+CommandProcessor* GameEngine::getCommandProcessor() {
+    return processor;
 }
 
