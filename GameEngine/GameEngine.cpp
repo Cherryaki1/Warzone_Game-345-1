@@ -136,6 +136,7 @@ void GameEngine::startUpPhase() {
     } while (*state!="mapvalidated");
 
     int playerCount= 0;
+
     do{
         cout << "Please enter addplayer and the player name (separated by space) - (2-6 players)" <<endl;
         cout << "You have " << playerCount << " player(s) so far" << endl;
@@ -685,5 +686,10 @@ vector<Player *> *GameEngine::getPlayerList() {
 
 CommandProcessor* GameEngine::getCommandProcessor() {
     return processor;
+}
+
+void GameEngine::clear() {
+    vector<Player*> blankPlayerList;
+    players = blankPlayerList;
 }
 

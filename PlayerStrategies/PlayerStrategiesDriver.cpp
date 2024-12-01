@@ -20,6 +20,7 @@ void testPlayerStrategies(){
 
     for (int j = 0; j < maps; j++){
         cout << "***********MAP " << (j+1) <<"***********"<< endl;
+        engine.clear();
         engine.startUpPhase();
         for(int i = 0; i < rounds; i++){
             cout << "****ROUND " << (i+1) <<"****" <<endl;

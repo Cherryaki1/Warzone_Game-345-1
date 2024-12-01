@@ -56,6 +56,7 @@ class GameEngine : public Subject, public ILoggable {
     vector<Player*>* getPlayerList();
     void transition(string newState);
     string stringToLog() override;
+    void clear();
 
 
     void definePlayerStrategy(Player *player);
