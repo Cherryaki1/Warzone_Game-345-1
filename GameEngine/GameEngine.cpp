@@ -703,10 +703,10 @@ void GameEngine::setTournamentParameters(CommandProcessor* processor) {
         } else if (commandText.substr(0, 9) == "addplayer") {
             std::string strategy = commandText.substr(10);
             tournamentPlayerStrategies.push_back(new std::string(strategy));
-        } else if (commandText == "validatemap") {
-            // Validate map logic can be added here
-        } else if (commandText == "gamestart") {
-            // Setup players or other configurations here
+        } else if (commandText.substr(0, 8) == "setgames") {
+            *tournamentNbOfGames = std::stoi(commandText.substr(9));
+        } else if (commandText.substr(0, 9) == "setrounds") {
+            *tournamentMaxTurns = std::stoi(commandText.substr(10));
         }
     }
 
@@ -714,8 +714,10 @@ void GameEngine::setTournamentParameters(CommandProcessor* processor) {
     for (const auto& map : tournamentMapFiles) std::cout << *map << " ";
     std::cout << "\nPlayer Strategies: ";
     for (const auto& strategy : tournamentPlayerStrategies) std::cout << *strategy << " ";
-    std::cout << "\n";
+    std::cout << "\nNumber of Games: " << *tournamentNbOfGames;
+    std::cout << "\nMax Turns per Game: " << *tournamentMaxTurns << "\n";
 }
+
 
 
 
@@ -723,19 +725,37 @@ void GameEngine::setTournamentParameters(CommandProcessor* processor) {
 void GameEngine::runTournament() {
     cout << "Tournament mode starting..." << endl;
 
-    // Iterate over all maps and games
-    for (const string* map : tournamentMapFiles) {
-        for (int game = 1; game <= *tournamentNbOfGames; ++game) {
-            cout << "\nPlaying game " << game << " on map " << map << "..." << endl;
+    cout << "Debug: Running tournament with the following parameters:" << endl;
+    cout << "Maps: ";
+    for (const auto& map : tournamentMapFiles) cout << *map << " ";
+    cout << "\nStrategies: ";
+    for (const auto& strategy : tournamentPlayerStrategies) cout << *strategy << " ";
+    cout << "\nNumber of Games: " << *tournamentNbOfGames << endl;
+    cout << "Max Turns per Game: " << *tournamentMaxTurns << endl;
 
-            // Simulate gameplay logic
-            int winnerIndex = rand() % tournamentPlayerStrategies.size(); // Randomly pick a winner
-            cout << "Winner: " << tournamentPlayerStrategies[winnerIndex] << endl;
+    for (const auto& map : tournamentMapFiles) {
+        cout << "\nPlaying all games on map: " << *map << endl;
+        for (int game = 1; game <= *tournamentNbOfGames; ++game) {
+            cout << "  Game " << game << " on map " << *map << "..." << endl;
+
+            // Simulate game rounds
+            for (int round = 1; round <= *tournamentMaxTurns; ++round) {
+                cout << "    Round " << round << "..." << endl;
+                // Simulate round logic
+                if (rand() % 10 == 0) { // Arbitrary winner condition
+                    int winnerIndex = rand() % tournamentPlayerStrategies.size();
+                    cout << "      Winner: " << *tournamentPlayerStrategies[winnerIndex] << endl;
+                    break;
+                }
+            }
         }
     }
 
-    cout << "\nTournament completed!" << endl;
+    cout << "\nTournament completed!\n";
 }
+
+
+
 
 
 

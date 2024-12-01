@@ -233,59 +233,57 @@ string CommandProcessor::stringToLog() {
 }
 
 void CommandProcessor::parseTournamentCommand(const std::string& input) {
-    // Initialize parsing variables
     std::vector<std::string> maps;
     std::vector<std::string> players;
     int numGames = 0, numRounds = 0;
 
-    // Tokenize the input string
     std::istringstream iss(input);
     std::string token;
     std::string currentFlag;
+    std::string buffer;
 
     // Check and skip the "tournament" token if it exists
     iss >> token;
     if (token == "tournament") {
         std::cout << "Skipping 'tournament' token." << std::endl;
     } else {
-        // Put the token back into the stream if it's not "tournament"
         iss.clear();
         iss.str(input);
         iss.seekg(0);
     }
 
-    // Process the remaining tokens
     while (iss >> token) {
         if (token == "-M" || token == "-P" || token == "-G" || token == "-D") {
-            // Update the current flag
+            if (currentFlag == "-M" && !buffer.empty()) {
+                std::istringstream mapStream(buffer);
+                std::string map;
+                while (std::getline(mapStream, map, ',')) {
+                    map.erase(map.begin(), std::find_if(map.begin(), map.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+                    map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
+                    maps.push_back(map);
+                }
+                buffer.clear();
+            }
             currentFlag = token;
         } else if (currentFlag == "-M") {
-            // Split maps by commas
-            std::istringstream mapStream(token);
-            std::string map;
-            while (std::getline(mapStream, map, ',')) {
-                // Trim leading and trailing spaces
-                map.erase(map.begin(), std::find_if(map.begin(), map.end(), [](unsigned char ch) { return !std::isspace(ch); }));
-                map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
-                maps.push_back(map);
-            }
+            if (!buffer.empty()) buffer += " ";
+            buffer += token;
         } else if (currentFlag == "-P") {
-            // Add player strategies (space-separated)
             players.push_back(token);
         } else if (currentFlag == "-G") {
-            // Number of games
             try {
                 numGames = std::stoi(token);
                 if (numGames < 1 || numGames > 5) throw std::out_of_range("Invalid number of games");
+                saveCommand("setgames " + std::to_string(numGames));  // Save the number of games
             } catch (...) {
                 std::cerr << "Error: Invalid number of games (must be 1-5).\n";
                 return;
             }
         } else if (currentFlag == "-D") {
-            // Number of rounds
             try {
                 numRounds = std::stoi(token);
                 if (numRounds < 10 || numRounds > 50) throw std::out_of_range("Invalid number of rounds");
+                saveCommand("setrounds " + std::to_string(numRounds));  // Save the number of rounds
             } catch (...) {
                 std::cerr << "Error: Invalid number of rounds (must be 10-50).\n";
                 return;
@@ -296,7 +294,16 @@ void CommandProcessor::parseTournamentCommand(const std::string& input) {
         }
     }
 
-    // Validate parsed data
+    if (currentFlag == "-M" && !buffer.empty()) {
+        std::istringstream mapStream(buffer);
+        std::string map;
+        while (std::getline(mapStream, map, ',')) {
+            map.erase(map.begin(), std::find_if(map.begin(), map.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+            map.erase(std::find_if(map.rbegin(), map.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), map.end());
+            maps.push_back(map);
+        }
+    }
+
     if (maps.empty()) {
         std::cerr << "Error: No maps provided.\n";
         return;
@@ -306,27 +313,22 @@ void CommandProcessor::parseTournamentCommand(const std::string& input) {
         return;
     }
 
-    // Save commands for each game
-    for (int game = 1; game <= numGames; ++game) {
-        for (const std::string& map : maps) {
-            saveCommand("loadmap " + map);
-            saveCommand("validatemap");
-
-            // Add players with their strategies
-            for (const std::string& strategy : players) {
-                saveCommand("addplayer " + strategy);
-            }
-
-            // End player addition
-            saveCommand("Y");
-
-            // Start the game
-            saveCommand("gamestart");
+    for (const auto& map : maps) {
+        saveCommand("loadmap " + map);
+        saveCommand("validatemap");
+        for (const auto& strategy : players) {
+            saveCommand("addplayer " + strategy);
         }
+        saveCommand("Y");
+        saveCommand("gamestart");
     }
 
     std::cout << "Tournament commands parsed and saved.\n";
 }
+
+
+
+
 
 
 /**
