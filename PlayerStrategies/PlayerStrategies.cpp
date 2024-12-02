@@ -108,8 +108,14 @@ void Cheater::issueOrder(Order *o) {
  */
 void Cheater::issueOrder() {
     // Conquers all adjacent territories
-    // Done implictly when executing orders
-    // Plays no cards
+    for (Territory* territory : player->getOwnedTerritories()) {
+        for (Territory* neighbor : territory->adjacentTerritories) {
+            if (neighbor->getOwner() != player) {
+                neighbor->setOwner(player);
+                cout << player->getPlayerName() << " has conquered " << neighbor->getName() << " from " << neighbor->getOwner()->getPlayerName() << endl;
+            }
+        }
+    }
 }
 
 /**
@@ -117,7 +123,15 @@ void Cheater::issueOrder() {
  * @return A vector of territories to attack.
  */
 vector<Territory *> Cheater::toAttack() {
-    return vector<Territory *>();
+    vector<Territory *> attackList;
+    for (Territory* territory : player->getOwnedTerritories()) {
+        for (Territory* neighbor : territory->adjacentTerritories) {
+            if (neighbor->getOwner() != player) {
+                attackList.push_back(neighbor);
+            }
+        }
+    }
+    return attackList;
 }
 
 /**
@@ -125,7 +139,7 @@ vector<Territory *> Cheater::toAttack() {
  * @return A vector of territories to defend.
  */
 vector<Territory *> Cheater::toDefend() {
-    return vector<Territory *>();
+    return player->getOwnedTerritories();
 }
 
 

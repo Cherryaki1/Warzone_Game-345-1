@@ -152,6 +152,7 @@ void AdvanceOrder::execute()
      */
     std::cout << "Executing AdvanceOrder for " << player->getPlayerName() << " deploying "
               <<this->numUnits <<" armies to " << targetTerritory->getName() << " from " << this->sourceTerritory->getName() << std::endl;
+    /*
     if(sourceTerritory->getOwner()->getStrategyType() == "cheater") {
         // Conquer all adjacent territories
         for(int i = 0; i < player->toAttack().size(); i++) {
@@ -161,7 +162,7 @@ void AdvanceOrder::execute()
             notify(this);
         }
 
-    }else {
+    */
         // Normal Execute
         if (sourceTerritory->getOwner()->getPlayerName() == player->getPlayerName()){
             if (sourceTerritory->isAdjacent(targetTerritory))
@@ -240,7 +241,7 @@ void AdvanceOrder::execute()
         }
     }
 
-}
+
 
 //**************************BOMB ORDER**************************
 
