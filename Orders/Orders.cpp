@@ -216,7 +216,10 @@ void AdvanceOrder::execute()
                         // Check if defender has been defeated
                         if (targetTerritory->getNumberOfArmies() == 0)
                         {
+                            auto oldOwner = targetTerritory->getOwner();
+                            oldOwner->removeOwnedTerritory(targetTerritory);
                             targetTerritory->setOwner(player);
+                            player->addOwnedTerritory(targetTerritory);
                             targetTerritory->setNumberOfArmies(attackerArmies - attackerLosses);
 
                             // Award a card to the player if they conquered at least one territory

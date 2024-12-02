@@ -110,8 +110,11 @@ void Cheater::issueOrder() {
     // Conquers all adjacent territories
     for (Territory* territory : player->getOwnedTerritories()) {
         for (Territory* neighbor : territory->adjacentTerritories) {
-            if (neighbor->getOwner() != player) {
+            if (neighbor->getOwner()->getPlayerName() != player->getPlayerName()) {
+                auto oldOwner = neighbor->getOwner();
                 neighbor->setOwner(player);
+                player->addOwnedTerritory(neighbor);
+                oldOwner->removeOwnedTerritory(neighbor);
                 cout << player->getPlayerName() << " has conquered " << neighbor->getName() << " from " << neighbor->getOwner()->getPlayerName() << endl;
             }
         }
