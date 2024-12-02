@@ -151,7 +151,7 @@ void AdvanceOrder::execute()
      * Second part handles the normal execution and normal caluclations for conquering a territory
      */
     std::cout << "Executing AdvanceOrder for " << player->getPlayerName() << " deploying "
-              <<this->numUnits <<" armies to " << targetTerritory->getName() << " from " << this->sourceTerritory << std::endl;
+              <<this->numUnits <<" armies to " << targetTerritory->getName() << " from " << this->sourceTerritory->getName() << std::endl;
     if(sourceTerritory->getOwner()->getStrategyType() == "cheater") {
         // Conquer all adjacent territories
         for(int i = 0; i < player->toAttack().size(); i++) {
