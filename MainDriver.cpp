@@ -27,10 +27,11 @@ using namespace std;
 extern void testLoggingObserver();
 extern void testOrderExecution();
 extern void testPlayerStrategies();
+extern void testTournament();
 
 // Main Class
 int main(){
-
+    cout << "**** Thank you for playing our CLI Warzone! ****" << endl;
   // ************** Assignment 1 **************
   //testLoadMap("Test.txt");
   //testGameStates();
@@ -47,8 +48,8 @@ int main(){
   //testLoggingObserver();      //Part 5
 
   // ************** Assignment 3 **************
-    testPlayerStrategies();
-  //testTournament();
+//  testPlayerStrategies();
+  testTournament();
 
 
 

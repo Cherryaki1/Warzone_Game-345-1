@@ -546,16 +546,23 @@ bool GameEngine::ordersExecutionPhase() {
  * @brief Handles the end phase of the game.
  * @return True if the phase is completed successfully, false otherwise.
  */
-bool GameEngine::endPhase() {
+string GameEngine::endPhase() {
     cout << "... End Phase ..." << endl;
     if (winner != nullptr){
         cout << winner->getPlayerName() << " has won the game by conquering all the territories" << endl;
+        if(processor->inTournamentMode()){
+            transition("win");
+            return "Winner: "+winner->getPlayerName()+" ("+winner->getStrategyType()+")";
+        }
     } else {
         cout << "The game has concluded with a draw." << endl;
+        if(processor->inTournamentMode()){
+            transition("win");
+            return "Draw";
+        }
     }
-
     transition("win");
-    return true;
+    return "";
 }
 
 
@@ -691,5 +698,21 @@ CommandProcessor* GameEngine::getCommandProcessor() {
 void GameEngine::clear() {
     vector<Player*> blankPlayerList;
     players = blankPlayerList;
+}
+
+Map *GameEngine::getGameMap() {
+    return gameMap;
+}
+
+void GameEngine::logTournament(string gamedata, int gameNumber, int mapNumber) {
+    std::ofstream file;
+    file.open("../gamelog.txt", std::ios::app);
+    if(file.is_open()){
+        file << "MAP " << mapNumber << " | GAME " << gameNumber << ": " << gamedata << "\n";
+    } else {
+        std::cout<<"FILE DID NOT OPEN! "<< std::endl;
+    }
+    file.flush();
+    file.close();
 }
 

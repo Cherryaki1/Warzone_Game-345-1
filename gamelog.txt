@@ -1,13 +1,4 @@
-Order Issued: Deploy
-Order Issued: Bomb
-Order Issued: Negotiate
-Order Executed: Negotiate
-Command: loadmap Test.txt
-Command's Effect: Loads a map
-Command: daksk
-Command's Effect: Invalid command in the current state.
-Command: stop
-Command's Effect: Invalid command in the current state.
-Game Engine new state: start
-Game Engine new state: maploaded
-Game Engine new state: mapvalidated
+MAP 1 | GAME 1: Winner: P1 (aggressive)
+MAP 1 | GAME 2: Winner: P1 (aggressive)
+MAP 2 | GAME 1: Winner: P1 (aggressive)
+MAP 2 | GAME 2: Winner: P1 (aggressive)

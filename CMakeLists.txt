@@ -39,4 +39,5 @@ add_executable(Warzone_Game_a1_COMP345
         PlayerStrategies/PlayerStrategies.cpp
         PlayerStrategies/PlayerStrategies.h
         PlayerStrategies/PlayerStrategiesDriver.cpp
+        GameEngine/TournamentDriver.cpp
 )

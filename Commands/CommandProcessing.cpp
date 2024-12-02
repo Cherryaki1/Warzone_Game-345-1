@@ -363,6 +363,10 @@ std::ostream& operator<<(std::ostream& os, const CommandProcessor& cp) {
     return os;
 }
 
+bool CommandProcessor::inTournamentMode() {
+    return tournamentMode;
+}
+
 //**************************FILE COMMAND PROCESSOR ADAPTER**************************
 
 /**

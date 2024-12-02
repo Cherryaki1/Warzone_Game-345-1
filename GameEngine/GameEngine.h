@@ -43,7 +43,7 @@ class GameEngine : public Subject, public ILoggable {
     bool ordersIssuingPhase();
     void ordersIssuingPhase2();
     bool ordersExecutionPhase();
-    bool endPhase();
+    string endPhase();
 
     // SETTERS AND GETTERS FOR PLAY
     string getState() const;
@@ -57,7 +57,8 @@ class GameEngine : public Subject, public ILoggable {
     void transition(string newState);
     string stringToLog() override;
     void clear();
-
+    Map* getGameMap();
+    void logTournament(string gamedata, int gameNumber, int mapNumber);
 
     void definePlayerStrategy(Player *player);
 

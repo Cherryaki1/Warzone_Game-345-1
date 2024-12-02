@@ -45,6 +45,7 @@ private:
     bool validate(Command* command, string& state);
     bool validate(Command *command);
     void parseTournamentCommand(const string s);
+    bool inTournamentMode();
 
     string nextGameState(const std::string& currentState, const std::string& commandText);
 

@@ -108,8 +108,10 @@ bool Territory::operator<(const Territory &other) const {
  * @return The output stream.
  */
 std::ostream& operator<<(std::ostream& os, const Territory& territory) {
+    string ownerName = "";
+    if(territory.pOwner != nullptr){ ownerName=territory.getOwner()->getPlayerName();}
     os << "> Territory: " << territory.getName()
-       << ", Owner: " << territory.getOwner()
+       << ", Owner: " << ownerName
        << ", Continent: " << territory.getContinentID()
        << ", Armies: " << territory.getNumberOfArmies();
     return os;

@@ -164,7 +164,7 @@ void Human::issueOrder(Order *newOrder) {
 void Human::issueOrder() {
     cout << "\n*****\n" <<player->getPlayerName() << ": What are your orders?" << endl;
     cout << "---You have " << player->getReinforcementPool() << " armies available for deployment\nOPTIONS (enter the number):" << endl;
-    cout << "1 - Deploy Armies\n2 - Advance Armies\n3 - Play a card\n4 - End your turn\n--Enter your choice: " << endl;
+    cout << "1 - Deploy Armies\n2 - Advance Armies\n3 - Play a card\n4 - Display Map\n5 - End your turn\n--Enter your choice: " << endl;
     string choice;
     choice = processor->getCommand()->getCommandText();
     if(choice == "1"){ //Deploy
@@ -336,6 +336,9 @@ void Human::issueOrder() {
         this->issueOrder();
     }
     else if (choice == "4"){ //End turn
+        cout << *(player->getCurrentGameEngine()->getGameMap())<<endl;
+    }
+    else if (choice == "5"){ //End turn
         cout << "End of this turn."<<endl;
     }
     else {

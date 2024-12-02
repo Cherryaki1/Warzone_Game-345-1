@@ -104,14 +104,13 @@ string Order::stringToLog()
  */
 void DeployOrder::execute()
 {
-    std::cout << "Executing DeployOrder" << std::endl;
-    std::cout << "targetTerritoryOwner: " << targetTerritory->getOwner() << std::endl;
-    std::cout << "playerName: " << player->getPlayerName() << std::endl;
+    std::cout << "Executing DeployOrder for " << player->getPlayerName() << " deploying "
+    <<this->numUnits <<" armies to " << targetTerritory->getName() << " owned by " << targetTerritory->getOwner()->getPlayerName() << std::endl;
 
     if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
     {
-        std::cout << "player reinforcement pool: " << player->getReinforcementPool() << std::endl;
-        std::cout << "numUnits: " << numUnits << std::endl;
+        std::cout << "Player Reinforcement Pool: " << player->getReinforcementPool() << std::endl;
+        std::cout << "Number of Units: " << numUnits << std::endl;
         if (player->getReinforcementPool() >= numUnits)
         {
             targetTerritory->setNumberOfArmies(targetTerritory->getNumberOfArmies() + numUnits);
@@ -132,7 +131,6 @@ void DeployOrder::execute()
     }
 }
 
-extern Deck *deck = new Deck;
 
 //**************************ADVANCE ORDER**************************
 
@@ -152,6 +150,8 @@ void AdvanceOrder::execute()
      *
      * Second part handles the normal execution and normal caluclations for conquering a territory
      */
+    std::cout << "Executing AdvanceOrder for " << player->getPlayerName() << " deploying "
+              <<this->numUnits <<" armies to " << targetTerritory->getName() << " from " << this->sourceTerritory << std::endl;
     if(sourceTerritory->getOwner()->getStrategyType() == "cheater") {
         // Conquer all adjacent territories
         for(int i = 0; i < player->toAttack().size(); i++) {
@@ -254,6 +254,7 @@ void AdvanceOrder::execute()
  */
 void BombOrder::execute()
 {
+    std::cout << "Executing BombOrder for " << player->getPlayerName() << " bombing " << this->targetTerritory << std::endl;
     if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
     {
         std::cout << "Invalid bomb order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
@@ -312,6 +313,7 @@ void BombOrder::execute()
  */
 void BlockadeOrder::execute()
 {
+    std::cout << "Executing BlockadeOrder for " << player->getPlayerName() << " bombing " << this->targetTerritory << std::endl;
     // if (player->getHand()->hasCard("Blockade")) {
     if (targetTerritory->getOwner()->getPlayerName() == player->getPlayerName())
     {
@@ -342,6 +344,8 @@ void BlockadeOrder::execute()
  */
 void AirliftOrder::execute()
 {
+    std::cout << "Executing AirLift for " << player->getPlayerName() << " airlifting armies from " << this->targetTerritory << std::endl;
+
     if (player->hasTruceWith(targetTerritory->getOwner()->getPlayerName()))
     {
         std::cout << "Invalid airlift order: " << player->getPlayerName() << " has a truce with " << targetTerritory->getOwner() << std::endl;
@@ -384,6 +388,8 @@ void AirliftOrder::execute()
  */
 void NegotiateOrder::execute()
 {
+    std::cout << "Executing NegotiateOrder for " << player->getPlayerName() << " with " << this->targetPlayer->getPlayerName() << std::endl;
+
     // if(player->getHand()->hasCard("Diplomacy")){
     if (player->getPlayerName() == targetPlayer->getPlayerName())
     {
