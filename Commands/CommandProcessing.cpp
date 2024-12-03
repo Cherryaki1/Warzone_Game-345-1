@@ -317,8 +317,8 @@ void CommandProcessor::parseTournamentCommand(const string input) {
     saveCommand(std::to_string(numGames));
     saveCommand(std::to_string(numRounds));
 
-    for(int j = 0; j<numGames; j++){
-        for (const auto& map : maps) { 
+    for(const auto& map : maps){
+        for (int j = 0; j<numGames; j++) {
             saveCommand("loadmap " + map);
             saveCommand("validatemap");
 
