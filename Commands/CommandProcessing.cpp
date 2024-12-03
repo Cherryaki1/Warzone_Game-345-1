@@ -326,6 +326,7 @@ void CommandProcessor::parseTournamentCommand(const string input) {
                 string strategy = players.at(i);
                 saveCommand("addplayer P"+ std::to_string(i + 1));
                 saveCommand(std::to_string(strategyMap[players[i]]));
+                if(players.size()>2 && i>0 && i!=players.size()-1) saveCommand(" ");
             }
             saveCommand("Y");
             saveCommand("gamestart");
