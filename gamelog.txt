@@ -1,4 +1,4 @@
-MAP 1 | GAME 1: Winner: P1 (aggressive)
-MAP 1 | GAME 2: Winner: P1 (aggressive)
+MAP 1 | GAME 1: Draw
+MAP 1 | GAME 2: Draw
 MAP 2 | GAME 1: Winner: P1 (aggressive)
 MAP 2 | GAME 2: Winner: P1 (aggressive)

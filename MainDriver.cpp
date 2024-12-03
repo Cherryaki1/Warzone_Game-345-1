@@ -48,8 +48,8 @@ int main(){
   //testLoggingObserver();      //Part 5
 
   // ************** Assignment 3 **************
-  testPlayerStrategies();
-  //testTournament();
+  //testPlayerStrategies();
+  testTournament();
 
 
 
