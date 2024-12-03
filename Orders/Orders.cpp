@@ -206,7 +206,7 @@ void AdvanceOrder::execute()
                         if(targetTerritory->getOwner()->getStrategyType()=="neutral"){
                             std::cout << targetTerritory->getOwner()->getPlayerName() <<
                                       " is no longer a neutral player because they were attacked. They are now aggressive" << std::endl;
-                            player->setStrategy("aggressive");
+                            targetTerritory->getOwner()->setStrategy("aggressive");
                         }
 
                         // Update armies

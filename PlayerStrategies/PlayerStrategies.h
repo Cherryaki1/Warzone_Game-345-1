@@ -10,6 +10,7 @@ using std::vector;
 
 class PlayerStrategy{
 public:
+    virtual ~PlayerStrategy();
     virtual void issueOrder(Order* o) = 0;
     virtual void issueOrder() = 0;
     virtual vector<Territory*> toAttack() = 0;

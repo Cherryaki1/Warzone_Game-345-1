@@ -156,6 +156,9 @@ Player::~Player() {
     if(armies != nullptr) {
         delete armies;
     }
+
+    delete strategy;
+    strategy= nullptr;
 }
 
 /**

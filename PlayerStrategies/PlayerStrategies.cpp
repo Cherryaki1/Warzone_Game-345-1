@@ -32,6 +32,18 @@ class Order;
  */
 string PlayerStrategy::getType() {return *type;}
 
+/**
+ * @brief Destruction of the PlayerStrategy object
+ */
+PlayerStrategy::~PlayerStrategy() {
+    if (type!= nullptr) delete type;
+    type = nullptr;
+
+    if (processor!= nullptr) delete processor;
+
+    player = nullptr;
+}
+
 // ****************************** Neutral Player ******************************
 
 /**
