@@ -317,21 +317,22 @@ void CommandProcessor::parseTournamentCommand(const string input) {
     saveCommand(std::to_string(numGames));
     saveCommand(std::to_string(numRounds));
 
-    for(int j = 0; j<numGames; j++){
-        for (const auto& map : maps) { 
+    for (const auto& map : maps) {
+        for (int j = 0; j < numGames; j++) {
             saveCommand("loadmap " + map);
             saveCommand("validatemap");
 
-            for (int i = 0; i<players.size(); i++){
+            for (int i = 0; i < players.size(); i++) {
                 string strategy = players.at(i);
-                saveCommand("addplayer P"+ std::to_string(i + 1));
+                saveCommand("addplayer P" + std::to_string(i + 1));
                 saveCommand(std::to_string(strategyMap[players[i]]));
-                if(players.size()>2 && i>0 && i!=players.size()-1) saveCommand(" ");
+                if (players.size() > 2 && i > 0 && i != players.size() - 1) saveCommand(" ");
             }
             saveCommand("Y");
             saveCommand("gamestart");
         }
     }
+
 
     std::cout << "Tournament commands parsed and saved.\n";
 }
